@@ -30,19 +30,19 @@
       "default": "./dist/matchers/constants.js",
       "types": "./dist/matchers/constants.d.ts"
     },
-    "./handlers/cors": {
+    "./corsHandler": {
       "import": "./dist/handlers/cors.js",
       "require": "./dist/handlers/cors.cjs",
       "default": "./dist/handlers/cors.js",
       "types": "./dist/handlers/cors.d.ts"
     },
-    "./handlers/static": {
+    "./staticHandler": {
       "import": "./dist/handlers/static.js",
       "require": "./dist/handlers/static.cjs",
       "default": "./dist/handlers/static.js",
       "types": "./dist/handlers/static.d.ts"
     },
-    "./app/edgeApp": {
+    "./edgeApp": {
       "import": "./dist/app/edgeApp.js",
       "require": "./dist/app/edgeApp.cjs",
       "default": "./dist/app/edgeApp.js",
