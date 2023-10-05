@@ -1,0 +1,46 @@
+import { type BuiltRoute, type BasePath } from "../router/types.ts";
+import { BunicornApp } from "./index.ts";
+import { type AddBasePathTo, type Route } from "../router/route.ts";
+import { mergePaths } from "../helpers/pathUtils.ts";
+
+export class BunicornEdgeApp<
+  TBasePath extends BasePath,
+  TRoutes extends Route<any, any, any, any>[] = []
+> extends BunicornApp<TBasePath, TRoutes> {
+  override addRoute<TRoute extends Route<any, any, any, any>>(
+    route: TRoute
+  ): BunicornApp<TBasePath, [...TRoutes, AddBasePathTo<TRoute, TBasePath>]> {
+    route.path = (
+      (this.args.basePath as string) === "/"
+        ? route.path
+        : mergePaths(this.args.basePath, route.path)
+    ) as TBasePath;
+    route.middlewares ??= [];
+    Object.defineProperties(route, {
+      regexp: {
+        get() {
+          return ((route as any).__regexp ??= new RegExp(
+            `^${(route.path as TBasePath)
+              .split("/")
+              .map(part => {
+                if (part.startsWith("...")) {
+                  return "((?:[^/]+/)*[^/]+)?";
+                }
+                if (part.startsWith(":")) {
+                  return "([^/]+)";
+                }
+                return part;
+              })
+              .join("/")}$`
+          ));
+        }
+      }
+    });
+
+    this.routes.push(route as unknown as BuiltRoute);
+    return this as unknown as BunicornApp<
+      TBasePath,
+      [...TRoutes, AddBasePathTo<TRoute, TBasePath>]
+    >;
+  }
+}

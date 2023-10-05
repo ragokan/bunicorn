@@ -1,0 +1,29 @@
+{
+  "name": "@bunicorn/root",
+  "private": false,
+  "scripts": {
+    "dev": "lerna run dev --stream",
+    "build": "lerna run build --stream",
+    "pretty-lint": "lerna run pretty-lint --stream",
+    "update-deps": "ncu -u && lerna run update-deps --stream",
+    "prepublish": "bun run build",
+    "publish": "lerna publish"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "bun-types": "^1.0.4",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "lerna": "^7.3.0",
+    "prettier": "^3.0.3",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "packageManager": "bun@1.0.3"
+}

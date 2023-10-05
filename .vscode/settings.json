@@ -1,0 +1,18 @@
+{
+  // Format on save, so uses eslint, too
+  "editor.formatOnSave": true,
+
+  // This is called on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  "files.exclude": {
+    "**/.eslintcache": true
+  },
+
+  "jsdoc-generator.author": "",
+  "jsdoc-generator.includeDate": false,
+  "jsdoc-generator.includeTime": false,
+  "jsdoc-generator.functionVariablesAsFunctions": true
+}

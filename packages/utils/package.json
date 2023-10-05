@@ -1,0 +1,44 @@
+{
+  "name": "@bunicorn/utils",
+  "version": "0.0.1",
+  "description": "Utils that help you while coding",
+  "type": "module",
+  "private": false,
+  "scripts": {
+    "build": "bun run build.js",
+    "pretty-lint": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
+    "clean": "rm -rf dist",
+    "update-deps": "ncu -u"
+  },
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "unpkg": "dist/index.global.js",
+  "jsdelivr": "dist/index.global.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [
+    "bunicorn",
+    "bun",
+    "utils",
+    "utility"
+  ],
+  "homepage": "https://github.com/ragokan/bunicorn",
+  "author": "ragokan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ragokan/bunicorn.git",
+    "directory": "packages/utils"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

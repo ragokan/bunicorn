@@ -1,0 +1,74 @@
+{
+  "name": "@bunicorn/server",
+  "version": "0.0.1",
+  "description": "Bunicorn server, ultra fast Bun, Edge and Node server framework",
+  "type": "module",
+  "private": false,
+  "scripts": {
+    "dev": "bun run --hot --watch src/development.ts",
+    "build": "bun run build.js",
+    "pretty-lint": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
+    "clean": "rm -rf dist",
+    "update-deps": "ncu -u"
+  },
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "unpkg": "dist/index.global.js",
+  "jsdelivr": "dist/index.global.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./matchers": {
+      "import": "./dist/matchers/constants.js",
+      "require": "./dist/matchers/constants.cjs",
+      "default": "./dist/matchers/constants.js",
+      "types": "./dist/matchers/constants.d.ts"
+    },
+    "./handlers/cors": {
+      "import": "./dist/handlers/cors.js",
+      "require": "./dist/handlers/cors.cjs",
+      "default": "./dist/handlers/cors.js",
+      "types": "./dist/handlers/cors.d.ts"
+    },
+    "./handlers/static": {
+      "import": "./dist/handlers/static.js",
+      "require": "./dist/handlers/static.cjs",
+      "default": "./dist/handlers/static.js",
+      "types": "./dist/handlers/static.d.ts"
+    },
+    "./app/edgeApp": {
+      "import": "./dist/app/edgeApp.js",
+      "require": "./dist/app/edgeApp.cjs",
+      "default": "./dist/app/edgeApp.js",
+      "types": "./dist/app/edgeApp.d.ts"
+    }
+  },
+  "keywords": [
+    "bunicorn",
+    "server",
+    "fast",
+    "edge",
+    "bun",
+    "node"
+  ],
+  "dependencies": {
+    "valibot": "^0.18.0"
+  },
+  "homepage": "https://github.com/ragokan/bunicorn",
+  "author": "ragokan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ragokan/bunicorn.git",
+    "directory": "packages/server"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

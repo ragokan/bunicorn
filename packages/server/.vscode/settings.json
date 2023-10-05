@@ -1,0 +1,9 @@
+{
+  // Format on save, so uses eslint, too
+  "editor.formatOnSave": true,
+
+  // This is called on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
