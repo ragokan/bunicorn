@@ -36,7 +36,11 @@ export function clone<T extends object>(obj: T): T {
     }
 
     // Go Objects
-    typeof val === "object" ? (result[key] = clone(val)) : (result[key] = val);
+    if (typeof val === "object") {
+      result[key] = clone(val);
+    } else {
+      result[key] = val;
+    }
   }
   return result;
 }

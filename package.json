@@ -10,7 +10,8 @@
     "publish": "lerna publish --no-private"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "example"
   ],
   "dependencies": {},
   "devDependencies": {

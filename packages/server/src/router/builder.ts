@@ -1,7 +1,7 @@
 import {
   type BunicornSchema,
-  type InferBunitoInput,
-  type InferBunitoOutput,
+  type InferBunicornInput,
+  type InferBunicornOutput,
   type ValidateOptions
 } from "../validation/types.ts";
 import { type BaseSchema as vBaseSchema } from "valibot";
@@ -67,7 +67,7 @@ export class RouteBuilder<
   private createRoute<
     TMethod extends BaseMethod,
     TPath extends BasePath,
-    Out extends InferBunitoInput<TOutput>
+    Out extends InferBunicornInput<TOutput>
   >(
     method: TMethod,
     path: TPath,
@@ -78,26 +78,35 @@ export class RouteBuilder<
     return Object.assign(this.copy().route, { path, handler, method }) as Route<
       TPath,
       TMethod,
-      InferBunitoOutput<TOutput, Awaited<Out>>,
+      InferBunicornOutput<TOutput, Awaited<Out>>,
       TInput
     >;
   }
 
-  public get = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
+  public get = <
+    TPath extends BasePath,
+    Out extends InferBunicornInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("GET", path, handler);
 
-  public post = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
+  public post = <
+    TPath extends BasePath,
+    Out extends InferBunicornInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("POST", path, handler);
 
-  public put = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
+  public put = <
+    TPath extends BasePath,
+    Out extends InferBunicornInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
@@ -106,7 +115,7 @@ export class RouteBuilder<
 
   public patch = <
     TPath extends BasePath,
-    Out extends InferBunitoInput<TOutput>
+    Out extends InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -116,7 +125,7 @@ export class RouteBuilder<
 
   public delete = <
     TPath extends BasePath,
-    Out extends InferBunitoInput<TOutput>
+    Out extends InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -124,7 +133,10 @@ export class RouteBuilder<
     ) => Out | Promise<Out>
   ) => this.createRoute("DELETE", path, handler);
 
-  public head = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
+  public head = <
+    TPath extends BasePath,
+    Out extends InferBunicornInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
@@ -133,7 +145,7 @@ export class RouteBuilder<
 
   public options = <
     TPath extends BasePath,
-    Out extends InferBunitoInput<TOutput>
+    Out extends InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -141,7 +153,10 @@ export class RouteBuilder<
     ) => Out | Promise<Out>
   ) => this.createRoute("OPTIONS", path, handler);
 
-  public all = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
+  public all = <
+    TPath extends BasePath,
+    Out extends InferBunicornInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults

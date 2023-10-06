@@ -1,6 +1,6 @@
 import {
-  type BunitoSchema,
-  type InferBunitoOutput
+  type BunicornSchema,
+  type InferBunicornOutput
 } from "src/validation/types.ts";
 import { validate } from "src/validation/validate.ts";
 import { BunicornError, type BunicornErrorArgs } from "../error/index.js";
@@ -48,12 +48,12 @@ export function getSearchParams<
 >(ctx: Ctx): Body;
 export function getSearchParams<
   Ctx extends BaseContext<any, any>,
-  TSchema extends BunitoSchema
->(ctx: Ctx, schema: TSchema): InferBunitoOutput<TSchema>;
+  TSchema extends BunicornSchema
+>(ctx: Ctx, schema: TSchema): InferBunicornOutput<TSchema>;
 
 export function getSearchParams(
   ctx: BaseContext<any, any>,
-  parser?: BunitoSchema
+  parser?: BunicornSchema
 ) {
   const result = Object.fromEntries(ctx.url.searchParams);
   if (parser) {

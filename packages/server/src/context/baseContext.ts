@@ -1,5 +1,5 @@
 import {
-  type InferBunitoOutput,
+  type InferBunicornOutput,
   type BunicornSchema
 } from "../validation/types.ts";
 import { type GetDependencyFn } from "../helpers/dependencyInjection.ts";
@@ -32,4 +32,4 @@ export interface BaseContext<
 declare const _schemaBrand: unique symbol;
 
 export type GetContextInput<TContext extends BaseContext | object> =
-  TContext extends { [_schemaBrand]: infer T } ? InferBunitoOutput<T> : never;
+  TContext extends { [_schemaBrand]: infer T } ? InferBunicornOutput<T> : never;

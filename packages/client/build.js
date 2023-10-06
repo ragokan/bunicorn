@@ -19,4 +19,4 @@ const globalConfig = defineConfig({
 });
 
 await build(globalConfig);
-console.log("Build of server is completed!");
+console.log("Build of client is completed!");

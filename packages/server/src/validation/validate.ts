@@ -2,9 +2,9 @@ import { BunicornValidationError } from "src/index.ts";
 import type * as v from "valibot";
 import type * as z from "zod";
 import { formatIssues, type FormattedIssue } from "./formatIssues.ts";
-import { type BunitoSchema, type RawSchema } from "./types.ts";
+import { type BunicornSchema, type RawSchema } from "./types.ts";
 
-export function validate<T extends BunitoSchema>(schema: T, input: unknown) {
+export function validate<T extends BunicornSchema>(schema: T, input: unknown) {
   // Check is Valibot
   if ("schema" in schema) {
     const result = (schema as v.BaseSchema)._parse(input);
@@ -22,7 +22,7 @@ export function validate<T extends BunitoSchema>(schema: T, input: unknown) {
     return result.data;
   }
   return validate(
-    rawSchemaWrapper(schema as RawSchema) as unknown as BunitoSchema,
+    rawSchemaWrapper(schema as RawSchema) as unknown as BunicornSchema,
     input
   );
 }

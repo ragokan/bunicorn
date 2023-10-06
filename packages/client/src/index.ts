@@ -1,13 +1,12 @@
 import type {
-  BunicornApp,
-  ErrorType,
-  Route,
-  FormattedIssue,
-  ExtractParams,
   BaseMethod,
-  BunitoSchema,
-  InferBunitoInput,
-  BunicornSchema
+  BunicornApp,
+  BunicornSchema,
+  ErrorType,
+  ExtractParams,
+  FormattedIssue,
+  InferBunicornInput,
+  Route
 } from "@bunicorn/server";
 
 function withoutTrailingSlash(path: string) {
@@ -51,8 +50,8 @@ type NonEmptyKeys<T> = {
 
 type FilterNeverAndEmpty<T> = Pick<T, NonEmptyKeys<T>>;
 
-type GetInputFromSchema<TSchema extends BunitoSchema | never> =
-  TSchema extends BunicornSchema ? InferBunitoInput<TSchema> : never;
+type GetInputFromSchema<TSchema extends BunicornSchema | never> =
+  TSchema extends BunicornSchema ? InferBunicornInput<TSchema> : never;
 
 type BaseConfig<TRoute extends Route<any, any, any, any>> =
   FilterNeverAndEmpty<{
