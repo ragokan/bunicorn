@@ -1,4 +1,4 @@
-import { createDependencyStore } from "../helpers/dependencyInjection.js";
+import { _createDependencyStore } from "../helpers/di.ts";
 import { type BaseContext } from "../context/baseContext.js";
 import { mergePaths } from "../helpers/pathUtils.js";
 import { BunicornError, type Handler } from "../index.js";
@@ -30,7 +30,7 @@ export class BunicornApp<
     console.error(error);
   }
 
-  private static getFromStore = createDependencyStore().get;
+  private static getFromStore = _createDependencyStore().get;
 
   protected routes: BuiltRoute[] = [];
 
@@ -71,7 +71,7 @@ export class BunicornApp<
   }
 
   public addRoutes<TNewRoutes extends Route<any, any, any, any>[]>(
-    ...routes: TNewRoutes
+    routes: TNewRoutes
   ) {
     routes.forEach(route => {
       this.addRoute(route);

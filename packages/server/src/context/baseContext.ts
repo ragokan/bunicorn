@@ -2,7 +2,7 @@ import {
   type InferBunicornOutput,
   type BunicornSchema
 } from "../validation/types.ts";
-import { type GetDependencyFn } from "../helpers/dependencyInjection.ts";
+import { type GetDependencyFn } from "../helpers/di.ts";
 import { type BasePath, type ExtractParams } from "../router/types.ts";
 
 export interface BaseContext<
@@ -12,7 +12,7 @@ export interface BaseContext<
   // Helpers
   params: ExtractParams<TPath>;
   request: Request;
-  use: GetDependencyFn;
+  get: GetDependencyFn;
   url: URL;
   // For response
   setHeader(name: string, value: string): void;

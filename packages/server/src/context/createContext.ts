@@ -103,7 +103,7 @@ export function createContext<TPath extends BasePath = BasePath>({
     json,
     stream,
     // Helpers and params
-    use,
+    get: use,
     params,
     request,
     url

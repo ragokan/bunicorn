@@ -18,7 +18,8 @@ export function dependency<T>(create: CreateFn<T>): Dependency<T> {
   };
 }
 
-export function createDependencyStore(): DependencyStore {
+// Recommended for internal usage only
+export function _createDependencyStore(): DependencyStore {
   const dependencies: Record<symbol, any> = {};
 
   function get<T>(dependency: Dependency<T>): T {

@@ -26,5 +26,5 @@
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },
-  "packageManager": "bun@1.0.3"
+  "packageManager": "bun@1.0.4"
 }

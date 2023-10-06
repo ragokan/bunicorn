@@ -2,7 +2,6 @@ export * from "./app/index.ts";
 export * from "./error/index.ts";
 export * from "./handlers/index.ts";
 export * from "./context/helpers.ts";
-export { dependency } from "./helpers/dependencyInjection.ts";
 export * from "./middleware.ts";
 export * from "./router/builder.ts";
 export * from "./router/group.ts";

@@ -16,34 +16,34 @@ export type BaseMethod =
   | "ALL"
   | "HEAD";
 
-type Split<
+export type _SplitParams<
   S extends string,
   D extends string
-> = S extends `${infer T}${D}${infer R}` ? [T, ...Split<R, D>] : [S];
+> = S extends `${infer T}${D}${infer R}` ? [T, ..._SplitParams<R, D>] : [S];
 
-type ExtractParamsHelper<
+export type _ExtractParamsHelper<
   T extends string[],
   History extends Record<string, any> = {}
 > = T extends [infer First, ...infer Rest]
   ? First extends string
     ? First extends `:${infer Param}`
-      ? ExtractParamsHelper<
+      ? _ExtractParamsHelper<
           Extract<Rest, string[]>,
           History & { [key in Param & string]: string }
         >
       : First extends `...${infer Param}`
-      ? ExtractParamsHelper<
+      ? _ExtractParamsHelper<
           Extract<Rest, string[]>,
           History & { [key in Param & string]: string[] }
         >
-      : ExtractParamsHelper<Extract<Rest, string[]>, History>
+      : _ExtractParamsHelper<Extract<Rest, string[]>, History>
     : never
   : History;
 
 export type ExtractParams<
   Path extends string,
   History extends Record<string, any> = {}
-> = ExtractParamsHelper<Split<Path, "/">, History>;
+> = _ExtractParamsHelper<_SplitParams<Path, "/">, History>;
 
 export type MergePaths<
   TBase extends BasePath,

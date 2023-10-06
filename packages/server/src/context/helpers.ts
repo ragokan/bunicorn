@@ -25,7 +25,7 @@ export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   }
 
   if (!route.input) {
-    return _body;
+    return _body as GetContextInput<Ctx>;
   }
 
   return validate(route.input!, _body) as GetContextInput<Ctx>;

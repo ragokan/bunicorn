@@ -13,7 +13,7 @@ const rb = new RouteBuilder();
 
 const R = app
   .with(staticHandler({ path: "/static", directory: "./src" }))
-  .addRoutes(
+  .addRoutes([
     rb.get("/hello", ctx => {
       return ctx.raw("Hello world!");
     }),
@@ -28,7 +28,7 @@ const R = app
       console.log("search params", getSearchParams(ctx));
       return ctx.raw("Hello world!");
     })
-  );
+  ]);
 
 export default R;
 
