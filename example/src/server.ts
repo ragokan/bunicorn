@@ -38,7 +38,7 @@ const todoStore = dependency(() => {
 });
 
 // CREATE APP WITH BASE PATH
-const baseApp = new BunicornApp({ basePath: "/" });
+const baseApp = new BunicornApp({ basePath: "/api" });
 
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
 const routeBuilder = new RouteBuilder().use(ctx => {

@@ -9,7 +9,7 @@ export class BunicornEdgeApp<
 > extends BunicornApp<TBasePath, TRoutes> {
   override addRoute<TRoute extends Route<any, any, any, any>>(
     route: TRoute
-  ): BunicornApp<TBasePath, [...TRoutes, AddBasePathTo<TRoute, TBasePath>]> {
+  ): BunicornApp<TBasePath, [...TRoutes, AddBasePathTo<TBasePath, TRoute>]> {
     route.path = (
       (this.args.basePath as string) === "/"
         ? route.path
@@ -40,7 +40,7 @@ export class BunicornEdgeApp<
     this.routes.push(route as unknown as BuiltRoute);
     return this as unknown as BunicornApp<
       TBasePath,
-      [...TRoutes, AddBasePathTo<TRoute, TBasePath>]
+      [...TRoutes, AddBasePathTo<TBasePath, TRoute>]
     >;
   }
 }

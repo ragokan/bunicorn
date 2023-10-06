@@ -66,7 +66,7 @@ export class BunicornApp<
     );
     return this as unknown as BunicornApp<
       TBasePath,
-      [...TRoutes, AddBasePathTo<TRoute, TBasePath>]
+      [...TRoutes, AddBasePathTo<TBasePath, TRoute>]
     >;
   }
 
@@ -78,7 +78,7 @@ export class BunicornApp<
     });
     return this as unknown as BunicornApp<
       TBasePath,
-      [...TRoutes, ...AddBasePathToAll<TNewRoutes, TBasePath>]
+      [...TRoutes, ...AddBasePathToAll<TBasePath, TNewRoutes>]
     >;
   }
 

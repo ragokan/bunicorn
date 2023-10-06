@@ -13,5 +13,5 @@ export function groupRoutes<
         : mergePaths(basePath, route.path)
     ) as TBasePath;
     return route;
-  }) as AddBasePathToAll<TNewRoutes, TBasePath>;
+  }) as AddBasePathToAll<TBasePath, TNewRoutes>;
 }

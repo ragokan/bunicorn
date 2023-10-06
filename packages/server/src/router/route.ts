@@ -22,13 +22,13 @@ export interface Route<
 }
 
 export type AddBasePathTo<
-  TRoute extends Route<any, any, any, any>,
-  TBasePath extends BasePath
+  TBasePath extends BasePath,
+  TRoute extends Route<any, any, any, any>
 > = Omit<TRoute, "path"> & { path: MergePaths<TBasePath, TRoute["path"]> };
 
 export type AddBasePathToAll<
-  TRoutes extends Route<any, any, any, any>[],
-  TBasePath extends BasePath
+  TBasePath extends BasePath,
+  TRoutes extends Route<any, any, any, any>[]
 > = {
-  [key in keyof TRoutes]: AddBasePathTo<TRoutes[key], TBasePath>;
+  [key in keyof TRoutes]: AddBasePathTo<TBasePath, TRoutes[key]>;
 };
