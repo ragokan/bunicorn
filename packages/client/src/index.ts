@@ -168,8 +168,10 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     }
     const response = await fetch(url, init);
     let data: any;
-    const contentType = response.headers.get("content-type") ?? "";
-    if (contentType.includes("application/json")) {
+    const contentType = response.headers.get("content-type");
+    if (!contentType) {
+      data = response.statusText;
+    } else if (contentType.includes("application/json")) {
       data = await response.json();
     } else if (contentType.includes("form-data")) {
       data = await response.formData();
@@ -182,20 +184,18 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     }
 
     if (!response.ok) {
-      console.log(data);
-      const _error = createError(
-        data.message ?? response.statusText,
-        { data, status: response.status },
-        "default"
+      const error = createError(
+        data?.message ?? response.statusText,
+        { data: data?.data, status: response.status },
+        data?.type ?? "default"
       );
       if (onError) {
-        onError(data);
+        onError(error);
       }
       return {
         success: false,
-        error: data,
-        response,
-        _error
+        error,
+        response
       } as any;
     }
 

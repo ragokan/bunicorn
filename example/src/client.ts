@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import bunicornClient from "@bunicorn/client";
-import { type AppType } from "./server.js";
+import bunicornClient, { BunicornValidationError } from "@bunicorn/client";
 import { omit } from "@bunicorn/utils";
+import { type AppType } from "./server.js";
 
 // WE INITIALIZE THE CLIENT WITH THE PATH THAT OUR SERVER IS GOING TO USE
 // AND PROVIDE THE TYPE OF OUR APP
@@ -15,7 +15,13 @@ const createdTodo = await client.post("/api/todos", {
   input: { title: "Hello world!" }
 });
 if (!createdTodo.success) {
-  throw createdTodo.error;
+  const error = createdTodo.error;
+  if (error instanceof BunicornValidationError) {
+    console.log("We got validation error", error.args.data[0]!.message);
+  } else {
+    console.log("We got an error", error.message);
+  }
+  throw error;
 }
 
 // NOW, IT IS TYPED
