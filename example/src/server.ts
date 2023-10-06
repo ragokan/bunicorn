@@ -86,13 +86,13 @@ const updateTodoRoute = routeBuilder
   });
 
 const deleteTodoRoute = routeBuilder
-  // .output(v => {
-  //   // CUSTOM OUTPUT VALIDATION, YOU CAN USE TYPIA HERE, TOO
-  //   if (!v || typeof v !== "object" || !("success" in v)) {
-  //     throw new BunicornError("Invalid response for delete");
-  //   }
-  //   return v as { success: boolean };
-  // })
+  .output(v => {
+    // CUSTOM OUTPUT VALIDATION, YOU CAN USE TYPIA HERE, TOO
+    if (!v || typeof v !== "object" || !("success" in v)) {
+      throw new BunicornError("Invalid response for delete");
+    }
+    return v as { success: boolean };
+  })
   .delete("/:id", ctx => {
     const todos = ctx.get(todoStore).todos;
     const index = todos.findIndex(todo => todo.id === parseInt(ctx.params.id));
@@ -100,7 +100,7 @@ const deleteTodoRoute = routeBuilder
       throw new BunicornNotFoundError("Todo not found");
     }
     todos.splice(index, 1);
-    return ctx.ok();
+    return ctx.json({ success: true });
   });
 
 // GROUP ROUTES BY PREFIX
