@@ -5,17 +5,30 @@ export interface BunicornErrorArgs<TData> {
   status?: number;
 }
 
-export enum ErrorType {
-  Default = "default",
-  Validation = "validation",
-  NotFound = "notfound"
+export type ErrorType = "default" | "validation" | "notFound";
+
+export function createError<TData = any>(
+  message: string,
+  args: BunicornErrorArgs<TData>,
+  type: ErrorType
+) {
+  if (type === "default") {
+    return new BunicornError(message, args, type);
+  }
+  if (type === "validation") {
+    return new BunicornValidationError(args.data as FormattedIssue[]);
+  }
+  if (type === "notFound") {
+    return new BunicornNotFoundError(message);
+  }
+  return new BunicornError(message, args, type);
 }
 
 export class BunicornError<TData = any> extends Error {
   constructor(
     message: string,
     public args: BunicornErrorArgs<TData> = {},
-    public type: ErrorType = ErrorType.Default
+    public type: ErrorType = "default"
   ) {
     super(message);
     this.args.status ??= 500;
@@ -38,13 +51,13 @@ export class BunicornValidationError extends BunicornError {
     super(
       BunicornValidationError.message,
       { status: 403, data: issues },
-      ErrorType.Validation
+      "validation"
     );
   }
 }
 
 export class BunicornNotFoundError extends BunicornError {
   constructor(message = "Not found.") {
-    super(message, { status: 404 }, ErrorType.NotFound);
+    super(message, { status: 404 }, "notFound");
   }
 }

@@ -11,6 +11,7 @@ import corsHandler from "@bunicorn/server/corsHandler";
 import { randomNumber } from "@bunicorn/utils";
 import { dependency } from "@bunicorn/server/di";
 import z from "zod";
+import { matchAll } from "@bunicorn/server/matchers";
 
 // SCHEMAS
 const todoSchema = z.object({
@@ -85,13 +86,13 @@ const updateTodoRoute = routeBuilder
   });
 
 const deleteTodoRoute = routeBuilder
-  .output(v => {
-    // CUSTOM OUTPUT VALIDATION, YOU CAN USE TYPIA HERE, TOO
-    if (!v || typeof v !== "object" || !("success" in v)) {
-      throw new BunicornError("Invalid response for delete");
-    }
-    return v as { success: boolean };
-  })
+  // .output(v => {
+  //   // CUSTOM OUTPUT VALIDATION, YOU CAN USE TYPIA HERE, TOO
+  //   if (!v || typeof v !== "object" || !("success" in v)) {
+  //     throw new BunicornError("Invalid response for delete");
+  //   }
+  //   return v as { success: boolean };
+  // })
   .delete("/:id", ctx => {
     const todos = ctx.get(todoStore).todos;
     const index = todos.findIndex(todo => todo.id === parseInt(ctx.params.id));
@@ -99,7 +100,7 @@ const deleteTodoRoute = routeBuilder
       throw new BunicornNotFoundError("Todo not found");
     }
     todos.splice(index, 1);
-    return ctx.json({ success: true });
+    return ctx.ok();
   });
 
 // GROUP ROUTES BY PREFIX
@@ -112,6 +113,6 @@ const todoRoutes = groupRoutes("/todos", [
 
 // Add cors handler and routes to app to infer types
 export const app = baseApp
-  .with(corsHandler({ origins: ["*"] }))
+  .with(corsHandler({ origins: [matchAll] }))
   .addRoutes(todoRoutes);
 export type AppType = typeof app;

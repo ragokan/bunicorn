@@ -4,10 +4,14 @@ import type * as z from "zod";
 import { formatIssues, type FormattedIssue } from "./formatIssues.js";
 import { type BunicornSchema, type RawSchema } from "./types.js";
 
-export function validate<T extends BunicornSchema>(schema: T, input: unknown) {
+export function validate<T extends BunicornSchema>(
+  schema: T,
+  input: unknown,
+  opts?: any
+) {
   // Check is Valibot
   if ("schema" in schema) {
-    const result = (schema as v.BaseSchema)._parse(input);
+    const result = (schema as v.BaseSchema)._parse(input, opts);
     if (result.issues) {
       throw new BunicornValidationError(formatIssues(result.issues));
     }

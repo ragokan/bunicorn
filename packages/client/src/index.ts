@@ -3,11 +3,15 @@ import type {
   BasePath,
   BunicornApp,
   BunicornSchema,
-  ErrorType,
   ExtractParams,
-  FormattedIssue,
   InferBunicornInput,
   Route
+} from "@bunicorn/server";
+import {
+  BunicornError,
+  BunicornNotFoundError,
+  BunicornValidationError,
+  createError
 } from "@bunicorn/server";
 
 function withoutTrailingSlash(path: string) {
@@ -65,7 +69,7 @@ type Config<
 interface ClientOptions {
   basePath: string;
   headers?: Record<string, string> | (() => Record<string, string>);
-  onError?: (error: TBunicornError) => void;
+  onError?: (error: BunicornError) => void;
   onRequest?: (request: Request) => void;
   onResult?: (result: Result, response: Response) => void;
 }
@@ -86,23 +90,6 @@ function hasFormData(
   return "formData" in config;
 }
 
-type TBunicornError = {
-  message: string;
-  status: number;
-} & (
-  | {
-      type: ErrorType.Default;
-      data?: any;
-    }
-  | {
-      type: ErrorType.Validation;
-      data: FormattedIssue[];
-    }
-  | {
-      type: ErrorType.NotFound;
-    }
-);
-
 type Result<T = any> =
   | {
       success: true;
@@ -111,7 +98,7 @@ type Result<T = any> =
     }
   | {
       success: false;
-      error: TBunicornError;
+      error: BunicornError;
       response: Response;
     };
 
@@ -195,14 +182,21 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     }
 
     if (!response.ok) {
+      console.log(data);
+      const _error = createError(
+        data.message ?? response.statusText,
+        { data, status: response.status },
+        "default"
+      );
       if (onError) {
         onError(data);
       }
       return {
         success: false,
         error: data,
-        response
-      };
+        response,
+        _error
+      } as any;
     }
 
     if (onResult) {
@@ -309,3 +303,5 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     delete: typeof _delete;
   };
 }
+
+export { BunicornError, BunicornNotFoundError, BunicornValidationError };

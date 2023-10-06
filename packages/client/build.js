@@ -13,7 +13,6 @@ const globalConfig = defineConfig({
   minify: true,
   dts: true,
   format: ["cjs", "esm", "iife"],
-  external: ["*"],
   silent: true,
   env: { IS_BUN: false }
 });
