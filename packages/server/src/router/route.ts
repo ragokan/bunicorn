@@ -24,7 +24,14 @@ export interface Route<
 export type AddBasePathTo<
   TBasePath extends BasePath,
   TRoute extends Route<any, any, any, any>
-> = Omit<TRoute, "path"> & { path: MergePaths<TBasePath, TRoute["path"]> };
+> = TRoute extends Route<
+  infer TRoutePath,
+  infer TRouteMethod,
+  infer TOutput,
+  infer TInput
+>
+  ? Route<MergePaths<TBasePath, TRoutePath>, TRouteMethod, TOutput, TInput>
+  : never;
 
 export type AddBasePathToAll<
   TBasePath extends BasePath,

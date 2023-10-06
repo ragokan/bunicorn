@@ -1,5 +1,6 @@
 import type {
   BaseMethod,
+  BasePath,
   BunicornApp,
   BunicornSchema,
   ErrorType,
@@ -12,30 +13,22 @@ import type {
 function withoutTrailingSlash(path: string) {
   return path.endsWith("/") ? path.slice(0, -1) : path;
 }
-
 type ExtractPathsByMethod<
-  TApp,
+  TApp extends BunicornApp<any, any[]>,
   Method extends BaseMethod
 > = TApp extends BunicornApp<any, infer Routes>
-  ? {
-      [K in keyof Routes]: Routes[K] extends Route<any, infer TMethod, any, any>
-        ? TMethod extends Method
-          ? Routes[K]["path"]
-          : never
-        : never;
-    }[number]
+  ? Extract<Routes extends (infer R)[] ? R : never, { method: Method }>["path"]
   : never;
 
 type FindRouteByPathAndMethod<
-  TApp extends BunicornApp<any, any> = any,
-  Path extends string = any,
-  Method extends string = any
+  TApp extends BunicornApp<any, any[]> = any,
+  Path extends BasePath = any,
+  Method extends BaseMethod = any
 > = TApp extends BunicornApp<any, infer Routes>
-  ? {
-      [K in keyof Routes]: Routes[K] extends { path: Path; method: Method }
-        ? Routes[K]
-        : never;
-    }[number]
+  ? Extract<
+      Routes extends (infer R)[] ? R : never,
+      { path: Path; method: Method }
+    >
   : never;
 
 type NonEmptyKeys<T> = {
@@ -114,10 +107,12 @@ type Result<T = any> =
   | {
       success: true;
       data: T;
+      response: Response;
     }
   | {
       success: false;
       error: TBunicornError;
+      response: Response;
     };
 
 export default function bunicornClient<App extends BunicornApp<any>>({
@@ -134,7 +129,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     path: string,
     config: Config<any>,
     method: BaseMethod
-  ): Promise<[Result<any>, Response]> {
+  ): Promise<Result<any>> {
     let url = withoutTrailingSlash(basePath) + path;
 
     const init: RequestInit & { headers: Record<string, string> } =
@@ -186,10 +181,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     }
     const response = await fetch(url, init);
     let data: any;
-    const contentType = response.headers.get("content-type");
-    if (!contentType) {
-      return [response.text() as any, response];
-    }
+    const contentType = response.headers.get("content-type") ?? "";
     if (contentType.includes("application/json")) {
       data = await response.json();
     } else if (contentType.includes("form-data")) {
@@ -206,20 +198,18 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       if (onError) {
         onError(data);
       }
-      return [
-        {
-          success: false,
-          error: data
-        },
+      return {
+        success: false,
+        error: data,
         response
-      ];
+      };
     }
 
     if (onResult) {
       onResult(data, response);
     }
 
-    return [{ success: true, data }, response];
+    return { success: true, data, response };
   }
 
   async function get<
@@ -230,10 +220,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "GET"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "GET") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "GET") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   async function post<
@@ -244,10 +233,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "POST"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "POST") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "POST") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   async function put<
@@ -258,10 +246,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "PUT"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "PUT") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "PUT") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   async function patch<
@@ -272,10 +259,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "PATCH"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "PATCH") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "PATCH") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   async function _delete<
@@ -286,10 +272,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "DELETE"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "DELETE") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "DELETE") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   async function options<
@@ -300,10 +285,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "OPTIONS"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "OPTIONS") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "OPTIONS") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   async function head<
@@ -314,10 +298,9 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "HEAD"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "HEAD") as unknown as [
-      Result<NonNullable<TRoute["output"]>>,
-      Response
-    ];
+    return handler(path, config, "HEAD") as unknown as Result<
+      NonNullable<TRoute["output"]>
+    >;
   }
 
   const obj = { get, post, patch, put, options, head };
