@@ -1,4 +1,10 @@
-import { type ParseInfo, type BaseSchema, type Input } from "valibot";
+import {
+  type BunicornSchema,
+  type InferBunitoInput,
+  type InferBunitoOutput,
+  type ValidateOptions
+} from "../validation/types.ts";
+import { type BaseSchema as vBaseSchema } from "valibot";
 import { type BaseContext } from "../context/baseContext.ts";
 import { type BaseMiddleware } from "../middleware.ts";
 import { type Route } from "./route.ts";
@@ -6,8 +12,8 @@ import { type BaseMethod, type BasePath, type BuiltRoute } from "./types.ts";
 
 export class RouteBuilder<
   TContextResults extends object = {},
-  TInput extends BaseSchema | never = never,
-  TOutput extends BaseSchema | any = any
+  TInput extends BunicornSchema | never = never,
+  TOutput extends BunicornSchema | any = any
 > {
   private route: Partial<Route<any, any, any, any>> = {
     middlewares: []
@@ -34,24 +40,24 @@ export class RouteBuilder<
     return this.copy() as unknown as RouteBuilder<NewContext>;
   }
 
-  public input<TSchema extends BaseSchema>(
+  public input<TSchema extends BunicornSchema>(
     schema: TSchema,
-    options?: ValidateOptions
+    ...options: TSchema extends vBaseSchema ? [options?: ValidateOptions] : []
   ) {
     this.route.input = schema;
-    this.route.__inputOptions = options;
+    this.route.__inputOptions = options?.[0];
     return this.copy() as unknown as Omit<
       RouteBuilder<TContextResults, TSchema, TOutput>,
       "input" | "get" | "head" | "options"
     >;
   }
 
-  public output<TSchema extends BaseSchema>(
+  public output<TSchema extends BunicornSchema>(
     schema: TSchema,
-    options?: ValidateOptions
+    ...options: TSchema extends vBaseSchema ? [options?: ValidateOptions] : []
   ) {
     this.route.output = schema;
-    this.route.__outputOptions = options;
+    this.route.__outputOptions = options?.[0];
     return this.copy() as unknown as Omit<
       RouteBuilder<TContextResults, TInput, TSchema>,
       "output"
@@ -61,7 +67,7 @@ export class RouteBuilder<
   private createRoute<
     TMethod extends BaseMethod,
     TPath extends BasePath,
-    Out extends GetReturnType<TOutput>
+    Out extends InferBunitoInput<TOutput>
   >(
     method: TMethod,
     path: TPath,
@@ -72,82 +78,73 @@ export class RouteBuilder<
     return Object.assign(this.copy().route, { path, handler, method }) as Route<
       TPath,
       TMethod,
-      GetTransformedOutput<TOutput, Awaited<Out>>,
+      InferBunitoOutput<TOutput, Awaited<Out>>,
       TInput
     >;
   }
 
-  public get = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public get = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("GET", path, handler);
 
-  public post = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public post = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("POST", path, handler);
 
-  public put = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public put = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("PUT", path, handler);
 
-  public patch = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public patch = <
+    TPath extends BasePath,
+    Out extends InferBunitoInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("PATCH", path, handler);
 
-  public delete = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public delete = <
+    TPath extends BasePath,
+    Out extends InferBunitoInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("DELETE", path, handler);
 
-  public head = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public head = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("HEAD", path, handler);
 
-  public options = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public options = <
+    TPath extends BasePath,
+    Out extends InferBunitoInput<TOutput>
+  >(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("OPTIONS", path, handler);
 
-  public all = <TPath extends BasePath, Out extends GetReturnType<TOutput>>(
+  public all = <TPath extends BasePath, Out extends InferBunitoInput<TOutput>>(
     path: TPath,
     handler: (
       ctx: BaseContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("ALL", path, handler);
 }
-
-// Internal types
-export type ValidateOptions = Pick<
-  ParseInfo,
-  "abortEarly" | "abortPipeEarly" | "skipPipe"
->;
-
-type GetReturnType<TOutput extends BaseSchema | any> =
-  TOutput extends BaseSchema ? Input<TOutput> : any;
-
-type GetTransformedOutput<
-  TOutput extends BaseSchema | any,
-  Out
-> = TOutput extends BaseSchema<infer MaybeUnknown, infer TransformedOutput>
-  ? unknown extends MaybeUnknown
-    ? Out
-    : TransformedOutput
-  : Out;

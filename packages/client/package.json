@@ -34,8 +34,7 @@
     "node"
   ],
   "devDependencies": {
-    "@bunicorn/server": "workspace:*",
-    "valibot": "^0.18.0"
+    "@bunicorn/server": "workspace:*"
   },
   "homepage": "https://github.com/ragokan/bunicorn",
   "author": "ragokan",

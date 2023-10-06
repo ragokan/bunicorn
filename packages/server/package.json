@@ -57,8 +57,9 @@
     "bun",
     "node"
   ],
-  "dependencies": {
-    "valibot": "^0.18.0"
+  "devDependencies": {
+    "valibot": "^0.18.0",
+    "zod": "^3.22.4"
   },
   "homepage": "https://github.com/ragokan/bunicorn",
   "author": "ragokan",

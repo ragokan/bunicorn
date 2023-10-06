@@ -7,7 +7,7 @@
     "pretty-lint": "lerna run pretty-lint --stream",
     "update-deps": "ncu -u && lerna run update-deps --stream",
     "prepublish": "bun run build",
-    "publish": "lerna publish"
+    "publish": "lerna publish --no-private"
   },
   "workspaces": [
     "packages/*"

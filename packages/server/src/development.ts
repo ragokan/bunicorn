@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import { object, string } from "valibot";
 import { BunicornApp } from "./app/index.js";
 import { getBody, getSearchParams } from "./context/helpers.js";
 import staticHandler from "./handlers/static.js";
 import { RouteBuilder } from "./router/builder.js";
+import { z } from "zod";
 
 const app = new BunicornApp({
   basePath: "/bunicorn"
@@ -17,7 +17,7 @@ const R = app
     rb.get("/hello", ctx => {
       return ctx.raw("Hello world!");
     }),
-    rb.input(object({ message: string() })).post("/hello", async ctx => {
+    rb.input(z.object({ message: z.string() })).post("/hello", async ctx => {
       const { message } = await getBody(ctx);
       return ctx.json({
         message: `Hello ${message}!`

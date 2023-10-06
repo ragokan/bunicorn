@@ -1,4 +1,4 @@
-import { type FormattedIssues } from "../helpers/formatIssues.ts";
+import { type FormattedIssue } from "src/index.ts";
 
 export interface BunicornErrorArgs<TData> {
   data?: TData;
@@ -34,7 +34,7 @@ export class BunicornError<TData = any> extends Error {
 
 export class BunicornValidationError extends BunicornError {
   static message = "Validation error.";
-  constructor(issues: FormattedIssues) {
+  constructor(issues: FormattedIssue[]) {
     super(
       BunicornValidationError.message,
       { status: 403, data: issues },

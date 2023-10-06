@@ -1,19 +1,11 @@
 import {
-  BunicornError,
-  BunicornValidationError,
-  type BunicornErrorArgs
-} from "../error/index.js";
+  type BunitoSchema,
+  type InferBunitoOutput
+} from "src/validation/types.ts";
+import { validate } from "src/validation/validate.ts";
+import { BunicornError, type BunicornErrorArgs } from "../error/index.js";
 import { formDataToObject } from "../helpers/formDataToObject.js";
-import { formatIssues } from "../helpers/formatIssues.js";
 import { type Route } from "../router/route.js";
-import {
-  safeParse,
-  type BaseSchema,
-  type ObjectSchema,
-  type OptionalSchema,
-  type Output,
-  type SafeParseResult
-} from "valibot";
 import { type BaseContext, type GetContextInput } from "./baseContext.js";
 
 export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
@@ -32,13 +24,11 @@ export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
     _body = await request.text();
   }
 
-  const parseResult = route.input
-    ? safeParse(route.input, _body, route.__inputOptions)
-    : ({ success: true, output: _body } as SafeParseResult<any>);
-  if (!parseResult.success) {
-    throw new BunicornValidationError(formatIssues(parseResult.issues));
+  if (!route.input) {
+    return _body;
   }
-  return parseResult.output as GetContextInput<Ctx>;
+
+  return validate(route.input!, _body) as GetContextInput<Ctx>;
 }
 
 export async function getText<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
@@ -58,21 +48,16 @@ export function getSearchParams<
 >(ctx: Ctx): Body;
 export function getSearchParams<
   Ctx extends BaseContext<any, any>,
-  Body extends Record<string, OptionalSchema<BaseSchema<any>, any>>,
-  TSchema extends ObjectSchema<Body>
->(ctx: Ctx, schema: TSchema): Output<TSchema>;
+  TSchema extends BunitoSchema
+>(ctx: Ctx, schema: TSchema): InferBunitoOutput<TSchema>;
 
 export function getSearchParams(
   ctx: BaseContext<any, any>,
-  parser?: ObjectSchema<any>
+  parser?: BunitoSchema
 ) {
   const result = Object.fromEntries(ctx.url.searchParams);
   if (parser) {
-    const parseResult = safeParse(parser, result);
-    if (!parseResult.success) {
-      throw new BunicornValidationError(formatIssues(parseResult.issues));
-    }
-    return parseResult.output;
+    return validate(parser, result);
   }
   return result;
 }

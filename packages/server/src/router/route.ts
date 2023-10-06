@@ -1,13 +1,15 @@
+import {
+  type BunicornSchema,
+  type ValidateOptions
+} from "../validation/types.ts";
 import { type BaseMiddleware } from "../middleware.ts";
-import { type BaseSchema } from "valibot";
-import { type MergePaths, type BaseMethod, type BasePath } from "./types.ts";
-import { type ValidateOptions } from "./builder.ts";
+import { type BaseMethod, type BasePath, type MergePaths } from "./types.ts";
 
 export interface Route<
   TPath extends BasePath = BasePath,
   TMethod extends BaseMethod = BaseMethod,
-  TOutput extends BaseSchema | any = any,
-  TInput extends BaseSchema | never = never
+  TOutput extends BunicornSchema | any = any,
+  TInput extends BunicornSchema | never = never
 > {
   path: TPath;
   method: TMethod;

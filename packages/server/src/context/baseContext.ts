@@ -1,10 +1,13 @@
+import {
+  type InferBunitoOutput,
+  type BunicornSchema
+} from "../validation/types.ts";
 import { type GetDependencyFn } from "../helpers/dependencyInjection.ts";
 import { type BasePath, type ExtractParams } from "../router/types.ts";
-import { type BaseSchema, type Output } from "valibot";
 
 export interface BaseContext<
   TPath extends BasePath = BasePath,
-  InputSchema extends BaseSchema<any> | never = never
+  InputSchema extends BunicornSchema | never = never
 > {
   // Helpers
   params: ExtractParams<TPath>;
@@ -29,8 +32,4 @@ export interface BaseContext<
 declare const _schemaBrand: unique symbol;
 
 export type GetContextInput<TContext extends BaseContext | object> =
-  TContext extends { [_schemaBrand]: infer T }
-    ? T extends BaseSchema
-      ? Output<T>
-      : never
-    : never;
+  TContext extends { [_schemaBrand]: infer T } ? InferBunitoOutput<T> : never;

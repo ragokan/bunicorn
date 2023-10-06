@@ -2,12 +2,13 @@ import type {
   BunicornApp,
   ErrorType,
   Route,
-  FormattedIssues,
+  FormattedIssue,
   ExtractParams,
-  BaseMethod
+  BaseMethod,
+  BunitoSchema,
+  InferBunitoInput,
+  BunicornSchema
 } from "@bunicorn/server";
-
-import type { BaseSchema, Input } from "valibot";
 
 function withoutTrailingSlash(path: string) {
   return path.endsWith("/") ? path.slice(0, -1) : path;
@@ -50,8 +51,8 @@ type NonEmptyKeys<T> = {
 
 type FilterNeverAndEmpty<T> = Pick<T, NonEmptyKeys<T>>;
 
-type GetInputFromSchema<TSchema extends BaseSchema | never> =
-  TSchema extends BaseSchema ? Input<TSchema> : never;
+type GetInputFromSchema<TSchema extends BunitoSchema | never> =
+  TSchema extends BunicornSchema ? InferBunitoInput<TSchema> : never;
 
 type BaseConfig<TRoute extends Route<any, any, any, any>> =
   FilterNeverAndEmpty<{
@@ -103,7 +104,7 @@ type TBunicornError = {
     }
   | {
       type: ErrorType.Validation;
-      data: FormattedIssues;
+      data: FormattedIssue[];
     }
   | {
       type: ErrorType.NotFound;
