@@ -3,12 +3,12 @@ import {
   type InferBunicornInput,
   type InferBunicornOutput,
   type ValidateOptions
-} from "../validation/types.ts";
+} from "../validation/types.js";
 import { type BaseSchema as vBaseSchema } from "valibot";
-import { type BaseContext } from "../context/baseContext.ts";
-import { type BaseMiddleware } from "../middleware.ts";
-import { type Route } from "./route.ts";
-import { type BaseMethod, type BasePath, type BuiltRoute } from "./types.ts";
+import { type BaseContext } from "../context/baseContext.js";
+import { type BaseMiddleware } from "../middleware.js";
+import { type Route } from "./route.js";
+import { type BaseMethod, type BasePath, type BuiltRoute } from "./types.js";
 
 export class RouteBuilder<
   TContextResults extends object = {},

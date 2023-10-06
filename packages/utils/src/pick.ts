@@ -1,4 +1,4 @@
-import { clone } from "./index.ts";
+import { clone } from "./index.js";
 
 export function pick<T extends Record<any, any>, K extends (keyof T)[]>(
   source: T,

@@ -12,8 +12,8 @@
     "alwaysStrict": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": false,
+    "emitDeclarationOnly": false,
     "sourceMap": true,
     "importHelpers": true,
     "importsNotUsedAsValues": "remove",
@@ -24,8 +24,8 @@
     "module": "NodeNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "target": "ES2020",
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -34,7 +34,8 @@
     "noUncheckedIndexedAccess": true,
     "moduleResolution": "NodeNext",
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "."
   },
   "exclude": ["node_modules", "./node_modules"]
 }

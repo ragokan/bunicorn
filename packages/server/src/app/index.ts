@@ -1,4 +1,4 @@
-import { _createDependencyStore } from "../helpers/di.ts";
+import { _createDependencyStore } from "../helpers/di.js";
 import { type BaseContext } from "../context/baseContext.js";
 import { mergePaths } from "../helpers/pathUtils.js";
 import { BunicornError, type Handler } from "../index.js";

@@ -1,5 +1,5 @@
-import { type GetDependencyFn } from "../helpers/di.ts";
-import { type BasePath, type BuiltRoute } from "../router/types.ts";
+import { type GetDependencyFn } from "../helpers/di.js";
+import { type BasePath, type BuiltRoute } from "../router/types.js";
 
 export interface CreateContextArgs<TPath extends BasePath> {
   route: BuiltRoute<TPath>;

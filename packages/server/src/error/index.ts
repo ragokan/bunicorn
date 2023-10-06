@@ -1,4 +1,4 @@
-import { type FormattedIssue } from "src/index.ts";
+import { type FormattedIssue } from "src/index.js";
 
 export interface BunicornErrorArgs<TData> {
   data?: TData;

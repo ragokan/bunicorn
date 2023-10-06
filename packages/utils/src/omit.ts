@@ -1,4 +1,4 @@
-import { clone } from "./index.ts";
+import { clone } from "./index.js";
 import { type DeepKey, deepDelete } from "./deepObject.js";
 
 export function omit<T extends Record<any, any>, K extends (keyof T)[]>(

@@ -1,7 +1,7 @@
-import { type BuiltRoute, type BasePath } from "../router/types.ts";
-import { BunicornApp } from "./index.ts";
-import { type AddBasePathTo, type Route } from "../router/route.ts";
-import { mergePaths } from "../helpers/pathUtils.ts";
+import { type BuiltRoute, type BasePath } from "../router/types.js";
+import { BunicornApp } from "./index.js";
+import { type AddBasePathTo, type Route } from "../router/route.js";
+import { mergePaths } from "../helpers/pathUtils.js";
 
 export class BunicornEdgeApp<
   TBasePath extends BasePath,

@@ -1,5 +1,5 @@
-import { type BaseMiddleware } from "../middleware.ts";
-import { type Route } from "./route.ts";
+import { type BaseMiddleware } from "../middleware.js";
+import { type Route } from "./route.js";
 
 export type BasePath = `/${string}`;
 

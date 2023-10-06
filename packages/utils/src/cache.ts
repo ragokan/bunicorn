@@ -1,4 +1,4 @@
-import { areEqual } from "./index.ts";
+import { areEqual } from "./index.js";
 
 type ArgsType<T> = T extends (...args: infer U) => unknown
   ? U extends Promise<infer Y>

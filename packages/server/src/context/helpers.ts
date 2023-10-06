@@ -1,8 +1,8 @@
 import {
   type BunicornSchema,
   type InferBunicornOutput
-} from "src/validation/types.ts";
-import { validate } from "src/validation/validate.ts";
+} from "src/validation/types.js";
+import { validate } from "src/validation/validate.js";
 import { BunicornError, type BunicornErrorArgs } from "../error/index.js";
 import { formDataToObject } from "../helpers/formDataToObject.js";
 import { type Route } from "../router/route.js";

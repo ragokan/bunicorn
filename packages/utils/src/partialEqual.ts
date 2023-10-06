@@ -1,4 +1,4 @@
-import { areEqual } from "./index.ts";
+import { areEqual } from "./index.js";
 
 export function partialEqual(a: any, b: any) {
   if (a === b) {

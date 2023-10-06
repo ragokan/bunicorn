@@ -1,5 +1,5 @@
-import { matchAll } from "../matchers/constants.ts";
-import { createHandler } from "./index.ts";
+import { matchAll } from "../matchers/constants.js";
+import { createHandler } from "./index.js";
 
 export interface CorsHandlerArgs {
   origins?: string[];
