@@ -26,19 +26,26 @@ const createTodoRoute = routeBuilder
   });
 ```
 
-### Returned Error
+### Returned Error
 
 ```ts
 interface Response {
   status: 403;
   message: "Validation error."; // This is default error.
-  data: FormattedIssue[]; // Don't worry, it is all typed on client
+  args: {
+    data: FormattedIssue[]; // Don't worry, it is all typed on client
+  };
 }
 
 interface FormattedIssue {
   message: string; // Such as expected string, got number
   validation: string; // Such as required, optional
   path: string[]; // Such as ['title']
+}
+
+// In client, you can do this:
+if (error instanceof BunicornValidationError) {
+  console.log("Validation error:", error.args.data[0]!.message);
 }
 ```
 
@@ -64,7 +71,9 @@ const updateMessageRoute = chatRouteBuilder.patch("/chat/:id", async ctx => {
 });
 ```
 
-## Output
+## Output
+
+Output validators are executed when `ctx.json` is called.
 
 ```ts
 const todoSchema = z.object({
@@ -79,4 +88,39 @@ const getTodos = routeBuilder.output(todoSchema.array()).get("/", ctx => {
   // if todos does not match the schema, it will throw an internal error and log issues.
   return ctx.json(todos);
 });
+```
+
+## Use both
+
+```ts
+const createTodoRoute = routeBuilder
+  .input(createTodoSchema)
+  .output(todoSchema)
+  .post("/todo", async ctx => {
+    // todo is typed as returned type of createTodoSchema
+    const todo = await getBody(ctx);
+    // Handle and return
+  });
+```
+
+You can also merge multiple schemas.
+
+```ts
+import z from "zod";
+import { object, string } from "valibot";
+
+const zodTodoCreateSchema = z.object({ title: z.string() });
+const valibotTodoSchema = object({ id: string(), title: string() });
+
+const createTodoRoute = routeBuilder
+  .input(zodTodoCreateSchema)
+  .output(valibotTodoSchema)
+  .post("/todo", async ctx => {
+    // todo is typed as returned type of zodTodoCreateSchema
+    const todo = await getBody(ctx);
+    // Handle and return
+    const createdTodo = await createTodo(todo);
+    // createdTodo is typed as returned type of valibotTodoSchema
+    return ctx.json(createdTodo);
+  });
 ```

@@ -48,7 +48,7 @@ export default defineConfig({
             ]
           },
           { text: "Validators", link: "/server/validators" },
-          { text: "Merging routes", link: "/server/merge-routes" },
+          { text: "Grouping routes", link: "/server/group-routes" },
           { text: "Context", link: "/server/context" },
           {
             text: "Middlewares",
