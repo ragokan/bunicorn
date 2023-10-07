@@ -8,14 +8,17 @@
     "update-deps": "ncu -u && lerna run update-deps --stream",
     "prepublish": "bun run build",
     "publish": "lerna publish --no-private",
-    "dev:example": "lerna run dev --scope @bunicorn/example",
-    "start:example": "lerna run start --scope @bunicorn/example"
+    "dev:example": "lerna run example:dev --scope @bunicorn/example",
+    "start:example": "lerna run example:start --scope @bunicorn/example",
+    "docs:dev": "lerna run dev --scope @bunicorn/docs",
+    "docs:build": "lerna run build --scope @bunicorn/docs",
+    "docs:preview": "lerna run preview --scope @bunicorn/docs"
   },
   "workspaces": [
     "packages/*",
-    "example"
+    "example",
+    "docs"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",

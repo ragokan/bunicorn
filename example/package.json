@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "start": "bun run src/index.ts"
+    "example:dev": "bun run --watch src/index.ts",
+    "example:start": "bun run src/index.ts"
   },
   "dependencies": {
     "@bunicorn/server": "workspace:*",

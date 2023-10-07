@@ -4,3 +4,5 @@ dist
 .eslintcache
 .DS_Store
 bun.lockb
+docs/.vitepress/cache
+docs/docs/.vitepress/cache/
