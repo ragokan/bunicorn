@@ -83,6 +83,10 @@ export default defineConfig({
             ]
           },
           {
+            text: "Dependency Injection",
+            link: "/server/di"
+          },
+          {
             text: "Errors",
             link: "/server/errors"
           }
