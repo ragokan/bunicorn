@@ -1,4 +1,8 @@
-import { type BuiltRoute, type BasePath } from "../router/types.js";
+import {
+  type BuiltRoute,
+  type BasePath,
+  type BaseMethod
+} from "../router/types.js";
 import { BunicornApp } from "./index.js";
 import { type AddBasePathTo, type Route } from "../router/route.js";
 import { mergePaths } from "../helpers/pathUtils.js";
@@ -37,7 +41,9 @@ export class BunicornEdgeApp<
       }
     });
 
-    this.routes.push(route as unknown as BuiltRoute);
+    this.routes[route.method as BaseMethod].push(
+      route as unknown as BuiltRoute
+    );
     return this as unknown as BunicornApp<
       TBasePath,
       [...TRoutes, AddBasePathTo<TBasePath, TRoute>]

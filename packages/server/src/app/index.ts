@@ -7,7 +7,11 @@ import {
   type AddBasePathToAll,
   type Route
 } from "../router/route.js";
-import { type BasePath, type BuiltRoute } from "../router/types.js";
+import {
+  type BaseMethod,
+  type BasePath,
+  type BuiltRoute
+} from "../router/types.js";
 import { createContext } from "../context/createContext.js";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
@@ -32,7 +36,16 @@ export class BunicornApp<
 
   private static getFromStore = _createDependencyStore().get;
 
-  protected routes: BuiltRoute[] = [];
+  protected routes: Record<BaseMethod, BuiltRoute[]> = {
+    GET: [],
+    POST: [],
+    PATCH: [],
+    PUT: [],
+    DELETE: [],
+    OPTIONS: [],
+    HEAD: [],
+    ALL: []
+  };
 
   public with(handler: Handler) {
     handler(this as unknown as PrivateBunicornApp);
@@ -45,7 +58,7 @@ export class BunicornApp<
         ? route.path
         : mergePaths(this.args.basePath, route.path)
     ) as TBasePath;
-    this.routes.push(
+    this.routes[route.method as BaseMethod].push(
       Object.assign(route as Route<any, any, any, any>, {
         regexp: new RegExp(
           `^${(route.path as TBasePath)
@@ -82,60 +95,75 @@ export class BunicornApp<
     >;
   }
 
-  public async handleRequest(request: Request) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const method = request.method;
+  protected async useRoute(
+    request: Request,
+    url: URL,
+    path: string,
+    route: BuiltRoute
+  ): Promise<Response | void> {
+    const match = path.match(route.regexp);
+    if (match) {
+      try {
+        let context = createContext({
+          use: BunicornApp.getFromStore,
+          request,
+          route,
+          match,
+          url
+        }) as BaseContext<BasePath, never> & { _route: Route };
+        context._route = route;
 
-    for (const route of this.routes) {
-      if (route.method !== method && route.method !== "ALL") {
-        continue;
-      }
-      const match = path.match(route.regexp);
-      if (match) {
-        try {
-          let context = createContext({
-            use: BunicornApp.getFromStore,
-            request,
-            route,
-            match,
-            url
-          }) as BaseContext<BasePath, never> & { _route: Route };
-          context._route = route;
-
-          for (const middleware of route.middlewares) {
-            const result = await middleware(context);
-            if (!result) {
-              continue;
-            }
-            if (result instanceof Response) {
-              return result;
-            }
-            context = Object.assign(context, result);
+        for (const middleware of route.middlewares) {
+          const result = await middleware(context);
+          if (!result) {
+            continue;
           }
-
-          const result = await route.handler(context as any);
           if (result instanceof Response) {
             return result;
           }
-          return new Response(
-            JSON.stringify({ message: "Internal Server Error", status: 500 }),
-            { status: 500, headers: { "Content-Type": "application/json" } }
-          );
-        } catch (error) {
-          if (error instanceof BunicornError) {
-            return new Response(error.toString(), {
-              status: error.args.status,
-              headers: { "Content-Type": "application/json" }
-            });
-          } else if (error instanceof Error) {
-            BunicornApp.onGlobalError(error);
-          }
-          return new Response(
-            JSON.stringify({ message: "Internal Server Error", status: 500 }),
-            { status: 500, headers: { "Content-Type": "application/json" } }
-          );
+          context = Object.assign(context, result);
         }
+
+        const result = await route.handler(context as any);
+        if (result instanceof Response) {
+          return result;
+        }
+        return new Response(
+          JSON.stringify({ message: "Internal Server Error", status: 500 }),
+          { status: 500, headers: { "Content-Type": "application/json" } }
+        );
+      } catch (error) {
+        if (error instanceof BunicornError) {
+          return new Response(error.toString(), {
+            status: error.args.status,
+            headers: { "Content-Type": "application/json" }
+          });
+        } else if (error instanceof Error) {
+          BunicornApp.onGlobalError(error);
+        }
+        return new Response(
+          JSON.stringify({ message: "Internal Server Error", status: 500 }),
+          { status: 500, headers: { "Content-Type": "application/json" } }
+        );
+      }
+    }
+  }
+
+  public async handleRequest(request: Request) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+    const method = request.method as BaseMethod;
+
+    for (const route of this.routes[method]) {
+      const result = await this.useRoute(request, url, path, route);
+      if (result) {
+        return result;
+      }
+    }
+    for (const route of this.routes.ALL) {
+      const result = await this.useRoute(request, url, path, route);
+      if (result) {
+        return result;
       }
     }
 
