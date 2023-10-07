@@ -6,7 +6,7 @@ export default defineConfig({
   description:
     "Bunicorn - Fast and type safe Bun/Deno/Edge/Node backend framework!",
   head: [
-    ["link", { rel: "icon", type: "image/svg+xml", href: "assets/logo.svg" }]
+    ["link", { rel: "icon", type: "image/svg+xml", href: "/assets/logo.svg" }]
   ],
   lang: "en-US",
   lastUpdated: true,
