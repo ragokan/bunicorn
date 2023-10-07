@@ -61,3 +61,9 @@ interface Context {
   stream<T>(body: ReadableStream<T>, init?: ResponseInit);
 }
 ```
+
+## Follow up
+
+Firstly, I recommend you to go to [middleware](./middleware.md) page to learn how to use middlewares.
+
+Then, you can go to [dependency injection](./dependency-injection.md) page to learn how to use dependency injection with context.
