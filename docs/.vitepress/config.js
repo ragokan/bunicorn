@@ -79,6 +79,10 @@ export default defineConfig({
               {
                 text: "Static Handler",
                 link: "/server/handlers#static-handler"
+              },
+              {
+                text: "Create a Handler",
+                link: "/server/handlers#create-a-handler"
               }
             ]
           },
