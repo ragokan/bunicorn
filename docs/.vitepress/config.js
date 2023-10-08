@@ -5,15 +5,13 @@ export default defineConfig({
   title: "Bunicorn",
   description:
     "Bunicorn - Fast and type safe Bun/Deno/Edge/Node backend framework!",
-  head: [
-    ["link", { rel: "icon", type: "image/svg+xml", href: "/assets/logo.svg" }]
-  ],
+  head: [["link", { rel: "icon", type: "image/svg+xml", href: "/logo.svg" }]],
   lang: "en-US",
   lastUpdated: true,
   themeConfig: {
     siteTitle: "Bunicorn",
     search: { provider: "local", options: { detailedView: true } },
-    logo: "./assets/logo.svg",
+    logo: "/logo.svg",
     nav: [
       { text: "Quick Start", link: "/quick-start", activeMatch: "^/$" },
       { text: "Introduction", link: "/introduction" }

@@ -6,7 +6,7 @@ hero:
   name: "Bunicorn"
   tagline: Fast and type safe Bun/Deno/Node/Edge backend and client framework!
   image:
-    src: ./assets/logo.svg
+    src: /logo.svg
     alt: Bunicorn-Logo
   actions:
     - theme: brand
