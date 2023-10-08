@@ -51,20 +51,20 @@ export default defineConfig({
           { text: "Grouping routes", link: "/server/group-routes" },
           { text: "Context", link: "/server/context" },
           {
-            text: "Middlewares",
-            link: "/server/middlewares",
+            text: "Middleware",
+            link: "/server/middleware",
             items: [
               {
                 text: "Local",
-                link: "/server/middlewares#local-middlewares"
+                link: "/server/middleware#local-middleware"
               },
               {
                 text: "Shared",
-                link: "/server/middlewares#shared-middlewares"
+                link: "/server/middleware#shared-middleware"
               },
               {
                 text: "Authentication",
-                link: "/server/middlewares#authentication"
+                link: "/server/middleware#authentication"
               }
             ]
           },

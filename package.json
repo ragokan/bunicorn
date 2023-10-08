@@ -10,9 +10,9 @@
     "publish": "lerna publish --no-private",
     "dev:example": "lerna run example:dev --scope @bunicorn/example",
     "start:example": "lerna run example:start --scope @bunicorn/example",
-    "docs:dev": "lerna run dev --scope @bunicorn/docs",
-    "docs:build": "lerna run build --scope @bunicorn/docs",
-    "docs:preview": "lerna run preview --scope @bunicorn/docs"
+    "docs:dev": "npm run docs:dev --workspace @bunicorn/docs",
+    "docs:build": "npm run docs:build --workspace @bunicorn/docs",
+    "docs:preview": "npm run docs:preview --workspace @bunicorn/docs"
   },
   "workspaces": [
     "packages/*",

@@ -86,7 +86,7 @@ const todoRoutes = groupRoutes("/todos", [
 ::: tip Info
 Grouped routes just add the prefix to the route path. It doesn't add any middleware or anything else. Everything is handled in the route builder.
 
-For details, check [middlewares page](/server/middlewares).
+For details, check [middleware page](/server/middleware).
 :::
 
 ## Dynamic routes
