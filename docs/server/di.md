@@ -41,9 +41,7 @@ const getTodosRoute = routeBuilder.get("/todos", async ctx => {
 ## Usage outside of routes
 
 ```ts
-const app = new BunicornApp();
-
 function globalFunction() {
-  const db = app.getFromStore(appDB); // This will get the appDB dependency, it is the same as ctx.get(appDB)
+  const db = BunicornApp.getFromStore(appDB); // This will get the appDB dependency, it is the same as ctx.get(appDB)
 }
 ```
