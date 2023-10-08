@@ -10,7 +10,7 @@ const rb = new RouteBuilder();
 
 ## GET Route
 
-Check [Dynamic routes](./#dynamic-routes) for the usage of `:id`.
+Check [Dynamic routes](#dynamic-routes) for the usage of `:id`.
 
 ```ts
 
@@ -39,7 +39,7 @@ const createTodoRoute = rb.input(createTodoSchema).post("/", async ctx => {
 
 ## PATCH/PUT route
 
-Check [Dynamic routes](./#dynamic-routes) for the usage of `:id`.
+Check [Dynamic routes](#dynamic-routes) for the usage of `:id`.
 
 ```ts
 // Path: prefix/:id, like /prefix/1
@@ -52,7 +52,7 @@ const updateTodoRoute = rb.input(updateTodoSchema).patch("/:id", async ctx => {
 
 ## DELETE route
 
-Check [Dynamic routes](./#dynamic-routes) for the usage of `:id`.
+Check [Dynamic routes](#dynamic-routes) for the usage of `:id`.
 
 ```ts
 
