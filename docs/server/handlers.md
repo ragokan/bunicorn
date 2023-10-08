@@ -82,7 +82,7 @@ const baseApp = new BunicornEdgeApp().with(staticHandler({
 
 :::
 
-## Create a handler
+## Create a handler
 
 Currently, we don't have a way to create handler in a meaningful way. But still, you can use it like how we use it internally.
 

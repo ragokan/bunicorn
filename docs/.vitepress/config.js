@@ -59,8 +59,8 @@ export default defineConfig({
                 link: "/server/middleware#local-middleware"
               },
               {
-                text: "Shared",
-                link: "/server/middleware#shared-middleware"
+                text: "Global",
+                link: "/server/middleware#global-middleware"
               },
               {
                 text: "Authentication",

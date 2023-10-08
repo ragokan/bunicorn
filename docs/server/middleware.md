@@ -38,7 +38,7 @@ const helloRoute = routeBuilder.get("/hello", ctx => {
 });
 ```
 
-## Local
+## Local Middleware
 
 We can have local middlewares, that will only be used by the route they are attached to.
 
@@ -66,7 +66,7 @@ const getTodosRoute = routeBuilder
   .get("/todos", getTodosHandler);
 ```
 
-## Global
+## Global Middleware
 
 We can use global middlewares by creating a base _RouteBuilder_ and using it to create all the routes.
 

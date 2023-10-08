@@ -66,4 +66,4 @@ interface Context {
 
 Firstly, I recommend you to go to [middleware](./middleware.md) page to learn how to use middlewares.
 
-Then, you can go to [dependency injection](./dependency-injection.md) page to learn how to use dependency injection with context.
+Then, you can go to [dependency injection](./di.md) page to learn how to use dependency injection with context.
