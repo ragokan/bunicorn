@@ -34,7 +34,7 @@ export class BunicornApp<
     console.error(error);
   }
 
-  private static getFromStore = _createDependencyStore().get;
+  public static getFromStore = _createDependencyStore().get;
 
   protected routes: Record<BaseMethod, BuiltRoute[]> = {
     GET: [],
