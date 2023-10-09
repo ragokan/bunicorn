@@ -10,7 +10,7 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
   const originRegexes = origins?.map(origin => new RegExp(origin));
 
   return createHandler(app => {
-    app.routes.push({
+    app.routes["OPTIONS"].push({
       path: `/${matchAll}`,
       method: "OPTIONS",
       middlewares: [],

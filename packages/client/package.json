@@ -5,7 +5,6 @@
   "type": "module",
   "private": false,
   "scripts": {
-    "dev": "bun run --hot --watch src/development.ts",
     "build": "bun run build.js",
     "pretty-lint": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
     "clean": "rm -rf dist",

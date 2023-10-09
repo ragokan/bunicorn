@@ -1,5 +1,6 @@
-import { _createDependencyStore } from "../helpers/di.js";
 import { type BaseContext } from "../context/baseContext.js";
+import { createContext } from "../context/createContext.js";
+import { _createDependencyStore } from "../helpers/di.js";
 import { mergePaths } from "../helpers/pathUtils.js";
 import { BunicornError, type Handler } from "../index.js";
 import {
@@ -12,10 +13,9 @@ import {
   type BasePath,
   type BuiltRoute
 } from "../router/types.js";
-import { createContext } from "../context/createContext.js";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
-  routes: BuiltRoute[];
+  routes: Record<BasePath, BuiltRoute[]>;
   args: AppArgs<any>;
 };
 
@@ -28,6 +28,7 @@ export class BunicornApp<
   TRoutes extends Route<any, any, any, any>[] = []
 > {
   constructor(protected args: AppArgs<TBasePath>) {
+    this.handleRequest = this.handleRequest.bind(this);
     // :/ Do nothing
   }
   public static onGlobalError(error: Error) {

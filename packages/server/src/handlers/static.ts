@@ -13,7 +13,7 @@ export interface StaticHandlerArgs {
 export default function staticHandler({ path, directory }: StaticHandlerArgs) {
   return createHandler(app => {
     const finalPath = mergePaths(app.args.basePath, path);
-    app.routes.push({
+    app.routes["GET"].push({
       path: finalPath,
       method: "GET",
       middlewares: [],

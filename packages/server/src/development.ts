@@ -6,7 +6,7 @@ import { RouteBuilder } from "./router/builder.js";
 import { z } from "zod";
 
 const app = new BunicornApp({
-  basePath: "/bunicorn"
+  basePath: "/"
 });
 
 const rb = new RouteBuilder();
@@ -14,6 +14,7 @@ const rb = new RouteBuilder();
 const R = app
   .with(staticHandler({ path: "/static", directory: "./src" }))
   .addRoutes([
+    rb.get("/", ctx => ctx.raw("Hello world!")),
     rb.get("/hello", ctx => {
       return ctx.raw("Hello world!");
     }),
@@ -26,16 +27,14 @@ const R = app
     rb.get("/...rest/:args", ctx => {
       console.log("params", ctx.params);
       console.log("search params", getSearchParams(ctx));
-      return ctx.raw("Hello world!");
+      return ctx.raw("Hello world!" + JSON.stringify(ctx.params));
     })
   ]);
 
 export default R;
 
 Bun.serve({
-  async fetch(request) {
-    return R.handleRequest(request);
-  },
+  fetch: R.handleRequest,
   port: 8000
 });
 
