@@ -1,4 +1,5 @@
 import { __getPath } from "src/helpers/pathRegexps.js";
+import { __testPath } from "src/helpers/testPath.js";
 import { type BaseContext } from "../context/baseContext.js";
 import { createContext } from "../context/createContext.js";
 import { _createDependencyStore } from "../helpers/di.js";
@@ -14,7 +15,6 @@ import {
   type BasePath,
   type BuiltRoute
 } from "../router/types.js";
-import { __testPath } from "src/helpers/testPath.js";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
   routes: Record<BasePath, BuiltRoute[]>;
@@ -26,10 +26,12 @@ export interface AppArgs<TPath extends BasePath> {
 }
 
 export class BunicornApp<
-  TBasePath extends BasePath,
+  TBasePath extends BasePath = "/",
   TRoutes extends Route<any, any, any, any>[] = []
 > {
-  constructor(protected args: AppArgs<TBasePath>) {
+  constructor(
+    protected args: AppArgs<TBasePath> = { basePath: "/" as TBasePath }
+  ) {
     this.handleRequest = this.handleRequest.bind(this);
     // :/ Do nothing
   }
