@@ -7,6 +7,7 @@ import { BunicornError, type BunicornErrorArgs } from "../error/index.js";
 import { formDataToObject } from "../helpers/formDataToObject.js";
 import { type Route } from "../router/route.js";
 import { type BaseContext, type GetContextInput } from "./baseContext.js";
+import { __getSearchParams } from "src/helpers/pathRegexps.js";
 
 export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   const route = (ctx as unknown as { _route: Route })._route;
@@ -55,7 +56,7 @@ export function getSearchParams(
   ctx: BaseContext<any, any>,
   parser?: BunicornSchema
 ) {
-  const result = Object.fromEntries(ctx.url.searchParams);
+  const result = __getSearchParams(ctx.url);
   if (parser) {
     return validate(parser, result);
   }

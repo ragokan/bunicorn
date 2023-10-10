@@ -13,7 +13,8 @@ export interface BaseContext<
   params: ExtractParams<TPath>;
   request: Request;
   get: GetDependencyFn;
-  url: URL;
+  // The url requested
+  url: string;
   // For response
   setHeader(name: string, value: string): void;
   // Response types

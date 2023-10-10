@@ -1,3 +1,4 @@
+import { __getPath } from "src/helpers/pathRegexps.js";
 import { type BaseContext } from "../context/baseContext.js";
 import { createContext } from "../context/createContext.js";
 import { _createDependencyStore } from "../helpers/di.js";
@@ -98,7 +99,7 @@ export class BunicornApp<
 
   protected async useRoute(
     request: Request,
-    url: URL,
+    url: string,
     path: string,
     route: BuiltRoute
   ): Promise<Response | void> {
@@ -151,18 +152,17 @@ export class BunicornApp<
   }
 
   public async handleRequest(request: Request) {
-    const url = new URL(request.url);
-    const path = url.pathname;
+    const path = __getPath(request.url);
     const method = request.method as BaseMethod;
 
     for (const route of this.routes[method]) {
-      const result = await this.useRoute(request, url, path, route);
+      const result = await this.useRoute(request, request.url, path, route);
       if (result) {
         return result;
       }
     }
     for (const route of this.routes.ALL) {
-      const result = await this.useRoute(request, url, path, route);
+      const result = await this.useRoute(request, request.url, path, route);
       if (result) {
         return result;
       }

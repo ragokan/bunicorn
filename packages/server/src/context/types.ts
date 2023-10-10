@@ -6,5 +6,5 @@ export interface CreateContextArgs<TPath extends BasePath> {
   request: Request;
   use: GetDependencyFn;
   match: RegExpMatchArray;
-  url: URL;
+  url: string;
 }

@@ -5,6 +5,7 @@ import { matchAll } from "../matchers/constants.js";
 import { type BasePath } from "../router/types.js";
 import { createHandler } from "./index.js";
 import { type BaseContext } from "../context/baseContext.js";
+import { __getPath } from "src/helpers/pathRegexps.js";
 
 export interface StaticHandlerArgs {
   path: BasePath;
@@ -20,7 +21,7 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
       regexp: new RegExp(`^${finalPath}/${matchAll}`),
       async handler(ctx: BaseContext) {
         try {
-          const target = ctx.url.pathname.replace(finalPath, directory);
+          const target = __getPath(ctx.url).replace(finalPath, directory);
           if (!process.env.IS_BUN) {
             const file = await readFile(target);
             return new Response(file);
