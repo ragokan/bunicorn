@@ -1,5 +1,7 @@
-export function __testPath(regexp: RegExp, target: string) {
-  const matchResult = regexp.exec(target);
+import { type BuiltRoute } from "src/router/types.js";
+
+export function __testPath(route: BuiltRoute, target: string) {
+  const matchResult = route.regexp.exec(target);
 
   if (matchResult) {
     const [, ...capturedGroups] = matchResult;

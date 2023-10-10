@@ -106,7 +106,7 @@ export class BunicornApp<
     path: string,
     route: BuiltRoute
   ): Promise<Response | void> {
-    const match = __testPath(route.regexp, path);
+    const match = __testPath(route, path);
     if (match) {
       try {
         let context = createContext({

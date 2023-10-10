@@ -4,6 +4,10 @@ export function getParams<TPath extends BasePath = BasePath>(
   path: TPath,
   match: string[]
 ) {
+  if (match.length === 0) {
+    return {} as ExtractParams<TPath>;
+  }
+
   const paramNames = path
     .split("/")
     .filter(x => x.startsWith("...") || x.startsWith(":"))
