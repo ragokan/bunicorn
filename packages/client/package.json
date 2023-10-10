@@ -1,6 +1,6 @@
 {
   "name": "@bunicorn/client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Bunicorn client whhich has full type support for the Bunicorn server, ultra fast Bun, Edge and Node server framework",
   "type": "module",
   "private": false,
