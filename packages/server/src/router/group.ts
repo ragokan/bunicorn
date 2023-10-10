@@ -1,6 +1,6 @@
-import { mergePaths } from "../helpers/pathUtils.js";
-import { type AddBasePathToAll, type Route } from "./route.js";
-import { type BasePath } from "./types.js";
+import { mergePaths } from "../helpers/pathUtils.ts";
+import { type AddBasePathToAll, type Route } from "./route.ts";
+import { type BasePath } from "./types.ts";
 
 export function groupRoutes<
   TBasePath extends BasePath,

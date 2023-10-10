@@ -6,51 +6,51 @@
   "private": false,
   "scripts": {
     "dev": "bun run --hot --watch src/development.ts",
-    "build": "bun run build.js",
+    "build": "tsc && bun run build.js",
     "pretty-lint": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
-    "clean": "rm -rf dist",
+    "prebuild": "rm -rf dist",
     "update-deps": "ncu -u"
   },
   "source": "./src/index.ts",
-  "main": "./dist/index.cjs",
-  "unpkg": "./dist/index.global.js",
-  "jsdelivr": "./dist/index.global.js",
+  "main": "./dist/index.js",
+  "unpkg": "./dist/index.js",
+  "jsdelivr": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
+      "require": "./dist/index.js",
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./matchers": {
       "import": "./dist/matchers/constants.js",
-      "require": "./dist/matchers/constants.cjs",
+      "require": "./dist/matchers/constants.js",
       "default": "./dist/matchers/constants.js",
       "types": "./dist/matchers/constants.d.ts"
     },
     "./corsHandler": {
       "import": "./dist/handlers/cors.js",
-      "require": "./dist/handlers/cors.cjs",
+      "require": "./dist/handlers/cors.js",
       "default": "./dist/handlers/cors.js",
       "types": "./dist/handlers/cors.d.ts"
     },
     "./staticHandler": {
       "import": "./dist/handlers/static.js",
-      "require": "./dist/handlers/static.cjs",
+      "require": "./dist/handlers/static.js",
       "default": "./dist/handlers/static.js",
       "types": "./dist/handlers/static.d.ts"
     },
     "./di": {
       "import": "./dist/helpers/di.js",
-      "require": "./dist/helpers/di.cjs",
+      "require": "./dist/helpers/di.js",
       "default": "./dist/helpers/di.js",
       "types": "./dist/helpers/di.d.ts"
     },
     "./edgeApp": {
       "import": "./dist/app/edgeApp.js",
-      "require": "./dist/app/edgeApp.cjs",
+      "require": "./dist/app/edgeApp.js",
       "default": "./dist/app/edgeApp.js",
       "types": "./dist/app/edgeApp.d.ts"
     }
@@ -63,9 +63,17 @@
     "bun",
     "node"
   ],
-  "devDependencies": {
+  "peerDependencies": {
     "valibot": "^0.18.0",
     "zod": "^3.22.4"
+  },
+  "peerDependenciesMeta": {
+    "valibot": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
   "homepage": "https://github.com/ragokan/bunicorn",
   "author": "ragokan",

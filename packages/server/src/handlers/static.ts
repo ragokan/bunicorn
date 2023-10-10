@@ -1,11 +1,11 @@
 import { readFile } from "fs/promises";
-import { BunicornNotFoundError } from "../error/index.js";
-import { mergePaths } from "../helpers/pathUtils.js";
-import { matchAll } from "../matchers/constants.js";
-import { type BasePath } from "../router/types.js";
-import { createHandler } from "./index.js";
-import { type BaseContext } from "../context/baseContext.js";
-import { __getPath } from "src/helpers/pathRegexps.js";
+import { BunicornNotFoundError } from "../error/index.ts";
+import { mergePaths } from "../helpers/pathUtils.ts";
+import { matchAll } from "../matchers/constants.ts";
+import { type BasePath } from "../router/types.ts";
+import { createHandler } from "./index.ts";
+import { type BaseContext } from "../context/baseContext.ts";
+import { __getPath } from "src/helpers/pathRegexps.ts";
 
 export interface StaticHandlerArgs {
   path: BasePath;

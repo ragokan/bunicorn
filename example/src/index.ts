@@ -1,4 +1,4 @@
-import { app } from "./server.js";
+import { app } from "./server.ts";
 
 Bun.serve({
   fetch(req) {
@@ -9,5 +9,5 @@ Bun.serve({
 
 // Wait for the server to start, just in case
 await Bun.sleep(10);
-await import("./client.js");
+await import("./client.ts");
 process.exit(0);

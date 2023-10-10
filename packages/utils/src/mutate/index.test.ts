@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { mutate } from "./index.js";
+import { mutate } from "./index.ts";
 
 describe("simple mutate test", () => {
   const original = {

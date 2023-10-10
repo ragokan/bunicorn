@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { clone } from "./index.js";
+import { clone } from "./index.ts";
 
 describe("simple clone test", () => {
   const original = {

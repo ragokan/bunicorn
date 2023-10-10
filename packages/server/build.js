@@ -1,7 +1,5 @@
-import { defineConfig, build } from "tsup";
-
-const config = defineConfig({
-  entry: [
+await Bun.build({
+  entrypoints: [
     "./src/index.ts",
     "./src/matchers/constants.ts",
     "./src/helpers/di.ts",
@@ -9,21 +7,14 @@ const config = defineConfig({
     "./src/handlers/static.ts",
     "./src/app/edgeApp.ts"
   ],
-  outDir: "./dist",
-  treeshake: "recommended",
-  splitting: false,
-  sourcemap: true,
-  clean: true,
-  banner: {
-    js: "// Bunicorn by Ragokan"
-  },
+  outdir: "./dist",
   minify: true,
-  dts: true,
-  format: ["cjs", "esm", "iife"],
-  external: ["*"],
-  silent: true,
-  env: { IS_BUN: true }
+  splitting: true,
+  sourcemap: "external",
+  target: "bun",
+  define: {
+    IS_BUN: "true"
+  }
 });
 
-await build(config);
 console.log("Build of server is completed!");

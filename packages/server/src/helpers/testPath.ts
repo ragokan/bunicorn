@@ -1,4 +1,4 @@
-import { type BuiltRoute } from "src/router/types.js";
+import { type BuiltRoute } from "src/router/types.ts";
 
 export function __testPath(route: BuiltRoute, target: string) {
   if (route.regexp) {

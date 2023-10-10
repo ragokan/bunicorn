@@ -1,9 +1,9 @@
 import {
   type InferBunicornOutput,
   type BunicornSchema
-} from "../validation/types.js";
-import { type GetDependencyFn } from "../helpers/di.js";
-import { type BasePath, type ExtractParams } from "../router/types.js";
+} from "../validation/types.ts";
+import { type GetDependencyFn } from "../helpers/di.ts";
+import { type BasePath, type ExtractParams } from "../router/types.ts";
 
 export interface BaseContext<
   TPath extends BasePath = BasePath,

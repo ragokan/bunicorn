@@ -1,8 +1,8 @@
-import { BunicornValidationError } from "src/index.js";
+import { BunicornValidationError } from "src/index.ts";
 import type * as v from "valibot";
 import type * as z from "zod";
-import { formatIssues, type FormattedIssue } from "./formatIssues.js";
-import { type BunicornSchema, type RawSchema } from "./types.js";
+import { formatIssues, type FormattedIssue } from "./formatIssues.ts";
+import { type BunicornSchema, type RawSchema } from "./types.ts";
 
 export function validate<T extends BunicornSchema>(
   schema: T,

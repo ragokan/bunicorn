@@ -1,21 +1,13 @@
-import { defineConfig, build } from "tsup";
-
-const globalConfig = defineConfig({
-  entry: ["./src/index.ts"],
-  outDir: "./dist",
-  treeshake: "recommended",
-  splitting: false,
-  sourcemap: true,
-  clean: true,
-  banner: {
-    js: "// Bunicorn by Ragokan"
-  },
+await Bun.build({
+  entrypoints: ["./src/index.ts"],
+  outdir: "./dist",
   minify: true,
-  dts: true,
-  format: ["cjs", "esm", "iife"],
-  silent: true,
-  env: { IS_BUN: false }
+  splitting: true,
+  sourcemap: "external",
+  target: "browser",
+  define: {
+    IS_BUN: "true"
+  }
 });
 
-await build(globalConfig);
 console.log("Build of client is completed!");

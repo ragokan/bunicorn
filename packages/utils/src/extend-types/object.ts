@@ -1,4 +1,4 @@
-import { isNotNull } from "../types.js";
+import { isNotNull } from "../types.ts";
 
 export function merge<T>(oldObject: T, newObject: Partial<T>, base = {}): T {
   return Object.assign(base, oldObject, newObject);

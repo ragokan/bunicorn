@@ -1,10 +1,10 @@
-import { BunicornApp } from "../app/index.js";
-import { getParams } from "../helpers/pathUtils.js";
-import { type BasePath } from "../router/types.js";
-import { type BaseContext } from "./baseContext.js";
-import { type CreateContextArgs } from "./types.js";
-import { bunicornError } from "./helpers.js";
-import { validate } from "src/validation/validate.js";
+import { BunicornApp } from "../app/index.ts";
+import { getParams } from "../helpers/pathUtils.ts";
+import { type BasePath } from "../router/types.ts";
+import { type BaseContext } from "./baseContext.ts";
+import { type CreateContextArgs } from "./types.ts";
+import { bunicornError } from "./helpers.ts";
+import { validate } from "src/validation/validate.ts";
 
 export function createContext<TPath extends BasePath = BasePath>({
   use,

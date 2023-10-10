@@ -1,13 +1,13 @@
 import {
   type BunicornSchema,
   type InferBunicornOutput
-} from "src/validation/types.js";
-import { validate } from "src/validation/validate.js";
-import { BunicornError, type BunicornErrorArgs } from "../error/index.js";
-import { formDataToObject } from "../helpers/formDataToObject.js";
-import { type Route } from "../router/route.js";
-import { type BaseContext, type GetContextInput } from "./baseContext.js";
-import { __getSearchParams } from "src/helpers/pathRegexps.js";
+} from "src/validation/types.ts";
+import { validate } from "src/validation/validate.ts";
+import { BunicornError, type BunicornErrorArgs } from "../error/index.ts";
+import { formDataToObject } from "../helpers/formDataToObject.ts";
+import { type Route } from "../router/route.ts";
+import { type BaseContext, type GetContextInput } from "./baseContext.ts";
+import { __getSearchParams } from "src/helpers/pathRegexps.ts";
 
 export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   const route = (ctx as unknown as { _route: Route })._route;

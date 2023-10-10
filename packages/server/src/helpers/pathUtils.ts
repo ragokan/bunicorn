@@ -1,4 +1,4 @@
-import { type BasePath, type ExtractParams } from "../router/types.js";
+import { type BasePath, type ExtractParams } from "../router/types.ts";
 
 export function getParams<TPath extends BasePath = BasePath>(
   path: TPath,

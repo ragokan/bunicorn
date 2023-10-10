@@ -1,21 +1,21 @@
-import { __getPath } from "src/helpers/pathRegexps.js";
-import { __testPath } from "src/helpers/testPath.js";
-import { type BaseContext } from "../context/baseContext.js";
-import { createContext } from "../context/createContext.js";
-import { _createDependencyStore } from "../helpers/di.js";
-import { mergePaths } from "../helpers/pathUtils.js";
-import { BunicornError, type Handler } from "../index.js";
+import { __getPath } from "src/helpers/pathRegexps.ts";
+import { __testPath } from "src/helpers/testPath.ts";
+import { type BaseContext } from "../context/baseContext.ts";
+import { createContext } from "../context/createContext.ts";
+import { _createDependencyStore } from "../helpers/di.ts";
+import { mergePaths } from "../helpers/pathUtils.ts";
+import { BunicornError, type Handler } from "../index.ts";
 import {
   type AddBasePathTo,
   type AddBasePathToAll,
   type Route
-} from "../router/route.js";
+} from "../router/route.ts";
 import {
   type BaseMethod,
   type BasePath,
   type BuiltRoute
-} from "../router/types.js";
-import { __checkPathIsRegex } from "src/helpers/checkIsRegex.js";
+} from "../router/types.ts";
+import { __checkPathIsRegex } from "src/helpers/checkIsRegex.ts";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
   routes: Record<BasePath, BuiltRoute[]>;

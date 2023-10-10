@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { BunicornApp } from "./app/index.js";
-import { getBody, getSearchParams } from "./context/helpers.js";
-import staticHandler from "./handlers/static.js";
-import { RouteBuilder } from "./router/builder.js";
+import { BunicornApp } from "./app/index.ts";
+import { getBody, getSearchParams } from "./context/helpers.ts";
+import staticHandler from "./handlers/static.ts";
+import { RouteBuilder } from "./router/builder.ts";
 import { z } from "zod";
 
 const app = new BunicornApp({

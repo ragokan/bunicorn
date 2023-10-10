@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import { clone } from "../clone/index.js";
-import { areEqual } from "./index.js";
+import { clone } from "../clone/index.ts";
+import { areEqual } from "./index.ts";
 
 describe("simple are equal test", () => {
   const original = {

@@ -1,4 +1,4 @@
-import { type PrivateBunicornApp } from "../app/index.js";
+import { type PrivateBunicornApp } from "../app/index.ts";
 
 export type Handler = (app: PrivateBunicornApp) => any;
 

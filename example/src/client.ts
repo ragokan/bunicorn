@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import bunicornClient, { BunicornValidationError } from "@bunicorn/client";
 import { omit } from "@bunicorn/utils";
-import { type AppType } from "./server.js";
+import { type AppType } from "./server.ts";
 
 // WE INITIALIZE THE CLIENT WITH THE PATH THAT OUR SERVER IS GOING TO USE
 // AND PROVIDE THE TYPE OF OUR APP
