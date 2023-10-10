@@ -2,7 +2,7 @@ import { type BasePath, type ExtractParams } from "../router/types.js";
 
 export function getParams<TPath extends BasePath = BasePath>(
   path: TPath,
-  match: RegExpMatchArray
+  match: string[]
 ) {
   const paramNames = path
     .split("/")
@@ -10,8 +10,8 @@ export function getParams<TPath extends BasePath = BasePath>(
     .map(x => x.replace(/[:.]+/, ""));
   const params: Record<string, string | string[]> = {};
 
-  for (let i = 1; i < match.length; i++) {
-    const key = paramNames[i - 1];
+  for (let i = 0; i < match.length; i++) {
+    const key = paramNames[i];
     if (key) {
       if (path.includes(`...${key}`)) {
         params[key] = match[i] ? match[i]!.split("/") : [];

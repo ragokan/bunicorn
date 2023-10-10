@@ -14,6 +14,7 @@ import {
   type BasePath,
   type BuiltRoute
 } from "../router/types.js";
+import { __testPath } from "src/helpers/testPath.js";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
   routes: Record<BasePath, BuiltRoute[]>;
@@ -103,7 +104,7 @@ export class BunicornApp<
     path: string,
     route: BuiltRoute
   ): Promise<Response | void> {
-    const match = path.match(route.regexp);
+    const match = __testPath(route.regexp, path);
     if (match) {
       try {
         let context = createContext({
