@@ -15,6 +15,7 @@ import {
   type BasePath,
   type BuiltRoute
 } from "../router/types.js";
+import { __checkPathIsRegex } from "src/helpers/checkIsRegex.js";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
   routes: Record<BasePath, BuiltRoute[]>;
@@ -63,9 +64,10 @@ export class BunicornApp<
         ? route.path
         : mergePaths(this.args.basePath, route.path)
     ) as TBasePath;
-    this.routes[route.method as BaseMethod].push(
-      Object.assign(route as Route<any, any, any, any>, {
-        regexp: new RegExp(
+    route.middlewares ??= [];
+    if (__checkPathIsRegex(route.path)) {
+      (route as BuiltRoute).regexp = new RegExp(
+        new RegExp(
           `^${(route.path as TBasePath)
             .split("/")
             .map(part => {
@@ -78,10 +80,10 @@ export class BunicornApp<
               return part;
             })
             .join("/")}$`
-        ),
-        middlewares: route.middlewares ?? []
-      }) as BuiltRoute
-    );
+        )
+      );
+    }
+    this.routes[route.method as BaseMethod].push(route as BuiltRoute);
     return this as unknown as BunicornApp<
       TBasePath,
       [...TRoutes, AddBasePathTo<TBasePath, TRoute>]

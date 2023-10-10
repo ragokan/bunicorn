@@ -5,6 +5,6 @@ export interface CreateContextArgs<TPath extends BasePath> {
   route: BuiltRoute<TPath>;
   request: Request;
   use: GetDependencyFn;
-  match: string[];
+  match: string[] | boolean;
   url: string;
 }

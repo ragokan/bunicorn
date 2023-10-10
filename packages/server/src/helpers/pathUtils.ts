@@ -2,9 +2,9 @@ import { type BasePath, type ExtractParams } from "../router/types.js";
 
 export function getParams<TPath extends BasePath = BasePath>(
   path: TPath,
-  match: string[]
+  match: string[] | boolean
 ) {
-  if (match.length === 0) {
+  if (typeof match === "boolean" || match.length === 0) {
     return {} as ExtractParams<TPath>;
   }
 

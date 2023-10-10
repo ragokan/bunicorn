@@ -54,6 +54,6 @@ export type MergePaths<
 
 export interface BuiltRoute<TPath extends BasePath = BasePath>
   extends Route<TPath> {
-  regexp: RegExp;
+  regexp?: RegExp;
   middlewares: BaseMiddleware<any>[];
 }
