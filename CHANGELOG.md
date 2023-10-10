@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.5] - 2023-10-10
+
+- Remove the requirement of specifying the basePath in app. Will use '/' by default.
+- Make bundler Bun for faster bundling.
+
 ## [0.0.4] - 2023-10-10
 
 - Increase path matching performance by equality checks for non regex paths.
