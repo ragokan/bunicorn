@@ -22,15 +22,15 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
       async handler(ctx: BaseContext) {
         try {
           const target = __getPath(ctx.url).replace(finalPath, directory);
-          if (!process.env.IS_BUN) {
-            const file = await readFile(target);
-            return new Response(file);
-          } else {
+          if (IS_BUN) {
             const file = Bun.file(target);
             const exists = await file.exists();
             if (!exists) {
               throw new BunicornNotFoundError();
             }
+            return new Response(file);
+          } else {
+            const file = await readFile(target);
             return new Response(file);
           }
         } catch (_) {

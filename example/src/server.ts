@@ -5,11 +5,11 @@ import {
   RouteBuilder,
   getBody,
   getHeader,
-  groupRoutes
+  groupRoutes,
+  dependency
 } from "@bunicorn/server";
 import corsHandler from "@bunicorn/server/corsHandler";
 import { randomNumber } from "@bunicorn/utils";
-import { dependency } from "@bunicorn/server/di";
 import z from "zod";
 import { matchAll } from "@bunicorn/server/matchers";
 

@@ -12,6 +12,7 @@ export * from "./router/builder.ts";
 export * from "./router/group.ts";
 export * from "./router/types.ts";
 export * from "./router/route.ts";
+export * from "./helpers/di.ts";
 export type * from "./validation/formatIssues.ts";
 export type * from "./validation/types.ts";
 export type { BaseMethod, BasePath, ExtractParams } from "./router/types.ts";

@@ -42,12 +42,6 @@
       "default": "./dist/handlers/static.js",
       "types": "./dist/handlers/static.d.ts"
     },
-    "./di": {
-      "import": "./dist/helpers/di.js",
-      "require": "./dist/helpers/di.js",
-      "default": "./dist/helpers/di.js",
-      "types": "./dist/helpers/di.d.ts"
-    },
     "./edgeApp": {
       "import": "./dist/app/edgeApp.js",
       "require": "./dist/app/edgeApp.js",
