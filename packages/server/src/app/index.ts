@@ -158,9 +158,8 @@ export class BunicornApp<
 
   public async handleRequest(request: Request) {
     const path = __getPath(request.url);
-    const method = request.method as BaseMethod;
 
-    for (const route of this.routes[method]) {
+    for (const route of this.routes[request.method as BaseMethod]) {
       const result = await this.useRoute(request, request.url, path, route);
       if (result) {
         return result;
@@ -175,7 +174,7 @@ export class BunicornApp<
 
     return new Response(
       JSON.stringify({
-        message: `The method '${method}' to path '${path}' does not exists.`,
+        message: `The method '${request.method}' to path '${path}' does not exists.`,
         status: 404
       }),
       { status: 404, headers: { "Content-Type": "application/json" } }
