@@ -1,10 +1,10 @@
+import { BunicornError } from "src/index.ts";
+import { validate } from "src/validation/validate.ts";
 import { BunicornApp } from "../app/index.ts";
 import { getParams } from "../helpers/pathUtils.ts";
 import { type BasePath } from "../router/types.ts";
 import { type BaseContext } from "./baseContext.ts";
 import { type CreateContextArgs } from "./types.ts";
-import { bunicornError } from "./helpers.ts";
-import { validate } from "src/validation/validate.ts";
 
 export function createContext<TPath extends BasePath = BasePath>({
   use,
@@ -49,7 +49,7 @@ export function createContext<TPath extends BasePath = BasePath>({
         return new Response(JSON.stringify(parseResult), init) as any;
       } catch (error) {
         BunicornApp.onGlobalError(
-          bunicornError(
+          new BunicornError(
             `Failed to parse output for the method '${route.method}' to path '${route.path}'.`,
             {
               data: {
@@ -61,7 +61,7 @@ export function createContext<TPath extends BasePath = BasePath>({
             }
           )
         );
-        throw bunicornError(
+        throw new BunicornError(
           "Failed to parse output. This should be handled internally."
         );
       }

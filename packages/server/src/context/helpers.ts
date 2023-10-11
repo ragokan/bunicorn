@@ -1,13 +1,12 @@
+import { __getSearchParams } from "src/helpers/pathRegexps.ts";
 import {
   type BunicornSchema,
   type InferBunicornOutput
 } from "src/validation/types.ts";
 import { validate } from "src/validation/validate.ts";
-import { BunicornError, type BunicornErrorArgs } from "../error/index.ts";
 import { formDataToObject } from "../helpers/formDataToObject.ts";
 import { type Route } from "../router/route.ts";
 import { type BaseContext, type GetContextInput } from "./baseContext.ts";
-import { __getSearchParams } from "src/helpers/pathRegexps.ts";
 
 export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   const route = (ctx as unknown as { _route: Route })._route;
@@ -61,11 +60,4 @@ export function getSearchParams(
     return validate(parser, result);
   }
   return result;
-}
-
-export function bunicornError<TData>(
-  message: string,
-  args?: BunicornErrorArgs<TData>
-) {
-  return new BunicornError(message, args);
 }
