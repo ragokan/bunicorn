@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.6] - 2023-10-11
+
+- Increase performance by updating regexes.
+- Add listen method to app.
+- Add a way to add global handlers.
+
 ## [0.0.5] - 2023-10-10
 
 - Remove the requirement of specifying the basePath in app. Will use '/' by default.
