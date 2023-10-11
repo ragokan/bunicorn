@@ -31,5 +31,5 @@ export function __getSearchParams(
 }
 
 export function __getPath(url: string) {
-  return url.match(getPathRegex)?.[2] ?? "";
+  return getPathRegex.exec(url)?.[2] ?? "";
 }
