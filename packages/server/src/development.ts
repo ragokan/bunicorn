@@ -31,8 +31,6 @@ const R = app
     })
   ]);
 
-export default R;
-
 Bun.serve({
   fetch: R.handleRequest,
   port: 8000
