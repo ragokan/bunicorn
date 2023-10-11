@@ -5,7 +5,7 @@ import { matchAll } from "../matchers/constants.ts";
 import { type BasePath } from "../router/types.ts";
 import { createHandler } from "./index.ts";
 import { type BaseContext } from "../context/baseContext.ts";
-import { __getPath } from "src/helpers/pathRegexps.ts";
+import { __getPath } from "../helpers/pathRegexps.ts";
 
 export interface StaticHandlerArgs {
   path: BasePath;

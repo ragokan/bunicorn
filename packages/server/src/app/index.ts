@@ -1,9 +1,10 @@
-import { __getPath } from "src/helpers/pathRegexps.ts";
-import { __testPath } from "src/helpers/testPath.ts";
 import { type BaseContext } from "../context/baseContext.ts";
 import { createContext } from "../context/createContext.ts";
+import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { _createDependencyStore } from "../helpers/di.ts";
+import { __getPath } from "../helpers/pathRegexps.ts";
 import { mergePaths } from "../helpers/pathUtils.ts";
+import { __testPath } from "../helpers/testPath.ts";
 import { BunicornError, type Handler } from "../index.ts";
 import {
   type AddBasePathTo,
@@ -15,7 +16,6 @@ import {
   type BasePath,
   type BuiltRoute
 } from "../router/types.ts";
-import { __checkPathIsRegex } from "src/helpers/checkIsRegex.ts";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
   routes: Record<BasePath, BuiltRoute[]>;

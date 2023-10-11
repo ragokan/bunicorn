@@ -1,5 +1,5 @@
-import { BunicornError } from "src/index.ts";
-import { validate } from "src/validation/validate.ts";
+import { BunicornError } from "../error/index.ts";
+import { validate } from "../validation/validate.ts";
 import { BunicornApp } from "../app/index.ts";
 import { getParams } from "../helpers/pathUtils.ts";
 import { type BasePath } from "../router/types.ts";

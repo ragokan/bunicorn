@@ -1,11 +1,11 @@
-import { __getSearchParams } from "src/helpers/pathRegexps.ts";
+import { formDataToObject } from "../helpers/formDataToObject.ts";
+import { __getSearchParams } from "../helpers/pathRegexps.ts";
+import { type Route } from "../router/route.ts";
 import {
   type BunicornSchema,
   type InferBunicornOutput
-} from "src/validation/types.ts";
-import { validate } from "src/validation/validate.ts";
-import { formDataToObject } from "../helpers/formDataToObject.ts";
-import { type Route } from "../router/route.ts";
+} from "../validation/types.ts";
+import { validate } from "../validation/validate.ts";
 import { type BaseContext, type GetContextInput } from "./baseContext.ts";
 
 export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
