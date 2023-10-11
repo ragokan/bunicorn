@@ -112,7 +112,7 @@ export class BunicornApp<
     if (match) {
       try {
         let context = createContext({
-          use: BunicornApp.getFromStore,
+          get: BunicornApp.getFromStore,
           request,
           route,
           match,
@@ -182,3 +182,5 @@ export class BunicornApp<
     );
   }
 }
+
+export { BunicornApp as BuniApp };

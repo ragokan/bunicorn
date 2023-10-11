@@ -163,3 +163,5 @@ export class RouteBuilder<
     ) => Out | Promise<Out>
   ) => this.createRoute("ALL", path, handler);
 }
+
+export { RouteBuilder as RB };

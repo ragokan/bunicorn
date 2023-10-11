@@ -4,7 +4,7 @@ import { type BasePath, type BuiltRoute } from "../router/types.ts";
 export interface CreateContextArgs<TPath extends BasePath> {
   route: BuiltRoute<TPath>;
   request: Request;
-  use: GetDependencyFn;
+  get: GetDependencyFn;
   match: string[] | boolean;
   url: string;
 }

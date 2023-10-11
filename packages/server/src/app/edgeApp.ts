@@ -6,6 +6,7 @@ import {
 import { BunicornApp } from "./index.ts";
 import { type AddBasePathTo, type Route } from "../router/route.ts";
 import { mergePaths } from "../helpers/pathUtils.ts";
+import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 
 export class BunicornEdgeApp<
   TBasePath extends BasePath,
@@ -20,26 +21,28 @@ export class BunicornEdgeApp<
         : mergePaths(this.args.basePath, route.path)
     ) as TBasePath;
     route.middlewares ??= [];
-    Object.defineProperties(route, {
-      regexp: {
-        get() {
-          return ((route as any).__regexp ??= new RegExp(
-            `^${(route.path as TBasePath)
-              .split("/")
-              .map(part => {
-                if (part.startsWith("...")) {
-                  return "((?:[^/]+/)*[^/]+)?";
-                }
-                if (part.startsWith(":")) {
-                  return "([^/]+)";
-                }
-                return part;
-              })
-              .join("/")}$`
-          ));
+    if (__checkPathIsRegex(route.path)) {
+      Object.defineProperties(route, {
+        regexp: {
+          get() {
+            return ((route as any).__regexp ??= new RegExp(
+              `^${(route.path as TBasePath)
+                .split("/")
+                .map(part => {
+                  if (part.startsWith("...")) {
+                    return "((?:[^/]+/)*[^/]+)?";
+                  }
+                  if (part.startsWith(":")) {
+                    return "([^/]+)";
+                  }
+                  return part;
+                })
+                .join("/")}$`
+            ));
+          }
         }
-      }
-    });
+      });
+    }
 
     this.routes[route.method as BaseMethod].push(
       route as unknown as BuiltRoute
@@ -50,3 +53,5 @@ export class BunicornEdgeApp<
     >;
   }
 }
+
+export { BunicornEdgeApp as BuniEdgeApp };

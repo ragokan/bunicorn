@@ -7,7 +7,7 @@ import { type BaseContext } from "./baseContext.ts";
 import { type CreateContextArgs } from "./types.ts";
 
 export function createContext<TPath extends BasePath = BasePath>({
-  use,
+  get,
   request,
   match,
   route,
@@ -105,7 +105,7 @@ export function createContext<TPath extends BasePath = BasePath>({
     json,
     stream,
     // Helpers and params
-    get: use,
+    get,
     params,
     request,
     url
