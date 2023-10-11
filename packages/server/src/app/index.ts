@@ -5,11 +5,11 @@ import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
 import { __testPath } from "../helpers/testPath.ts";
-import { type BaseMiddleware, BunicornError, type Handler } from "../index.ts";
+import { BunicornError, type BaseMiddleware, type Handler } from "../index.ts";
 import {
+  type Route,
   type __AddBasePathTo,
-  type __AddBasePathToAll,
-  type Route
+  type __AddBasePathToAll
 } from "../router/route.ts";
 import {
   type BaseMethod,
