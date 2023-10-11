@@ -1,3 +1,4 @@
+import { type ServeOptions, type TLSServeOptions } from "bun";
 import { type BaseContext } from "../context/baseContext.ts";
 import { __createContext } from "../context/createContext.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
@@ -187,6 +188,16 @@ export class BunicornApp<
       }),
       { status: 404, headers: { "Content-Type": "application/json" } }
     );
+  }
+
+  public serve(options: Omit<ServeOptions & TLSServeOptions, "fetch"> = {}) {
+    Bun.gc(false);
+    return Bun.serve({
+      ...options,
+      fetch: request => {
+        return this.handleRequest(request);
+      }
+    });
   }
 }
 
