@@ -1,19 +1,19 @@
 import { BunicornError } from "../error/index.ts";
-import { validate } from "../validation/validate.ts";
+import { __validate } from "../validation/validate.ts";
 import { BunicornApp } from "../app/index.ts";
-import { getParams } from "../helpers/pathUtils.ts";
+import { __getParams } from "../helpers/pathUtils.ts";
 import { type BasePath } from "../router/types.ts";
 import { type BaseContext } from "./baseContext.ts";
-import { type CreateContextArgs } from "./types.ts";
+import { type __CreateContextArgs } from "./types.ts";
 
-export function createContext<TPath extends BasePath = BasePath>({
+export function __createContext<TPath extends BasePath = BasePath>({
   get,
   request,
   match,
   route,
   url
-}: CreateContextArgs<TPath>) {
-  const params = getParams(route.path, match);
+}: __CreateContextArgs<TPath>) {
+  const params = __getParams(route.path, match);
 
   // Setters
   const resultHeaders: Record<string, string> = {};
@@ -45,7 +45,11 @@ export function createContext<TPath extends BasePath = BasePath>({
 
     if (route.output) {
       try {
-        const parseResult = validate(route.output, body, route.__outputOptions);
+        const parseResult = __validate(
+          route.output,
+          body,
+          route.__outputOptions
+        );
         return new Response(JSON.stringify(parseResult), init) as any;
       } catch (error) {
         BunicornApp.onGlobalError(

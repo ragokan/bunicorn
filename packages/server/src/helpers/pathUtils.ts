@@ -1,11 +1,11 @@
-import { type BasePath, type ExtractParams } from "../router/types.ts";
+import { type BasePath, type __ExtractParams } from "../router/types.ts";
 
-export function getParams<TPath extends BasePath = BasePath>(
+export function __getParams<TPath extends BasePath = BasePath>(
   path: TPath,
   match: string[] | boolean
 ) {
   if (typeof match === "boolean" || match.length === 0) {
-    return {} as ExtractParams<TPath>;
+    return {} as __ExtractParams<TPath>;
   }
 
   const paramNames = path
@@ -25,17 +25,17 @@ export function getParams<TPath extends BasePath = BasePath>(
     }
   }
 
-  return params as ExtractParams<TPath>;
+  return params as __ExtractParams<TPath>;
 }
 
-export function withoutTrailingSlash(path: string) {
+export function __withoutTrailingSlash(path: string) {
   return path.endsWith("/") ? path.slice(0, -1) : path;
 }
 
-export function mergePaths<TPath1 extends BasePath, TPath2 extends BasePath>(
+export function __mergePaths<TPath1 extends BasePath, TPath2 extends BasePath>(
   path1: TPath1,
   path2: TPath2
 ) {
-  return (withoutTrailingSlash(path1) +
-    withoutTrailingSlash(path2)) as BasePath;
+  return (__withoutTrailingSlash(path1) +
+    __withoutTrailingSlash(path2)) as BasePath;
 }

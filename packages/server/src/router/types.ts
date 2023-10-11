@@ -3,7 +3,7 @@ import { type Route } from "./route.ts";
 
 export type BasePath = `/${string}`;
 
-export type RemoveTrailingSlash<T extends BasePath> =
+export type __RemoveTrailingSlash<T extends BasePath> =
   T extends `/${infer Path}/` ? `/${Path}` : T;
 
 export type BaseMethod =
@@ -16,43 +16,43 @@ export type BaseMethod =
   | "ALL"
   | "HEAD";
 
-export type _SplitParams<
+export type __SplitParams<
   S extends string,
   D extends string
-> = S extends `${infer T}${D}${infer R}` ? [T, ..._SplitParams<R, D>] : [S];
+> = S extends `${infer T}${D}${infer R}` ? [T, ...__SplitParams<R, D>] : [S];
 
-export type _ExtractParamsHelper<
+export type __ExtractParamsHelper<
   T extends string[],
   History extends Record<string, any> = {}
 > = T extends [infer First, ...infer Rest]
   ? First extends string
     ? First extends `:${infer Param}`
-      ? _ExtractParamsHelper<
+      ? __ExtractParamsHelper<
           Extract<Rest, string[]>,
           History & { [key in Param & string]: string }
         >
       : First extends `...${infer Param}`
-      ? _ExtractParamsHelper<
+      ? __ExtractParamsHelper<
           Extract<Rest, string[]>,
           History & { [key in Param & string]: string[] }
         >
-      : _ExtractParamsHelper<Extract<Rest, string[]>, History>
+      : __ExtractParamsHelper<Extract<Rest, string[]>, History>
     : never
   : History;
 
-export type ExtractParams<
+export type __ExtractParams<
   Path extends string,
   History extends Record<string, any> = {}
-> = _ExtractParamsHelper<_SplitParams<Path, "/">, History>;
+> = __ExtractParamsHelper<__SplitParams<Path, "/">, History>;
 
-export type MergePaths<
+export type __MergePaths<
   TBase extends BasePath,
   TNew extends BasePath
 > = TBase extends "/"
   ? TNew
-  : `${RemoveTrailingSlash<TBase>}${RemoveTrailingSlash<TNew>}`;
+  : `${__RemoveTrailingSlash<TBase>}${__RemoveTrailingSlash<TNew>}`;
 
-export interface BuiltRoute<TPath extends BasePath = BasePath>
+export interface __BuiltRoute<TPath extends BasePath = BasePath>
   extends Route<TPath> {
   regexp?: RegExp;
   middlewares: BaseMiddleware<any>[];

@@ -1,16 +1,16 @@
 import {
-  type InferBunicornOutput,
+  type __InferBunicornOutput,
   type BunicornSchema
 } from "../validation/types.ts";
 import { type GetDependencyFn } from "../helpers/di.ts";
-import { type BasePath, type ExtractParams } from "../router/types.ts";
+import { type BasePath, type __ExtractParams } from "../router/types.ts";
 
 export interface BaseContext<
   TPath extends BasePath = BasePath,
   InputSchema extends BunicornSchema | never = never
 > {
   // Helpers
-  params: ExtractParams<TPath>;
+  params: __ExtractParams<TPath>;
   request: Request;
   get: GetDependencyFn;
   // The url requested
@@ -27,10 +27,12 @@ export interface BaseContext<
   ): T;
   stream<T>(body: ReadableStream<T>, init?: ResponseInit): ReadableStream<T>;
 
-  [_schemaBrand]: InputSchema;
+  [__schemaBrand]: InputSchema;
 }
 
-declare const _schemaBrand: unique symbol;
+declare const __schemaBrand: unique symbol;
 
-export type GetContextInput<TContext extends BaseContext | object> =
-  TContext extends { [_schemaBrand]: infer T } ? InferBunicornOutput<T> : never;
+export type __GetContextInput<TContext extends BaseContext | object> =
+  TContext extends { [__schemaBrand]: infer T }
+    ? __InferBunicornOutput<T>
+    : never;

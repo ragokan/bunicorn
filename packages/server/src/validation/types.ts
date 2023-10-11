@@ -5,7 +5,7 @@ export type RawSchema<Output = any> = (input: unknown) => Output;
 
 export type BunicornSchema = v.BaseSchema<any> | z.ZodSchema<any> | RawSchema;
 
-export type InferBunicornInput<TSchema> = TSchema extends v.BaseSchema
+export type __InferBunicornInput<TSchema> = TSchema extends v.BaseSchema
   ? v.Input<TSchema>
   : TSchema extends z.ZodSchema
   ? z.input<TSchema>
@@ -13,7 +13,10 @@ export type InferBunicornInput<TSchema> = TSchema extends v.BaseSchema
   ? Input
   : never;
 
-export type InferBunicornOutput<TSchema, Out = never> = unknown extends TSchema
+export type __InferBunicornOutput<
+  TSchema,
+  Out = never
+> = unknown extends TSchema
   ? Out
   : TSchema extends v.BaseSchema
   ? v.Output<TSchema>
@@ -23,7 +26,7 @@ export type InferBunicornOutput<TSchema, Out = never> = unknown extends TSchema
   ? ReturnType<TSchema>
   : Out;
 
-export type ValidateOptions = Pick<
+export type __ValidateOptions = Pick<
   v.ParseInfo,
   "abortEarly" | "abortPipeEarly" | "skipPipe"
 >;

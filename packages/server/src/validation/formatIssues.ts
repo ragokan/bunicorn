@@ -7,11 +7,11 @@ export type FormattedIssue = {
   path: string[];
 };
 
-function isPathItem(item: any): item is v.PathItem {
+function __isPathItem(item: any): item is v.PathItem {
   return typeof item === "object" && item.key !== undefined;
 }
 
-export function formatIssues(
+export function __formatIssues(
   issues: v.Issues | z.ZodIssue[] | FormattedIssue[]
 ): FormattedIssue[] {
   return issues.map(issue => ({
@@ -20,6 +20,6 @@ export function formatIssues(
       (issue as v.Issues[number]).validation ??
       (issue as z.ZodIssue).code ??
       "",
-    path: issue.path?.map(k => (isPathItem(k) ? k.key : k)) ?? []
+    path: issue.path?.map(k => (__isPathItem(k) ? k.key : k)) ?? []
   }));
 }

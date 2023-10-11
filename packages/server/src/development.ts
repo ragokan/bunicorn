@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
-import { BunicornApp } from "./app/index.ts";
+import { z } from "zod";
+import { BuniApp } from "./app/index.ts";
 import { getBody, getSearchParams } from "./context/helpers.ts";
 import staticHandler from "./handlers/static.ts";
-import { RouteBuilder } from "./router/builder.ts";
-import { z } from "zod";
+import { RB } from "./router/builder.ts";
 
-const app = new BunicornApp({
+const app = new BuniApp({
   basePath: "/"
 });
 
-const rb = new RouteBuilder();
+const rb = new RB();
 
 const R = app
   .with(staticHandler({ path: "/static", directory: "./src" }))

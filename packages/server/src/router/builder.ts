@@ -1,14 +1,14 @@
 import {
   type BunicornSchema,
-  type InferBunicornInput,
-  type InferBunicornOutput,
-  type ValidateOptions
+  type __InferBunicornInput,
+  type __InferBunicornOutput,
+  type __ValidateOptions
 } from "../validation/types.ts";
 import { type BaseSchema as vBaseSchema } from "valibot";
 import { type BaseContext } from "../context/baseContext.ts";
 import { type BaseMiddleware } from "../middleware.ts";
 import { type Route } from "./route.ts";
-import { type BaseMethod, type BasePath, type BuiltRoute } from "./types.ts";
+import { type BaseMethod, type BasePath, type __BuiltRoute } from "./types.ts";
 
 export class RouteBuilder<
   TContextResults extends object = {},
@@ -20,7 +20,7 @@ export class RouteBuilder<
   };
 
   private copy() {
-    const newRoute: Partial<BuiltRoute> = {};
+    const newRoute: Partial<__BuiltRoute> = {};
     const { middlewares, ...rest } = this.route;
     newRoute.middlewares = [...middlewares!];
     Object.assign(newRoute, rest);
@@ -42,7 +42,7 @@ export class RouteBuilder<
 
   public input<TSchema extends BunicornSchema>(
     schema: TSchema,
-    ...options: TSchema extends vBaseSchema ? [options?: ValidateOptions] : []
+    ...options: TSchema extends vBaseSchema ? [options?: __ValidateOptions] : []
   ) {
     this.route.input = schema;
     this.route.__inputOptions = options?.[0];
@@ -54,7 +54,7 @@ export class RouteBuilder<
 
   public output<TSchema extends BunicornSchema>(
     schema: TSchema,
-    ...options: TSchema extends vBaseSchema ? [options?: ValidateOptions] : []
+    ...options: TSchema extends vBaseSchema ? [options?: __ValidateOptions] : []
   ) {
     this.route.output = schema;
     this.route.__outputOptions = options?.[0];
@@ -67,7 +67,7 @@ export class RouteBuilder<
   private createRoute<
     TMethod extends BaseMethod,
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     method: TMethod,
     path: TPath,
@@ -78,14 +78,14 @@ export class RouteBuilder<
     return Object.assign(this.copy().route, { path, handler, method }) as Route<
       TPath,
       TMethod,
-      InferBunicornOutput<TOutput, Awaited<Out>>,
+      __InferBunicornOutput<TOutput, Awaited<Out>>,
       TInput
     >;
   }
 
   public get = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -95,7 +95,7 @@ export class RouteBuilder<
 
   public post = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -105,7 +105,7 @@ export class RouteBuilder<
 
   public put = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -115,7 +115,7 @@ export class RouteBuilder<
 
   public patch = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -125,7 +125,7 @@ export class RouteBuilder<
 
   public delete = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -135,7 +135,7 @@ export class RouteBuilder<
 
   public head = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -145,7 +145,7 @@ export class RouteBuilder<
 
   public options = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (
@@ -155,7 +155,7 @@ export class RouteBuilder<
 
   public all = <
     TPath extends BasePath,
-    Out extends InferBunicornInput<TOutput>
+    Out extends __InferBunicornInput<TOutput>
   >(
     path: TPath,
     handler: (

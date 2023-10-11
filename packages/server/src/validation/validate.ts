@@ -1,10 +1,10 @@
 import { BunicornValidationError } from "../error/index.ts";
 import type * as v from "valibot";
 import type * as z from "zod";
-import { formatIssues, type FormattedIssue } from "./formatIssues.ts";
+import { __formatIssues, type FormattedIssue } from "./formatIssues.ts";
 import { type BunicornSchema, type RawSchema } from "./types.ts";
 
-export function validate<T extends BunicornSchema>(
+export function __validate<T extends BunicornSchema>(
   schema: T,
   input: unknown,
   opts?: any
@@ -13,7 +13,7 @@ export function validate<T extends BunicornSchema>(
   if ("schema" in schema) {
     const result = (schema as v.BaseSchema)._parse(input, opts);
     if (result.issues) {
-      throw new BunicornValidationError(formatIssues(result.issues));
+      throw new BunicornValidationError(__formatIssues(result.issues));
     }
     return result.output;
   }
@@ -21,17 +21,17 @@ export function validate<T extends BunicornSchema>(
   if ("safeParse" in schema) {
     const result = (schema as unknown as z.ZodSchema).safeParse(input);
     if (!result.success) {
-      throw new BunicornValidationError(formatIssues(result.error.issues));
+      throw new BunicornValidationError(__formatIssues(result.error.issues));
     }
     return result.data;
   }
-  return validate(
-    rawSchemaWrapper(schema as RawSchema) as unknown as BunicornSchema,
+  return __validate(
+    __rawSchemaWrapper(schema as RawSchema) as unknown as BunicornSchema,
     input
   );
 }
 
-function rawSchemaWrapper<Output>(schema: RawSchema<Output>) {
+function __rawSchemaWrapper<Output>(schema: RawSchema<Output>) {
   return {
     _parse: (
       input: unknown

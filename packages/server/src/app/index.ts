@@ -1,24 +1,24 @@
 import { type BaseContext } from "../context/baseContext.ts";
-import { createContext } from "../context/createContext.ts";
+import { __createContext } from "../context/createContext.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
-import { _createDependencyStore } from "../helpers/di.ts";
+import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
-import { mergePaths } from "../helpers/pathUtils.ts";
+import { __mergePaths } from "../helpers/pathUtils.ts";
 import { __testPath } from "../helpers/testPath.ts";
 import { BunicornError, type Handler } from "../index.ts";
 import {
-  type AddBasePathTo,
-  type AddBasePathToAll,
+  type __AddBasePathTo,
+  type __AddBasePathToAll,
   type Route
 } from "../router/route.ts";
 import {
   type BaseMethod,
   type BasePath,
-  type BuiltRoute
+  type __BuiltRoute
 } from "../router/types.ts";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
-  routes: Record<BasePath, BuiltRoute[]>;
+  routes: Record<BasePath, __BuiltRoute[]>;
   args: AppArgs<any>;
 };
 
@@ -40,9 +40,9 @@ export class BunicornApp<
     console.error(error);
   }
 
-  public static getFromStore = _createDependencyStore().get;
+  public static getFromStore = __createDependencyStore().get;
 
-  protected routes: Record<BaseMethod, BuiltRoute[]> = {
+  protected routes: Record<BaseMethod, __BuiltRoute[]> = {
     GET: [],
     POST: [],
     PATCH: [],
@@ -62,11 +62,11 @@ export class BunicornApp<
     route.path = (
       (this.args.basePath as string) === "/"
         ? route.path
-        : mergePaths(this.args.basePath, route.path)
+        : __mergePaths(this.args.basePath, route.path)
     ) as TBasePath;
     route.middlewares ??= [];
     if (__checkPathIsRegex(route.path)) {
-      (route as BuiltRoute).regexp = new RegExp(
+      (route as __BuiltRoute).regexp = new RegExp(
         new RegExp(
           `^${(route.path as TBasePath)
             .split("/")
@@ -83,10 +83,10 @@ export class BunicornApp<
         )
       );
     }
-    this.routes[route.method as BaseMethod].push(route as BuiltRoute);
+    this.routes[route.method as BaseMethod].push(route as __BuiltRoute);
     return this as unknown as BunicornApp<
       TBasePath,
-      [...TRoutes, AddBasePathTo<TBasePath, TRoute>]
+      [...TRoutes, __AddBasePathTo<TBasePath, TRoute>]
     >;
   }
 
@@ -98,7 +98,7 @@ export class BunicornApp<
     });
     return this as unknown as BunicornApp<
       TBasePath,
-      [...TRoutes, ...AddBasePathToAll<TBasePath, TNewRoutes>]
+      [...TRoutes, ...__AddBasePathToAll<TBasePath, TNewRoutes>]
     >;
   }
 
@@ -106,12 +106,12 @@ export class BunicornApp<
     request: Request,
     url: string,
     path: string,
-    route: BuiltRoute
+    route: __BuiltRoute
   ): Promise<Response | void> {
     const match = __testPath(route, path);
     if (match) {
       try {
-        let context = createContext({
+        let context = __createContext({
           get: BunicornApp.getFromStore,
           request,
           route,

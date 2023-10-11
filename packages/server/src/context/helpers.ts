@@ -3,10 +3,10 @@ import { __getSearchParams } from "../helpers/pathRegexps.ts";
 import { type Route } from "../router/route.ts";
 import {
   type BunicornSchema,
-  type InferBunicornOutput
+  type __InferBunicornOutput
 } from "../validation/types.ts";
-import { validate } from "../validation/validate.ts";
-import { type BaseContext, type GetContextInput } from "./baseContext.ts";
+import { __validate } from "../validation/validate.ts";
+import { type BaseContext, type __GetContextInput } from "./baseContext.ts";
 
 export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   const route = (ctx as unknown as { _route: Route })._route;
@@ -25,10 +25,10 @@ export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   }
 
   if (!route.input) {
-    return _body as GetContextInput<Ctx>;
+    return _body as __GetContextInput<Ctx>;
   }
 
-  return validate(route.input!, _body) as GetContextInput<Ctx>;
+  return __validate(route.input!, _body) as __GetContextInput<Ctx>;
 }
 
 export async function getText<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
@@ -49,7 +49,7 @@ export function getSearchParams<
 export function getSearchParams<
   Ctx extends BaseContext<any, any>,
   TSchema extends BunicornSchema
->(ctx: Ctx, schema: TSchema): InferBunicornOutput<TSchema>;
+>(ctx: Ctx, schema: TSchema): __InferBunicornOutput<TSchema>;
 
 export function getSearchParams(
   ctx: BaseContext<any, any>,
@@ -57,7 +57,7 @@ export function getSearchParams(
 ) {
   const result = __getSearchParams(ctx.url);
   if (parser) {
-    return validate(parser, result);
+    return __validate(parser, result);
   }
   return result;
 }

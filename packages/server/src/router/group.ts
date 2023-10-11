@@ -1,5 +1,5 @@
-import { mergePaths } from "../helpers/pathUtils.ts";
-import { type AddBasePathToAll, type Route } from "./route.ts";
+import { __mergePaths } from "../helpers/pathUtils.ts";
+import { type __AddBasePathToAll, type Route } from "./route.ts";
 import { type BasePath } from "./types.ts";
 
 export function groupRoutes<
@@ -10,8 +10,8 @@ export function groupRoutes<
     route.path = (
       (basePath as string) === "/"
         ? route.path
-        : mergePaths(basePath, route.path)
+        : __mergePaths(basePath, route.path)
     ) as TBasePath;
     return route;
-  }) as AddBasePathToAll<TBasePath, TNewRoutes>;
+  }) as __AddBasePathToAll<TBasePath, TNewRoutes>;
 }
