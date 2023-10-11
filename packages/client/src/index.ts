@@ -3,8 +3,8 @@ import type {
   BasePath,
   BunicornApp,
   BunicornSchema,
-  ExtractParams,
-  InferBunicornInput,
+  __ExtractParams,
+  __InferBunicornInput,
   Route
 } from "@bunicorn/server";
 import {
@@ -48,11 +48,11 @@ type NonEmptyKeys<T> = {
 type FilterNeverAndEmpty<T> = Pick<T, NonEmptyKeys<T>>;
 
 type GetInputFromSchema<TSchema extends BunicornSchema | never> =
-  TSchema extends BunicornSchema ? InferBunicornInput<TSchema> : never;
+  TSchema extends BunicornSchema ? __InferBunicornInput<TSchema> : never;
 
 type BaseConfig<TRoute extends Route<any, any, any, any>> =
   FilterNeverAndEmpty<{
-    params: ExtractParams<TRoute["path"]>;
+    params: __ExtractParams<TRoute["path"]>;
     input: GetInputFromSchema<TRoute["input"]>;
   }> & {
     with?: Omit<RequestInit, "body">;
