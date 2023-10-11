@@ -12,7 +12,7 @@ const app = new BuniApp({
 const rb = new RB();
 
 const R = app
-  .with(staticHandler({ path: "/static", directory: "./src" }))
+  .addHandler(staticHandler({ path: "/static", directory: "./src" }))
   .addRoutes([
     rb.get("/", ctx => ctx.raw("Hello world!")),
     rb.get("/hello", ctx => {

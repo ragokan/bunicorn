@@ -113,7 +113,7 @@ const todoRoutes = groupRoutes("/todos", [
 
 // Add cors handler and routes to app to infer types
 export const app = baseApp
-  .with(corsHandler({ origins: [matchAll] }))
+  .addHandler(corsHandler({ origins: [matchAll] }))
   .addRoutes(todoRoutes);
 
 export type AppType = typeof app;

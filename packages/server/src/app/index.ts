@@ -5,7 +5,7 @@ import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
 import { __testPath } from "../helpers/testPath.ts";
-import { BunicornError, type Handler } from "../index.ts";
+import { type BaseMiddleware, BunicornError, type Handler } from "../index.ts";
 import {
   type __AddBasePathTo,
   type __AddBasePathToAll,
@@ -53,8 +53,15 @@ export class BunicornApp<
     ALL: []
   };
 
-  public with(handler: Handler) {
+  protected middlewares: BaseMiddleware[] = [];
+
+  public addHandler(handler: Handler) {
     handler(this as unknown as PrivateBunicornApp);
+    return this;
+  }
+
+  public addMiddleware(middleware: BaseMiddleware) {
+    this.middlewares.push(middleware);
     return this;
   }
 
@@ -65,6 +72,7 @@ export class BunicornApp<
         : __mergePaths(this.args.basePath, route.path)
     ) as TBasePath;
     route.middlewares ??= [];
+    route.middlewares = [...this.middlewares, ...route.middlewares];
     if (__checkPathIsRegex(route.path)) {
       (route as __BuiltRoute).regexp = new RegExp(
         new RegExp(

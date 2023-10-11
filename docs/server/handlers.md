@@ -14,10 +14,10 @@ import corsHandler from "@bunicorn/server/corsHandler";
 // We can use matchAll to allow all origins, because we use raw regex, we can't just use "*", instead we use ".*"
 import { matchAll } from "@bunicorn/server/matchers";
 
-const baseApp = new BunicornApp().with(corsHandler({ origins: [matchAll] }));
+const baseApp = new BunicornApp().addHandler(corsHandler({ origins: [matchAll] }));
 
 // OR
-const baseApp = new BunicornApp().with(
+const baseApp = new BunicornApp().addHandler(
   corsHandler({ origins: ["example.com", `dev.${matchAll}.com`] }) // -> Accepts example.com and all dev.*.com
 );
 ```
@@ -29,10 +29,10 @@ import corsHandler from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/handl
 // We can use matchAll to allow all origins, because we use raw regex, we can't just use "*", instead we use ".*"
 import { matchAll } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/matchers/constants.ts";
 
-const baseApp = new BunicornEdgeApp().with(corsHandler({ origins: [matchAll] }));
+const baseApp = new BunicornEdgeApp().addHandler(corsHandler({ origins: [matchAll] }));
 
 // OR
-const baseApp = new BunicornApp().with(
+const baseApp = new BunicornApp().addHandler(
   corsHandler({ origins: ["example.com", `dev.${matchAll}.com`] }) // -> Accepts example.com and all dev.*.com
 );
 ```
@@ -45,9 +45,9 @@ So, you can do something like this:
 
 ```ts
 baseApp
-  .with(corsHandler(/* options */))
-  .with(staticHandler(/* options */))
-  .with(/* other handler */)
+  .addHandler(corsHandler(/* options */))
+  .addHandler(staticHandler(/* options */))
+  .addHandler(/* other handler */)
   .addRoutes(/* routes */);
 ```
 
@@ -63,7 +63,7 @@ Static handler is a handler that allows you to serve static files. It accepts a 
 import { BunicornApp, RouteBuilder } from "@bunicorn/server";
 import staticHandler from "@bunicorn/server/staticHandler";
 
-const baseApp = new BunicornApp().with(staticHandler({
+const baseApp = new BunicornApp().addHandler(staticHandler({
     path: "public", // -> This will serve files from public route, such as example.com/public/a.png
     directory: "./static" // -> This will serve files from static directory, so, a request to example.com/a.png will be served from ./static/a.png
  }));
@@ -74,7 +74,7 @@ import { BunicornEdgeApp } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/s
 import {  RouteBuilder } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/index.ts";
 import staticHandler from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/handlers/static.ts";
 
-const baseApp = new BunicornEdgeApp().with(staticHandler({
+const baseApp = new BunicornEdgeApp().addHandler(staticHandler({
     path: "public", // -> This will serve files from public route, such as example.com/public/a.png
     directory: "./static" // -> This will serve files from static directory, so, a request to example.com/a.png will be served from ./static/a.png
  }));
