@@ -8,3 +8,12 @@ export interface __CreateContextArgs<TPath extends BasePath> {
   match: string[] | boolean;
   url: string;
 }
+
+export interface BuniResponseInit {
+  headers?: Record<string, string>;
+  /** @default 200 */
+  status?: number | bigint;
+
+  /** @default "OK" */
+  statusText?: string;
+}
