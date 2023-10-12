@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.7] - 2023-10-12
+
+- Convert context to be a class to be more expensable.
+- Add more performance improvements.
+
 ## [0.0.6] - 2023-10-11
 
 - Increase performance by updating regexes.
