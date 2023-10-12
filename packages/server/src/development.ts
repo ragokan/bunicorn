@@ -15,6 +15,7 @@ const R = app
   .addHandler(staticHandler({ path: "/static", directory: "./src" }))
   .addRoutes([
     rb.get("/", ctx => ctx.raw("Hello world!")),
+    rb.get("/:id", ctx => ctx.json({ params: ctx.params })),
     rb.get("/hello", ctx => {
       return ctx.raw("Hello world!");
     }),

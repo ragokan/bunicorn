@@ -5,7 +5,7 @@ import {
   type __ValidateOptions
 } from "../validation/types.ts";
 import { type BaseSchema as vBaseSchema } from "valibot";
-import { type BaseContext } from "../context/baseContext.ts";
+import { type BunicornContext } from "../context/base.ts";
 import { type BaseMiddleware } from "../middleware.ts";
 import { type Route } from "./route.ts";
 import { type BaseMethod, type BasePath, type __BuiltRoute } from "./types.ts";
@@ -30,7 +30,7 @@ export class RouteBuilder<
   }
 
   public use<TResult extends object | void | Promise<object> | Promise<void>>(
-    cb: (context: BaseContext & TContextResults) => TResult
+    cb: (context: BunicornContext & TContextResults) => TResult
   ) {
     this.route.middlewares!.push(cb as unknown as BaseMiddleware);
     type Result = Awaited<TResult>;
@@ -72,7 +72,7 @@ export class RouteBuilder<
     method: TMethod,
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) {
     return Object.assign(this.copy().route, { path, handler, method }) as Route<
@@ -89,7 +89,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("GET", path, handler);
 
@@ -99,7 +99,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("POST", path, handler);
 
@@ -109,7 +109,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("PUT", path, handler);
 
@@ -119,7 +119,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("PATCH", path, handler);
 
@@ -129,7 +129,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("DELETE", path, handler);
 
@@ -139,7 +139,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("HEAD", path, handler);
 
@@ -149,7 +149,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("OPTIONS", path, handler);
 
@@ -159,7 +159,7 @@ export class RouteBuilder<
   >(
     path: TPath,
     handler: (
-      ctx: BaseContext<TPath, TInput> & TContextResults
+      ctx: BunicornContext<TPath, TInput> & TContextResults
     ) => Out | Promise<Out>
   ) => this.createRoute("ALL", path, handler);
 }

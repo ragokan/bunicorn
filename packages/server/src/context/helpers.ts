@@ -6,9 +6,9 @@ import {
   type __InferBunicornOutput
 } from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
-import { type BaseContext, type __GetContextInput } from "./baseContext.ts";
+import { type BunicornContext, type __GetContextInput } from "./base.ts";
 
-export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
+export async function getBody<Ctx extends BunicornContext<any, any>>(ctx: Ctx) {
   const route = (ctx as unknown as { _route: Route })._route;
   const request = ctx.request;
   const contentType = request.headers.get("Content-Type") ?? "";
@@ -31,11 +31,11 @@ export async function getBody<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
   return __validate(route.input!, _body) as __GetContextInput<Ctx>;
 }
 
-export async function getText<Ctx extends BaseContext<any, any>>(ctx: Ctx) {
+export async function getText<Ctx extends BunicornContext<any, any>>(ctx: Ctx) {
   return ctx.request.text();
 }
 
-export function getHeader<Ctx extends BaseContext<any, any>>(
+export function getHeader<Ctx extends BunicornContext<any, any>>(
   ctx: Ctx,
   name: string
 ) {
@@ -43,16 +43,16 @@ export function getHeader<Ctx extends BaseContext<any, any>>(
 }
 
 export function getSearchParams<
-  Ctx extends BaseContext<any, any>,
+  Ctx extends BunicornContext<any, any>,
   Body extends Record<string, string>
 >(ctx: Ctx): Body;
 export function getSearchParams<
-  Ctx extends BaseContext<any, any>,
+  Ctx extends BunicornContext<any, any>,
   TSchema extends BunicornSchema
 >(ctx: Ctx, schema: TSchema): __InferBunicornOutput<TSchema>;
 
 export function getSearchParams(
-  ctx: BaseContext<any, any>,
+  ctx: BunicornContext<any, any>,
   parser?: BunicornSchema
 ) {
   const result = __getSearchParams(ctx.url);

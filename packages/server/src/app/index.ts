@@ -1,6 +1,5 @@
 import { type ServeOptions, type TLSServeOptions } from "bun";
-import { type BaseContext } from "../context/baseContext.ts";
-import { __createContext } from "../context/createContext.ts";
+import { BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
@@ -120,13 +119,13 @@ export class BunicornApp<
     const match = __testPath(route, path);
     if (match) {
       try {
-        let context = __createContext({
-          get: BunicornApp.getFromStore,
+        const context = new BunicornContext(
           request,
+          url as TBasePath,
           route,
           match,
-          url
-        }) as BaseContext<BasePath, never> & { _route: Route };
+          BunicornApp.getFromStore
+        ) as BunicornContext<BasePath, never> & { _route: Route };
         context._route = route;
 
         for (const middleware of route.middlewares) {
@@ -137,10 +136,12 @@ export class BunicornApp<
           if (result instanceof Response) {
             return result;
           }
-          context = Object.assign(context, result);
+          for (const key in result) {
+            context[key as keyof BunicornContext] = result[key];
+          }
         }
 
-        const result = await route.handler(context as any);
+        const result = await route.handler(context);
         if (result instanceof Response) {
           return result;
         }

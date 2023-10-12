@@ -4,7 +4,7 @@ import { __mergePaths } from "../helpers/pathUtils.ts";
 import { matchAll } from "../matchers/constants.ts";
 import { type BasePath } from "../router/types.ts";
 import { createHandler } from "./index.ts";
-import { type BaseContext } from "../context/baseContext.ts";
+import { type BunicornContext } from "../context/base.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 
 export interface StaticHandlerArgs {
@@ -19,7 +19,7 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
       method: "GET",
       middlewares: [],
       regexp: new RegExp(`^${finalPath}/${matchAll}`),
-      async handler(ctx: BaseContext) {
+      async handler(ctx: BunicornContext) {
         try {
           const target = __getPath(ctx.url).replace(finalPath, directory);
           if (IS_BUN) {
