@@ -7,10 +7,10 @@ export function sortRoutes(target: BuniApp) {
     app.routes[method as keyof PrivateBunicornApp["routes"]] = routes.sort(
       (a, b) => {
         if (a.regexp && !b.regexp) {
-          return -1;
+          return 1;
         }
         if (!a.regexp && b.regexp) {
-          return 1;
+          return -1;
         }
         return 0;
       }
