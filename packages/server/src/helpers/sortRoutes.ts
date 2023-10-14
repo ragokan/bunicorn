@@ -1,6 +1,6 @@
-import { type PrivateBunicornApp, type BuniApp } from "../app/index.ts";
+import { type PrivateBunicornApp, type BunicornApp } from "../app/index.ts";
 
-export function sortRoutes(target: BuniApp) {
+export function sortRoutes(target: BunicornApp) {
   const app = target as PrivateBunicornApp;
   Object.entries(app.routes).forEach(([method, routes]) => {
     // sort app.routes[method] so if the route does not have 'regexp', it should be at last

@@ -201,5 +201,3 @@ export class BunicornApp<
     });
   }
 }
-
-export { BunicornApp as BuniApp };

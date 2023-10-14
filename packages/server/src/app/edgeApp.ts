@@ -53,5 +53,3 @@ export class BunicornEdgeApp<
     >;
   }
 }
-
-export { BunicornEdgeApp as BuniEdgeApp };

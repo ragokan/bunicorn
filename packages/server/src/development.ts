@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { z } from "zod";
-import { BuniApp } from "./app/index.ts";
+import { BunicornApp } from "./app/index.ts";
 import { getBody, getSearchParams } from "./context/helpers.ts";
 import staticHandler from "./handlers/static.ts";
 import { RB } from "./router/builder.ts";
 
-const app = new BuniApp({
+const app = new BunicornApp({
   basePath: "/"
 });
 

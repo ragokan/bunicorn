@@ -63,9 +63,3 @@ export class BunicornNotFoundError extends BunicornError {
     super(message, { status: 404 }, "notFound");
   }
 }
-
-export {
-  BunicornError as BuniError,
-  BunicornValidationError as BuniValidationError,
-  BunicornNotFoundError as BuniNotFoundError
-};
