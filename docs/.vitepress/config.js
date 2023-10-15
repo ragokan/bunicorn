@@ -94,6 +94,33 @@ export default defineConfig({
             link: "/server/errors"
           }
         ]
+      },
+      {
+        text: "Client",
+        items: [
+          {
+            text: "Usage",
+            link: "/client/usage",
+            items: [
+              {
+                text: "Installation",
+                link: "/client/usage#installation"
+              },
+              {
+                text: "Create a client",
+                link: "/client/usage#create-a-client"
+              },
+              {
+                text: "Sharing server types",
+                link: "/client/usage#sharing-server-types"
+              }
+            ]
+          },
+          {
+            text: "Errors",
+            link: "/client/errors"
+          }
+        ]
       }
     ],
     footer: {
