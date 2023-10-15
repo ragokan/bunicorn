@@ -36,28 +36,30 @@ if (createdTodo.success) {
 }
 ```
 
-But this is for the success case, if we want to think error cases, we have multiple ways.
+But this is for the success case, if we want to think error cases, we have two ways
 
 1: Asserting
 
 ```ts
 import { assertResult } from "@bunicorn/client";
 
-assertResult(createdTodo); // will throw error if failure
-createdTodo.data.title; // now, we can use it as Success Result
+const createdTodo = await client
+  .post("/api/todos", {
+    input: { title: "Hello world!" }
+  })
+  .assert(); // now, it will throw error on failure
+
+createdTodo.data.title; // we can use it as Success Result
 ```
 
-2: Force Read
-
-```ts
-import { readData } from "@bunicorn/client";
-readData(createdTodo).title; // we directly get data, if there is an error, it will be thrown
-```
-
-3: Manual check
+2: Manual check
 
 ```ts
 import { BunicornValidationError } from "@bunicorn/server";
+
+const createdTodo = await client.post("/api/todos", {
+  input: { title: "Hello world!" }
+});
 
 if (!createdTodo.success) {
   const error = createdTodo.error;

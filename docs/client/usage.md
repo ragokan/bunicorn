@@ -49,10 +49,15 @@ if (!createdTodo.success) {
 }
 ```
 
-If you want to handle errors on a force way, you can import `assertResult` function from client.
+If you want to handle errors on a force way, you can do 'assert' to the response.
 
 ```ts
-assertResult(createdTodo);
+const createdTodo = await client
+  .post("/api/todos", {
+    // This is also typed.
+    input: { title: "Hello world!" }
+  })
+  .assert();
 const title = createdTodo.data.title; // This is typed as success result.
 ```
 
