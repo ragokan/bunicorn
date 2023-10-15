@@ -1,8 +1,9 @@
 # Change Log
 
-## [0.0.8] - 2023-10-?
+## [0.0.8] - 2023-10-15
 
 - Add assert to Bunicorn result promise
+- Add more docs
 
 ## [0.0.7] - 2023-10-12
 
