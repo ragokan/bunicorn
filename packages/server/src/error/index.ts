@@ -41,9 +41,8 @@ export class BunicornError<TData = any> extends Error {
 }
 
 export class BunicornValidationError extends BunicornError<FormattedIssue[]> {
-  static message = "Validation error.";
   constructor(issues: FormattedIssue[]) {
-    super(BunicornValidationError.message, issues, 403, "validation");
+    super("Validation Error", issues, 403, "validation");
   }
 }
 
