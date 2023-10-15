@@ -26,4 +26,4 @@ class BunicornValidationError extends BunicornError<FormattedIssue[]> {}
 class BunicornNotFoundError extends BunicornError<undefined> {}
 ```
 
-For the next steps, I recommedn you to check [client errors](./client/error.md) page.
+For the next steps, I recommedn you to check [client errors](../client/errors.md) page.
