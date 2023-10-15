@@ -104,18 +104,15 @@ export interface FailureResult {
 
 export type BunicornResult<T = any> = SuccessResult<T> | FailureResult;
 
-export function assertResult<T>(
-  result: BunicornResult<T>
-): asserts result is SuccessResult<T> {
-  if (!result.success) {
-    throw result.error;
-  }
-}
-
-export function readData<T>(result: BunicornResult<T>): T {
-  if (result.success) {
-    return result.data;
-  } else {
+class BunicornPromise<
+  TData,
+  TResult extends BunicornResult<TData> = BunicornResult<TData>
+> extends Promise<TResult> {
+  public async assert() {
+    const result = await this;
+    if (result.success) {
+      return result as SuccessResult<TData>;
+    }
     throw result.error;
   }
 }
@@ -130,102 +127,104 @@ export default function bunicornClient<App extends BunicornApp<any>>({
   const getHeaders =
     typeof headers === "function" ? headers : () => headers ?? {};
 
-  async function handler(
+  function handler(
     path: string,
     config: Config<any>,
     method: BaseMethod
-  ): Promise<BunicornResult<any>> {
-    let url = withoutTrailingSlash(basePath) + path;
+  ): BunicornPromise<BunicornResult<any>, any> {
+    return new BunicornPromise(async resolve => {
+      let url = withoutTrailingSlash(basePath) + path;
 
-    const init: RequestInit & { headers: Record<string, string> } =
-      Object.assign(config.with ?? {}, {
-        method,
-        headers: Object.assign(getHeaders(), config.with?.headers ?? {})
-      });
-    if (config.query) {
-      const query = new URLSearchParams(config.query);
-      if (url.includes("?")) {
-        const [urlWithoutQuery, urlQuery] = url.split("?");
-        url = `${urlWithoutQuery}?${query.toString()}&${urlQuery}`;
-      } else {
-        url = `${url}?${query.toString()}`;
-      }
-    }
-    if (hasParams(config)) {
-      url = url.replace(/:(\w+)/g, (_, key) => {
-        if (/^\d+$/.test(key)) {
-          return `:${key}`;
+      const init: RequestInit & { headers: Record<string, string> } =
+        Object.assign(config.with ?? {}, {
+          method,
+          headers: Object.assign(getHeaders(), config.with?.headers ?? {})
+        });
+      if (config.query) {
+        const query = new URLSearchParams(config.query);
+        if (url.includes("?")) {
+          const [urlWithoutQuery, urlQuery] = url.split("?");
+          url = `${urlWithoutQuery}?${query.toString()}&${urlQuery}`;
+        } else {
+          url = `${url}?${query.toString()}`;
         }
-        return config.params[key] ?? `:${key}`;
-      });
-      url = url.replace(/\/\.\.\.(\w+)/g, (_, key) => {
-        const params = config.params[key] as unknown as Array<string>;
-        return params ? "/" + params.join("/") : `...${key}`;
-      });
-    }
-    if (hasInput(config)) {
-      const input = config.input;
+      }
+      if (hasParams(config)) {
+        url = url.replace(/:(\w+)/g, (_, key) => {
+          if (/^\d+$/.test(key)) {
+            return `:${key}`;
+          }
+          return config.params[key] ?? `:${key}`;
+        });
+        url = url.replace(/\/\.\.\.(\w+)/g, (_, key) => {
+          const params = config.params[key] as unknown as Array<string>;
+          return params ? "/" + params.join("/") : `...${key}`;
+        });
+      }
+      if (hasInput(config)) {
+        const input = config.input;
 
-      // For string, FormData, Blob and ReadableStream, we don't need to do anything to body
-      if (
-        typeof input === "string" ||
-        input instanceof ReadableStream ||
-        input instanceof Blob
-      ) {
-        init.body = input;
+        // For string, FormData, Blob and ReadableStream, we don't need to do anything to body
+        if (
+          typeof input === "string" ||
+          input instanceof ReadableStream ||
+          input instanceof Blob
+        ) {
+          init.body = input;
+        } else {
+          // Else, we need to stringify the body and set Content-Type to application/json
+          init.body = JSON.stringify(input);
+          init.headers["Content-Type"] = "application/json";
+        }
+      } else if (hasFormData(config)) {
+        init.body = config.formData;
+      }
+      if (onRequest) {
+        onRequest(new Request(url, init));
+      }
+      const response = await fetch(url, init);
+      let data: any;
+      const contentType = response.headers.get("content-type");
+      if (!contentType) {
+        data = response.statusText;
+      } else if (contentType.includes("application/json")) {
+        data = await response.json();
+      } else if (contentType.includes("form-data")) {
+        data = await response.formData();
+      } else if (contentType.includes("stream")) {
+        data = response.body;
+      } else if (contentType.includes("text")) {
+        data = await response.text();
       } else {
-        // Else, we need to stringify the body and set Content-Type to application/json
-        init.body = JSON.stringify(input);
-        init.headers["Content-Type"] = "application/json";
+        data = await response.blob();
       }
-    } else if (hasFormData(config)) {
-      init.body = config.formData;
-    }
-    if (onRequest) {
-      onRequest(new Request(url, init));
-    }
-    const response = await fetch(url, init);
-    let data: any;
-    const contentType = response.headers.get("content-type");
-    if (!contentType) {
-      data = response.statusText;
-    } else if (contentType.includes("application/json")) {
-      data = await response.json();
-    } else if (contentType.includes("form-data")) {
-      data = await response.formData();
-    } else if (contentType.includes("stream")) {
-      data = response.body;
-    } else if (contentType.includes("text")) {
-      data = await response.text();
-    } else {
-      data = await response.blob();
-    }
 
-    if (!response.ok) {
-      const error = createError(
-        data?.message ?? response.statusText,
-        data?.data,
-        response.status,
-        data?.type ?? "default"
-      );
-      if (onError) {
-        onError(error);
+      if (!response.ok) {
+        const error = createError(
+          data?.message ?? response.statusText,
+          data?.data,
+          response.status,
+          data?.type ?? "default"
+        );
+        if (onError) {
+          onError(error);
+        }
+        return resolve({
+          success: false,
+          error,
+          response
+        });
       }
-      return {
-        success: false,
-        error,
-        response
-      } as any;
-    }
 
-    if (onResult) {
-      onResult(data, response);
-    }
+      if (onResult) {
+        onResult(data, response);
+      }
 
-    return { success: true, data, response };
+      return resolve({ success: true, data, response });
+    });
   }
 
-  async function get<
+  function get<
     TPath extends ExtractPathsByMethod<App, "GET">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -233,12 +232,12 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "GET"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "GET") as unknown as BunicornResult<
+    return handler(path, config, "GET") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
 
-  async function post<
+  function post<
     TPath extends ExtractPathsByMethod<App, "POST">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -246,12 +245,12 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "POST"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "POST") as unknown as BunicornResult<
+    return handler(path, config, "POST") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
 
-  async function put<
+  function put<
     TPath extends ExtractPathsByMethod<App, "PUT">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -259,12 +258,12 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "PUT"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "PUT") as unknown as BunicornResult<
+    return handler(path, config, "PUT") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
 
-  async function patch<
+  function patch<
     TPath extends ExtractPathsByMethod<App, "PATCH">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -272,12 +271,12 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "PATCH"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "PATCH") as unknown as BunicornResult<
+    return handler(path, config, "PATCH") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
 
-  async function _delete<
+  function _delete<
     TPath extends ExtractPathsByMethod<App, "DELETE">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -285,12 +284,12 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "DELETE"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "DELETE") as unknown as BunicornResult<
+    return handler(path, config, "DELETE") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
 
-  async function options<
+  function options<
     TPath extends ExtractPathsByMethod<App, "OPTIONS">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -298,12 +297,12 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "OPTIONS"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "OPTIONS") as unknown as BunicornResult<
+    return handler(path, config, "OPTIONS") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
 
-  async function head<
+  function head<
     TPath extends ExtractPathsByMethod<App, "HEAD">,
     TRoute extends FindRouteByPathAndMethod = FindRouteByPathAndMethod<
       App,
@@ -311,7 +310,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "HEAD"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "HEAD") as unknown as BunicornResult<
+    return handler(path, config, "HEAD") as BunicornPromise<
       NonNullable<TRoute["output"]>
     >;
   }
