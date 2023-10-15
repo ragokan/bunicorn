@@ -17,7 +17,7 @@ const createdTodo = await client.post("/api/todos", {
 if (!createdTodo.success) {
   const error = createdTodo.error;
   if (error instanceof BunicornValidationError) {
-    console.log("We got validation error", error.args.data[0]!.message);
+    console.log("We got validation error", error.data![0]!.message);
   } else {
     console.log("We got an error", error.message);
   }

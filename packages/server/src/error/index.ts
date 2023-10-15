@@ -1,45 +1,40 @@
 import { type FormattedIssue } from "../validation/formatIssues.ts";
 
-export interface BunicornErrorArgs<TData> {
-  data?: TData;
-  status?: number;
-}
-
 export type ErrorType = "default" | "validation" | "notFound";
 
 export function createError<TData = any>(
   message: string,
-  args: BunicornErrorArgs<TData>,
-  type: ErrorType
+  data?: TData,
+  status?: number,
+  type: ErrorType = "default"
 ) {
   if (type === "default") {
-    return new BunicornError(message, args, type);
+    return new BunicornError(message, data, status, type);
   }
   if (type === "validation") {
-    return new BunicornValidationError(args.data as FormattedIssue[]);
+    return new BunicornValidationError(data as FormattedIssue[]);
   }
   if (type === "notFound") {
     return new BunicornNotFoundError(message);
   }
-  return new BunicornError(message, args, type);
+  return new BunicornError(message, data, status, type);
 }
 
 export class BunicornError<TData = any> extends Error {
   constructor(
     message: string,
-    public args: BunicornErrorArgs<TData> = {},
+    public data?: TData,
+    public status: number = 500,
     public type: ErrorType = "default"
   ) {
     super(message);
-    this.args.status ??= 500;
   }
 
   public override toString() {
-    const { data, status } = this.args;
     return JSON.stringify({
       message: this.message,
-      data,
-      status,
+      data: this.data,
+      status: this.status,
       type: this.type
     });
   }
@@ -47,19 +42,13 @@ export class BunicornError<TData = any> extends Error {
 
 export class BunicornValidationError extends BunicornError<FormattedIssue[]> {
   static message = "Validation error.";
-  public override args: Required<BunicornErrorArgs<FormattedIssue[]>>;
   constructor(issues: FormattedIssue[]) {
-    super(
-      BunicornValidationError.message,
-      { status: 403, data: issues },
-      "validation"
-    );
-    this.args = super.args as Required<BunicornErrorArgs<FormattedIssue[]>>;
+    super(BunicornValidationError.message, issues, 403, "validation");
   }
 }
 
 export class BunicornNotFoundError extends BunicornError {
   constructor(message = "Not found.") {
-    super(message, { status: 404 }, "notFound");
+    super(message, undefined, 404, "notFound");
   }
 }

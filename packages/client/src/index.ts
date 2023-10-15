@@ -186,7 +186,8 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     if (!response.ok) {
       const error = createError(
         data?.message ?? response.statusText,
-        { data: data?.data, status: response.status },
+        data?.data,
+        response.status,
         data?.type ?? "default"
       );
       if (onError) {

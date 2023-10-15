@@ -152,7 +152,7 @@ export class BunicornApp<
       } catch (error) {
         if (error instanceof BunicornError) {
           return new Response(error.toString(), {
-            status: error.args.status,
+            status: error.status,
             headers: { "Content-Type": "application/json" }
           });
         } else if (error instanceof Error) {
