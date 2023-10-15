@@ -1,6 +1,6 @@
 {
   "name": "@bunicorn/server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Bunicorn server, ultra fast Bun, Edge and Node server framework",
   "type": "module",
   "private": false,
