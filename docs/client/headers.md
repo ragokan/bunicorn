@@ -1,8 +1,8 @@
-# Headers
+# Headers
 
 To add headers to request, we have a global way and local way.
 
-## Global
+## Global
 
 You can specify headers while creating client.
 
@@ -22,7 +22,7 @@ const client = bunicornClient<AppType>({
 });
 ```
 
-## Local
+## Local
 
 ```ts
 const createdTodo = await client.post("/api/todos", {
