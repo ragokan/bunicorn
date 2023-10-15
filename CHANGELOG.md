@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.8] - 2023-10-?
+
+- Add assert and read methods to the
+
 ## [0.0.7] - 2023-10-12
 
 - Convert context to be a class to be more expensable.

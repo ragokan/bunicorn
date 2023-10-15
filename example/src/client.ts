@@ -14,6 +14,7 @@ const createdTodo = await client.post("/api/todos", {
   // THIS IS ALSO TYPED
   input: { title: "Hello world!" }
 });
+
 if (!createdTodo.success) {
   const error = createdTodo.error;
   if (error instanceof BunicornValidationError) {

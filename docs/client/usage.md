@@ -49,11 +49,11 @@ if (!createdTodo.success) {
 }
 ```
 
-If you want to handle errors on a force way, you can do:
+If you want to handle errors on a force way, you can import `assertResult` function from client.
 
 ```ts
-if (!createdTodo.success) throw createdTodo.error;
-const title = createdTodo.data.title; // This is typed.
+assertResult(createdTodo);
+const title = createdTodo.data.title; // This is typed as success result.
 ```
 
 For error handling, you can check [error handling](./errors.md) section.

@@ -71,7 +71,7 @@ interface ClientOptions {
   headers?: Record<string, string> | (() => Record<string, string>);
   onError?: (error: BunicornError) => void;
   onRequest?: (request: Request) => void;
-  onResult?: (result: Result, response: Response) => void;
+  onResult?: (result: BunicornResult, response: Response) => void;
 }
 
 function hasParams(
@@ -90,17 +90,35 @@ function hasFormData(
   return "formData" in config;
 }
 
-type Result<T = any> =
-  | {
-      success: true;
-      data: T;
-      response: Response;
-    }
-  | {
-      success: false;
-      error: BunicornError;
-      response: Response;
-    };
+export interface SuccessResult<T = any> {
+  success: true;
+  data: T;
+  response: Response;
+}
+
+export interface FailureResult {
+  success: false;
+  error: BunicornError;
+  response: Response;
+}
+
+export type BunicornResult<T = any> = SuccessResult<T> | FailureResult;
+
+export function assertResult<T>(
+  result: BunicornResult<T>
+): asserts result is SuccessResult<T> {
+  if (!result.success) {
+    throw result.error;
+  }
+}
+
+export function readData<T>(result: BunicornResult<T>): T {
+  if (result.success) {
+    return result.data;
+  } else {
+    throw result.error;
+  }
+}
 
 export default function bunicornClient<App extends BunicornApp<any>>({
   headers,
@@ -116,7 +134,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
     path: string,
     config: Config<any>,
     method: BaseMethod
-  ): Promise<Result<any>> {
+  ): Promise<BunicornResult<any>> {
     let url = withoutTrailingSlash(basePath) + path;
 
     const init: RequestInit & { headers: Record<string, string> } =
@@ -215,7 +233,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "GET"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "GET") as unknown as Result<
+    return handler(path, config, "GET") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
@@ -228,7 +246,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "POST"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "POST") as unknown as Result<
+    return handler(path, config, "POST") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
@@ -241,7 +259,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "PUT"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "PUT") as unknown as Result<
+    return handler(path, config, "PUT") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
@@ -254,7 +272,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "PATCH"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "PATCH") as unknown as Result<
+    return handler(path, config, "PATCH") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
@@ -267,7 +285,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "DELETE"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "DELETE") as unknown as Result<
+    return handler(path, config, "DELETE") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
@@ -280,7 +298,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "OPTIONS"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "OPTIONS") as unknown as Result<
+    return handler(path, config, "OPTIONS") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
@@ -293,7 +311,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
       "HEAD"
     >
   >(path: TPath, config: Config<TRoute>) {
-    return handler(path, config, "HEAD") as unknown as Result<
+    return handler(path, config, "HEAD") as unknown as BunicornResult<
       NonNullable<TRoute["output"]>
     >;
   }
