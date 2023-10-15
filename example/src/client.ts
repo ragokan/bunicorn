@@ -11,7 +11,6 @@ export const client = bunicornClient<AppType>({
 });
 
 const createdTodo = await client.post("/api/todos", {
-  // THIS IS ALSO TYPED
   input: { title: "Hello world!" }
 });
 

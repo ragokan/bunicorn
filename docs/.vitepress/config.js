@@ -117,6 +117,20 @@ export default defineConfig({
             ]
           },
           {
+            text: "Headers",
+            link: "/client/headers",
+            items: [
+              {
+                text: "Global",
+                link: "/client/headers#global-headers"
+              },
+              {
+                text: "Local",
+                link: "/client/headers#local-headers"
+              }
+            ]
+          },
+          {
             text: "Errors",
             link: "/client/errors"
           }

@@ -55,7 +55,7 @@ type BaseConfig<TRoute extends Route<any, any, any, any>> =
     params: __ExtractParams<TRoute["path"]>;
     input: GetInputFromSchema<TRoute["input"]>;
   }> & {
-    with?: Omit<RequestInit, "body">;
+    with?: Omit<RequestInit, "body" | "method">;
     query?: Record<string, string>;
   };
 
