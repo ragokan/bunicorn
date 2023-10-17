@@ -34,7 +34,6 @@ export class BunicornApp<
     protected args: AppArgs<TBasePath> = { basePath: "/" as TBasePath }
   ) {
     this.handleRequest = this.handleRequest.bind(this);
-    // :/ Do nothing
   }
   public static onGlobalError(error: Error) {
     console.error(error);
@@ -197,9 +196,7 @@ export class BunicornApp<
     Bun.gc(false);
     return Bun.serve({
       ...options,
-      fetch: (request, server) => {
-        return this.handleRequest(request, server);
-      }
+      fetch: this.handleRequest
     });
   }
 }
