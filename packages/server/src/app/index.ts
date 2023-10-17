@@ -191,7 +191,9 @@ export class BunicornApp<
     );
   }
 
-  public serve(options: Omit<ServeOptions & TLSServeOptions, "fetch"> = {}) {
+  public serve(
+    options: Partial<Omit<ServeOptions & TLSServeOptions, "fetch">> = {}
+  ) {
     Bun.gc(false);
     return Bun.serve({
       ...options,
