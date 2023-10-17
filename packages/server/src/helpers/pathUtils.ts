@@ -4,7 +4,7 @@ export function __getParams<TPath extends BasePath = BasePath>(
   path: TPath,
   match: string[] | boolean
 ) {
-  if (typeof match === "boolean" || match.length === 0) {
+  if (typeof match == "boolean" || match.length == 0) {
     return {} as __ExtractParams<TPath>;
   }
 

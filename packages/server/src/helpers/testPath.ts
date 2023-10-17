@@ -10,6 +10,6 @@ export function __testPath(route: __BuiltRoute, target: string) {
     }
     return false;
   } else {
-    return route.path === target;
+    return route.path == target;
   }
 }

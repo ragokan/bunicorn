@@ -12,7 +12,7 @@ export function clone<T extends object>(obj: T): T {
     // Catch Array
     if (val instanceof Array) {
       result[key] = val.map(item =>
-        typeof item === "object" ? clone(item) : item
+        typeof item == "object" ? clone(item) : item
       );
       continue;
     }
@@ -36,7 +36,7 @@ export function clone<T extends object>(obj: T): T {
     }
 
     // Go Objects
-    if (typeof val === "object") {
+    if (typeof val == "object") {
       result[key] = clone(val);
     } else {
       result[key] = val;

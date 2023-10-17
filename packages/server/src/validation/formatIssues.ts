@@ -8,7 +8,7 @@ export type FormattedIssue = {
 };
 
 function __isPathItem(item: any): item is v.PathItem {
-  return typeof item === "object" && item.key !== undefined;
+  return typeof item == "object" && item.key !== undefined;
 }
 
 export function __formatIssues(

@@ -67,7 +67,7 @@ export class BunicornApp<
 
   public addRoute<TRoute extends Route<any, any, any, any>>(route: TRoute) {
     route.path = (
-      (this.args.basePath as string) === "/"
+      (this.args.basePath as string) == "/"
         ? route.path
         : __mergePaths(this.args.basePath, route.path)
     ) as TBasePath;

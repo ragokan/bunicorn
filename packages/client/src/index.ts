@@ -125,7 +125,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
   onResult
 }: ClientOptions) {
   const getHeaders =
-    typeof headers === "function" ? headers : () => headers ?? {};
+    typeof headers == "function" ? headers : () => headers ?? {};
 
   function handler(
     path: string,
@@ -166,7 +166,7 @@ export default function bunicornClient<App extends BunicornApp<any>>({
 
         // For string, FormData, Blob and ReadableStream, we don't need to do anything to body
         if (
-          typeof input === "string" ||
+          typeof input == "string" ||
           input instanceof ReadableStream ||
           input instanceof Blob
         ) {

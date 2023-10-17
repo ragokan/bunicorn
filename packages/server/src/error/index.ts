@@ -8,13 +8,13 @@ export function createError<TData = any>(
   status?: number,
   type: ErrorType = "default"
 ) {
-  if (type === "default") {
+  if (type == "default") {
     return new BunicornError(message, data, status, type);
   }
-  if (type === "validation") {
+  if (type == "validation") {
     return new BunicornValidationError(data as FormattedIssue[]);
   }
-  if (type === "notFound") {
+  if (type == "notFound") {
     return new BunicornNotFoundError(message);
   }
   return new BunicornError(message, data, status, type);

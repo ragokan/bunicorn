@@ -47,7 +47,7 @@
       { "avoidEscape": true, "allowTemplateLiterals": false }
     ],
     "curly": ["error", "all"],
-    "eqeqeq": "error",
+    "eqeqeq": "off",
     "prefer-arrow-callback": "error",
     "prefer-rest-params": "off",
     "no-control-regex": "off",
