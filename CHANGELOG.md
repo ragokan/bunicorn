@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.10] - 2023-10-18
+
+- Type updates
+
 ## [0.0.9] - 2023-10-18
 
 - Type updates
