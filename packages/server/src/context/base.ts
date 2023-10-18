@@ -80,7 +80,7 @@ export class BunicornContext<
           body,
           route.__outputOptions
         );
-        return new Response(JSON.stringify(parseResult), init) as any;
+        return new Response(JSON.stringify(parseResult), init) as any as T;
       } catch (error) {
         BunicornApp.onGlobalError(
           new BunicornError(
