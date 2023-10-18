@@ -14,10 +14,10 @@ export class BunicornContext<
   TPath extends BasePath = BasePath,
   InputSchema = never
 > {
-  // @ts-expect-error
-  private __inputSchema: InputSchema;
+  // @ts-expect-error Not initialized
+  protected __inputSchema: InputSchema;
 
-  private resultHeaders: Record<string, string> = {};
+  private resultHeaders?: Record<string, string>;
   public params: __ExtractParams<TPath>;
 
   constructor(
@@ -31,6 +31,7 @@ export class BunicornContext<
   }
 
   setHeader(name: string, value: string) {
+    this.resultHeaders ??= {};
     this.resultHeaders[name] = value;
   }
 
@@ -107,6 +108,9 @@ export class BunicornContext<
   }
 
   private applyHeaders(init: any) {
+    if (!this.resultHeaders) {
+      return;
+    }
     init.headers ??= {};
     for (const key in this.resultHeaders) {
       init.headers[key] = this.resultHeaders[key]!;
@@ -116,4 +120,7 @@ export class BunicornContext<
 
 export type __GetContextInput<
   TContext extends BunicornContext<any, any> | object
-> = TContext extends BunicornContext<any, infer TSchema> ? TSchema : never;
+> = TContext extends BunicornContext<any, any>
+  ? // @ts-expect-error Private field
+    TContext["__inputSchema"]
+  : never;
