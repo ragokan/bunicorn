@@ -20,14 +20,14 @@ const R = app
       .post("/hello", async ctx => {
         const { message } = await getBody(ctx);
         return ctx.json({
-          message: `Hello ${message}!`
+          msg: `Hello ${message}!`
         });
       }),
-    // rb.output(z.string()).get("/", ctx => ctx.raw("Hello world!")),
-    // rb.get("/:id", ctx => ctx.json({ params: ctx.params })),
-    // rb.get("/hello", ctx => {
-    //   return ctx.raw("Hello world!");
-    // }),
+    rb.output(z.string()).get("/", ctx => ctx.raw("Hello world!")),
+    rb.get("/:id", ctx => ctx.json({ params: ctx.params })),
+    rb.get("/hello", ctx => {
+      return ctx.raw("Hello world!");
+    }),
 
     rb.get("/...rest/:args", ctx => {
       console.log("params", ctx.params);
