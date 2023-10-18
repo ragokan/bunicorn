@@ -48,6 +48,15 @@ const getTodos = routeBuilder.output(todoSchema.array()).get("/", ctx => {
   return ctx.json(todos);
 });
 
+const getTodo = routeBuilder.output(todoSchema).get("/:id", ctx => {
+  const todos = ctx.get(todoStore).todos;
+  const todo = todos.find(todo => todo.id === parseInt(ctx.params.id));
+  if (!todo) {
+    throw new BunicornNotFoundError("Todo not found");
+  }
+  return ctx.json(todo);
+});
+
 const createTodoRoute = new RouteBuilder()
   .use(() => ({ a: 1 }))
   .input(createTodoSchema)
@@ -55,7 +64,7 @@ const createTodoRoute = new RouteBuilder()
   .post("/", async ctx => {
     const body = await getBody(ctx);
     const todo = ctx.get(todoStore).addTodo(body.title);
-    return ctx.json(todo);
+    return ctx.json(todo, { status: 201 });
   });
 
 const updateTodoRoute = routeBuilder
@@ -92,6 +101,7 @@ const deleteTodoRoute = routeBuilder
 
 const todoRoutes = groupRoutes("/todos", [
   getTodos,
+  getTodo,
   createTodoRoute,
   updateTodoRoute,
   deleteTodoRoute

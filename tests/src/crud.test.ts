@@ -2,6 +2,7 @@ import { type Server } from "bun";
 import { test, expect, beforeAll, afterAll, describe } from "bun:test";
 import bunicornClient, {
   BunicornError,
+  BunicornNotFoundError,
   BunicornValidationError
 } from "@bunicorn/client";
 import { type AppType, app } from "./crud/server.ts";
@@ -33,9 +34,7 @@ test("api tests", async end => {
   describe("header tests", async () => {
     const r1 = await client.get("/api/todos", {});
     expect(r1.success).toBe(false);
-    if (r1.success) {
-      return end("Should not be success");
-    }
+    assert(r1.success === false);
     expect(r1.error).toBeInstanceOf(BunicornError);
     expect(r1.error.message).toBe("Unique token is required");
     expect(r1.error.status).toBe(401);
@@ -49,12 +48,12 @@ test("api tests", async end => {
     expect(r2.response.headers.get("content-type")).toBe("application/json");
   });
 
+  let todoId: number;
+
   describe("validation", async () => {
     // as any to avoid type error, because we want to get error
     const r1 = await client.post("/api/todos", { input: {} as any });
-    if (r1.success) {
-      return end("Should not be success");
-    }
+    assert(r1.success === false);
     expect(r1.error).toBeInstanceOf(BunicornValidationError);
     expect(r1.error.message).toBe("Validation Error");
     expect(r1.error.status).toBe(403);
@@ -67,6 +66,55 @@ test("api tests", async end => {
       validation: "invalid_type",
       path: ["title"]
     });
+
+    const r2 = await client.post("/api/todos", {
+      input: { title: "Hello world!" }
+    });
+    expect(r2.success).toBe(true);
+    expect(r2.response.status).toBe(201);
+    assert(r2.success);
+    expect(r2.data.id).toBeNumber();
+    todoId = r2.data.id;
+    expect(r2.data.title).toBe("Hello world!");
+    expect(r2.data.completed).toBe(false);
+  });
+
+  describe("get tests", async () => {
+    const r1 = await client
+      .get("/api/todos/:id", {
+        params: { id: todoId.toString() }
+      })
+      .assert();
+
+    expect(r1.success).toBe(true);
+    expect(r1.response.status).toBe(200);
+    expect(r1.data).toEqual({
+      id: todoId,
+      title: "Hello world!",
+      completed: false
+    });
+
+    const r2 = await client.get("/api/todos/:id", {
+      params: { id: "-1" }
+    });
+    expect(r2.success).toBe(false);
+    assert(r2.success === false);
+    expect(r2.error).toBeInstanceOf(BunicornNotFoundError);
+    expect(r2.error.message).toBe("Todo not found");
+    expect(r2.error.status).toBe(404);
+    expect(r2.response.status).toBe(404);
+
+    const r3 = await client.get("/api/todos", {}).assert();
+    expect(r3.success).toBe(true);
+    expect(r3.response.status).toBe(200);
+    expect(r3.data).toBeArray();
+    expect(r3.data).toHaveLength(1);
+    expect(r3.data.at(0)).toEqual({
+      id: todoId,
+      title: "Hello world!",
+      completed: false
+    });
+    expect(r3.response.headers.get("content-type")).toBe("application/json");
   });
 
   end();
