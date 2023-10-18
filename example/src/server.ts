@@ -6,7 +6,8 @@ import {
   getBody,
   getHeader,
   groupRoutes,
-  dependency
+  dependency,
+  RB
 } from "@bunicorn/server";
 import corsHandler from "@bunicorn/server/corsHandler";
 import { randomNumber } from "@bunicorn/utils";
@@ -42,7 +43,7 @@ const todoStore = dependency(() => {
 const baseApp = new BunicornApp({ basePath: "/api" });
 
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
-const routeBuilder = new RouteBuilder().use(ctx => {
+const routeBuilder = new RB().use(ctx => {
   if (getHeader(ctx, "x-token") !== "123") {
     throw new BunicornError("Unique token is required", { status: 401 });
   }
@@ -57,7 +58,8 @@ const getTodos = routeBuilder.output(todoSchema.array()).get("/", ctx => {
 });
 
 // CREATE TODO AND ENFORCE OUR INPUT TO BE A TODO
-const createTodoRoute = routeBuilder
+const createTodoRoute = new RouteBuilder()
+  .use(() => ({ a: 1 }))
   .input(createTodoSchema)
   .output(todoSchema)
   .post("/", async ctx => {

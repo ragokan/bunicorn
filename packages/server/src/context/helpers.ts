@@ -8,7 +8,9 @@ import {
 import { __validate } from "../validation/validate.ts";
 import { type BunicornContext, type __GetContextInput } from "./base.ts";
 
-export async function getBody<Ctx extends BunicornContext<any, any>>(ctx: Ctx) {
+export async function getBody<Ctx extends BunicornContext<any, any>>(
+  ctx: Ctx
+): Promise<__GetContextInput<Ctx>> {
   const route = (ctx as unknown as { _route: Route })._route;
   const request = ctx.request;
   const contentType = request.headers.get("Content-Type") ?? "";

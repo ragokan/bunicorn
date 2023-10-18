@@ -37,7 +37,7 @@ export class RouteBuilder<
     type NewContext = Result extends void
       ? TContextResults
       : TContextResults & Result;
-    return this.copy() as unknown as RouteBuilder<NewContext>;
+    return this.copy() as unknown as RouteBuilder<NewContext, TInput, TOutput>;
   }
 
   public input<TSchema extends BunicornSchema>(

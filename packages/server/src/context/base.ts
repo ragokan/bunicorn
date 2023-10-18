@@ -114,5 +114,6 @@ export class BunicornContext<
   }
 }
 
-export type __GetContextInput<TContext extends BunicornContext | object> =
-  TContext extends BunicornContext<any, infer TSchema> ? TSchema : never;
+export type __GetContextInput<
+  TContext extends BunicornContext<any, any> | object
+> = TContext extends BunicornContext<any, infer TSchema> ? TSchema : never;
