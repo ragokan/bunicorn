@@ -3,20 +3,16 @@ import { BunicornError } from "../error/index.js";
 import { type GetDependencyFn } from "../helpers/di.js";
 import { __getParams } from "../helpers/pathUtils.js";
 import {
-  type __ExtractParams,
+  type BasePath,
   type __BuiltRoute,
-  type BasePath
+  type __ExtractParams
 } from "../router/types.js";
-import {
-  type __InferBunicornOutput,
-  type BunicornSchema
-} from "../validation/types.js";
 import { __validate } from "../validation/validate.js";
 import { type BuniResponseInit } from "./types.js";
 
 export class BunicornContext<
   TPath extends BasePath = BasePath,
-  InputSchema extends BunicornSchema | never = never
+  InputSchema = never
 > {
   // @ts-expect-error
   private __inputSchema: InputSchema;
@@ -119,6 +115,4 @@ export class BunicornContext<
 }
 
 export type __GetContextInput<TContext extends BunicornContext | object> =
-  TContext extends BunicornContext<any, infer TSchema>
-    ? __InferBunicornOutput<TSchema>
-    : never;
+  TContext extends BunicornContext<any, infer TSchema> ? TSchema : never;

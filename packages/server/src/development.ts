@@ -14,22 +14,23 @@ const rb = new RB();
 const R = app
   .addHandler(staticHandler({ path: "/static", directory: "./src" }))
   .addRoutes([
-    rb.output(z.string()).get("/", ctx => ctx.raw("Hello world!")),
-    rb.get("/:id", ctx => ctx.json({ params: ctx.params })),
-    rb.get("/hello", ctx => {
-      return ctx.raw("Hello world!");
-    }),
     rb.input(z.object({ message: z.string() })).post("/hello", async ctx => {
       const { message } = await getBody(ctx);
       return ctx.json({
         message: `Hello ${message}!`
       });
-    }),
-    rb.get("/...rest/:args", ctx => {
-      console.log("params", ctx.params);
-      console.log("search params", getSearchParams(ctx));
-      return ctx.raw("Hello world!" + JSON.stringify(ctx.params));
     })
+    // rb.output(z.string()).get("/", ctx => ctx.raw("Hello world!")),
+    // rb.get("/:id", ctx => ctx.json({ params: ctx.params })),
+    // rb.get("/hello", ctx => {
+    //   return ctx.raw("Hello world!");
+    // }),
+
+    // rb.get("/...rest/:args", ctx => {
+    //   console.log("params", ctx.params);
+    //   console.log("search params", getSearchParams(ctx));
+    //   return ctx.raw("Hello world!" + JSON.stringify(ctx.params));
+    // })
   ]);
 
 Bun.serve({

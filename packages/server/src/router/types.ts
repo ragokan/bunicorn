@@ -49,7 +49,9 @@ export type __MergePaths<
   TBase extends BasePath,
   TNew extends BasePath
 > = TBase extends "/"
-  ? TNew
+  ? TNew extends "/"
+    ? TBase
+    : TNew
   : `${__RemoveTrailingSlash<TBase>}${__RemoveTrailingSlash<TNew>}`;
 
 export interface __BuiltRoute<TPath extends BasePath = BasePath>
