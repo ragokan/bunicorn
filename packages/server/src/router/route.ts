@@ -1,5 +1,4 @@
 import {
-  type __InferBunicornOutput,
   type BunicornSchema,
   type __ValidateOptions
 } from "../validation/types.js";
@@ -31,12 +30,7 @@ export type __AddBasePathTo<
   infer TOutput,
   infer TInput
 >
-  ? Route<
-      __MergePaths<TBasePath, TRoutePath>,
-      TRouteMethod,
-      TOutput,
-      __InferBunicornOutput<TInput>
-    >
+  ? Route<__MergePaths<TBasePath, TRoutePath>, TRouteMethod, TOutput, TInput>
   : never;
 
 export type __AddBasePathToAll<
