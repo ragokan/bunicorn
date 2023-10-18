@@ -1,0 +1,14 @@
+{
+  "name": "@bunicorn/tets",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "@bunicorn/server": "workspace:*",
+    "@bunicorn/client": "workspace:*",
+    "@bunicorn/utils": "workspace:*",
+    "@bunicorn/example": "workspace:*",
+    "zod": "^3.22.4"
+  }
+}

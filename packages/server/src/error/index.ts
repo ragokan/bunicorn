@@ -28,6 +28,9 @@ export class BunicornError<TData = any> extends Error {
     public type: ErrorType = "default"
   ) {
     super(message);
+    if (typeof data === "number") {
+      this.status = data;
+    }
   }
 
   public override toString() {
