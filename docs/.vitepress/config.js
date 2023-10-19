@@ -22,7 +22,8 @@ export default defineConfig({
         items: [
           { text: "Why Bunicorn?", link: "/introduction" },
           { text: "Quick Start", link: "/quick-start" },
-          { text: "Roadmap", link: "/roadmap" }
+          { text: "Roadmap", link: "/roadmap" },
+          { text: "Benchmark 🚀", link: "/benchmark" }
         ]
       },
       {

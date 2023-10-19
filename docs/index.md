@@ -19,6 +19,7 @@ hero:
 features:
   - title: Soo fast
     icon: 🚀
+    link: /benchmark
     details: Thanks to Bun and many performance optimizations, Bunicorn is so fast!
   - title: Easy to use
     icon: 👌
@@ -29,7 +30,7 @@ features:
   - title: Amazing client
     icon: 🎉
     details: Bunicorn comes with its own RPC client for type safety and auto completion
-    link: link/to/client
+    link: /client/usage
   - title: Validation
     icon: 🪖
     details: Use zod, valibot, typia or others. If you want, you can create your validation!
