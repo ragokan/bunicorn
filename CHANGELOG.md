@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.11] - 2023-10-20
+
+- Make context creation a little bit faster.
+
 ## [0.0.10] - 2023-10-18
 
 - Type updates

@@ -1,5 +1,5 @@
 import { type Server, type ServeOptions, type TLSServeOptions } from "bun";
-import { BunicornContext } from "../context/base.ts";
+import { type BunicornContext, __BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
@@ -118,7 +118,7 @@ export class BunicornApp<
     const match = __testPath(route, path);
     if (match) {
       try {
-        const context = new BunicornContext(
+        const context = new __BunicornContext(
           request,
           url as TBasePath,
           route,
@@ -136,7 +136,8 @@ export class BunicornApp<
             return result;
           }
           for (const key in result) {
-            context[key as keyof BunicornContext] = result[key];
+            // @ts-expect-error - This is fine because result[key] is any/unknown
+            context[key] = result[key];
           }
         }
 
