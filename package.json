@@ -6,7 +6,7 @@
     "build": "lerna run build --stream",
     "pretty-lint": "lerna run pretty-lint --stream",
     "update-deps": "ncu -u && lerna run update-deps --stream",
-    "prepublish": "bun run build",
+    "prepublish": "bun run build && bun test",
     "publish": "lerna publish --no-private",
     "dev:example": "lerna run example:dev --scope @bunicorn/example",
     "start:example": "lerna run example:start --scope @bunicorn/example",
