@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.12] - 2023-10-20
+
+- Small performance improvements.
+- Prepare for Deno.
+
 ## [0.0.11] - 2023-10-20
 
 - Make context creation a little bit faster.
