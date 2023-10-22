@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.0.12] - 2023-10-20
+## [0.0.12] - 2023-10-22
 
 - Small performance improvements.
 - Prepare for Deno.
