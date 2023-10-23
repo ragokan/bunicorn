@@ -191,10 +191,15 @@ export class BunicornApp<
     );
   }
 
+  // Only available in Bun
   public serve(
     options: Partial<Omit<ServeOptions & TLSServeOptions, "fetch">> = {}
   ) {
-    Bun.gc(false);
+    if (!IS_BUN) {
+      throw new Error("This method can only be called in Bun.");
+    }
+
+    Bun.gc(true);
     return Bun.serve({
       ...options,
       fetch: this.handleRequest
