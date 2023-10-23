@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.15] - 2023-10-23
+
+- Update js imports to ts
+
 ## [0.0.14] - 2023-10-23
 
 - Update types for Deno
