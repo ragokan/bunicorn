@@ -1,4 +1,3 @@
-import type { ServeOptions, Server, TLSServeOptions } from "bun";
 import { __BunicornContext, type BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
@@ -166,7 +165,7 @@ export class BunicornApp<
     }
   }
 
-  public async handleRequest(request: Request, _server?: Server) {
+  public async handleRequest(request: Request, _server?: import("bun").Server) {
     const path = __getPath(request.url);
 
     for (const route of this.routes[request.method as BaseMethod]) {
@@ -193,7 +192,9 @@ export class BunicornApp<
 
   // Only available in Bun
   public serve(
-    options: Partial<Omit<ServeOptions & TLSServeOptions, "fetch">> = {}
+    options: Partial<
+      Omit<import("bun").ServeOptions & import("bun").TLSServeOptions, "fetch">
+    > = {}
   ) {
     if (!IS_BUN) {
       throw new Error("This method can only be called in Bun.");
