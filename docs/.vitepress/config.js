@@ -4,7 +4,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "Bunicorn",
   description:
-    "Bunicorn - Fast and type safe Bun/Deno/Edge/Node backend framework!",
+    "Bunicorn - Fast and type safe Bun, Deno and Edge backend framework!",
   head: [["link", { rel: "icon", type: "image/svg+xml", href: "/logo.svg" }]],
   lang: "en-US",
   lastUpdated: true,

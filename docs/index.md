@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Bunicorn"
-  tagline: Fast and type safe Bun/Deno/Node/Edge backend and client framework!
+  tagline: Fast and type safe Bun, Deno and Edge backend and client framework!
   image:
     src: /logo.svg
     alt: Bunicorn-Logo
