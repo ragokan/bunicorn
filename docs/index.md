@@ -36,7 +36,7 @@ features:
     details: Use zod, valibot, typia or others. If you want, you can create your validation!
   - title: Framework agnostic
     icon: 🦖
-    details: Use with Bun, Deno, Node or on Edge, we even have EdgeApp for lazy evaluation
+    details: Use with Bun, Deno and Edge, we even have EdgeApp for lazy evaluation
   - title: Lightweight
     icon: 🌱
     details: Zero dependencies, raw JavaScript and nothing else that affects performance

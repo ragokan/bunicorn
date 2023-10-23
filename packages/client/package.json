@@ -1,7 +1,7 @@
 {
   "name": "@bunicorn/client",
   "version": "0.0.12",
-  "description": "Bunicorn client whhich has full type support for the Bunicorn server, ultra fast Bun, Edge and Node server framework",
+  "description": "Bunicorn client whhich has full type support for the Bunicorn server, ultra fast Bun, Deno and Edge server framework",
   "type": "module",
   "private": false,
   "scripts": {
