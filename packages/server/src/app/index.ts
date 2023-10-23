@@ -1,5 +1,5 @@
-import { type Server, type ServeOptions, type TLSServeOptions } from "bun";
-import { type BunicornContext, __BunicornContext } from "../context/base.ts";
+import type { ServeOptions, Server, TLSServeOptions } from "bun";
+import { __BunicornContext, type BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
@@ -166,7 +166,7 @@ export class BunicornApp<
     }
   }
 
-  public async handleRequest(request: Request, _server: Server) {
+  public async handleRequest(request: Request, _server?: Server) {
     const path = __getPath(request.url);
 
     for (const route of this.routes[request.method as BaseMethod]) {
