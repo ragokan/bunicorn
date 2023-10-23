@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.14] - 2023-10-23
+
+- Update types for Deno
+
 ## [0.0.13] - 2023-10-23
 
 - Prepare server for Deno
