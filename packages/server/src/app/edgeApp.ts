@@ -7,6 +7,7 @@ import { BunicornApp } from "./index.ts";
 import { type __AddBasePathTo, type Route } from "../router/route.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
+import { __getPath } from "../helpers/pathRegexps.ts";
 
 export class BunicornEdgeApp<
   TBasePath extends BasePath,
@@ -51,5 +52,30 @@ export class BunicornEdgeApp<
       TBasePath,
       [...TRoutes, __AddBasePathTo<TBasePath, TRoute>]
     >;
+  }
+
+  public override async handleRequest(request: Request) {
+    const path = __getPath(request.url);
+
+    for (const route of this.routes[request.method as BaseMethod]) {
+      const result = await this.useRoute(request, request.url, path, route);
+      if (result) {
+        return result;
+      }
+    }
+    for (const route of this.routes.ALL) {
+      const result = await this.useRoute(request, request.url, path, route);
+      if (result) {
+        return result;
+      }
+    }
+
+    return new Response(
+      JSON.stringify({
+        message: `The method '${request.method}' to path '${path}' does not exists.`,
+        status: 404
+      }),
+      { status: 404, headers: { "Content-Type": "application/json" } }
+    );
   }
 }
