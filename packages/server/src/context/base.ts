@@ -1,14 +1,14 @@
-import { BunicornApp } from "../app/index.js";
-import { BunicornError } from "../error/index.js";
-import { type GetDependencyFn } from "../helpers/di.js";
-import { __getParams } from "../helpers/pathUtils.js";
+import { BunicornApp } from "../app/index.ts";
+import { BunicornError } from "../error/index.ts";
+import { type GetDependencyFn } from "../helpers/di.ts";
+import { __getParams } from "../helpers/pathUtils.ts";
 import {
   type BasePath,
   type __BuiltRoute,
   type __ExtractParams
-} from "../router/types.js";
-import { __validate } from "../validation/validate.js";
-import { type BuniResponseInit } from "./types.js";
+} from "../router/types.ts";
+import { __validate } from "../validation/validate.ts";
+import { type BuniResponseInit } from "./types.ts";
 
 export interface BunicornContext<
   TPath extends BasePath = BasePath,

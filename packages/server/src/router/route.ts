@@ -1,9 +1,9 @@
 import {
   type BunicornSchema,
   type __ValidateOptions
-} from "../validation/types.js";
-import { type BaseMiddleware } from "../middleware.js";
-import { type BaseMethod, type BasePath, type __MergePaths } from "./types.js";
+} from "../validation/types.ts";
+import { type BaseMiddleware } from "../middleware.ts";
+import { type BaseMethod, type BasePath, type __MergePaths } from "./types.ts";
 
 export interface Route<
   TPath extends BasePath = BasePath,
