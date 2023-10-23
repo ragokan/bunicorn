@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "valibot": "https://deno.land/x/valibot/mod.ts",
+    "zod": "https://deno.land/x/zod/mod.ts"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true
+  },
+  "nodeModulesDir": true,
+  "lock": false
+}
