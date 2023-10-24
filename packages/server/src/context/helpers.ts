@@ -11,13 +11,18 @@ import { type BunicornContext, type __GetContextInput } from "./base.ts";
 export async function getBody<Ctx extends BunicornContext<any, any>>(
   ctx: Ctx
 ): Promise<__GetContextInput<Ctx>> {
-  const route = (ctx as unknown as { _route: Route })._route;
+  const __ctx = ctx as unknown as { __body: any; _route: Route } & Ctx;
+  // Cache body.
+  if (__ctx.__body) {
+    return __ctx.__body;
+  }
+  const route = __ctx._route;
   const request = ctx.request;
   const contentType = request.headers.get("Content-Type") ?? "";
   let _body: any;
 
   if (contentType.includes("application/json")) {
-    _body = await request.json();
+    _body = JSON.parse(await getText(ctx));
   } else if (contentType.includes("multipart/form-data")) {
     _body = await request
       .formData()
@@ -30,11 +35,16 @@ export async function getBody<Ctx extends BunicornContext<any, any>>(
     return _body as __GetContextInput<Ctx>;
   }
 
-  return __validate(route.input!, _body) as __GetContextInput<Ctx>;
+  return (__ctx.__body = __validate(
+    route.input!,
+    _body
+  ) as __GetContextInput<Ctx>);
 }
 
 export async function getText<Ctx extends BunicornContext<any, any>>(ctx: Ctx) {
-  return ctx.request.text();
+  // Cache text.
+  const __ctx = ctx as unknown as { __text: string } & Ctx;
+  return (__ctx.__text ??= await ctx.request.text());
 }
 
 export function getHeader<Ctx extends BunicornContext<any, any>>(
@@ -57,7 +67,8 @@ export function getSearchParams(
   ctx: BunicornContext<any, any>,
   parser?: BunicornSchema
 ) {
-  const result = __getSearchParams(ctx.url);
+  const __ctx = ctx as unknown as { __searchParams: any } & BunicornContext;
+  const result = (__ctx.__searchParams ??= __getSearchParams(ctx.url));
   if (parser) {
     return __validate(parser, result);
   }
