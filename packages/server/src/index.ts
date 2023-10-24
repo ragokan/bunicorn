@@ -7,7 +7,6 @@ export * from "./app/index.ts";
 export * from "./error/index.ts";
 export * from "./handlers/index.ts";
 export * from "./context/base.ts";
-export * from "./context/helpers.ts";
 export * from "./middleware.ts";
 export * from "./router/builder.ts";
 export * from "./router/group.ts";

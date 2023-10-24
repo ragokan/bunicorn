@@ -66,9 +66,8 @@ Every path should start with a slash ('/') and should end without a slash.
 
 ```ts
 const authenticated = routeBuilder.use(context => {
-  // getHeader function is exported from @bunicorn/server
   // There are many utilities that can be tree shaken.
-  if (getHeader(ctx, "x-token") !== "123") {
+  if (ctx.getHeader("x-token") !== "123") {
     throw new BunicornError("Unique token is required", { status: 401 });
   }
   // Now, we can use ctx.token and anything else we add to the context
@@ -91,8 +90,7 @@ const createTodoRoute = authenticated
   .input(createTodoSchema)
   .post("/", async ctx => {
     // Body is inferred to be result of *createTodoSchema*
-    // getBody function is also exported from @bunicorn/server
-    const body = await getBody(ctx);
+    const body = await ctx.getBody();
     const todo = createTodo(body);
     return ctx.json(todo);
   });

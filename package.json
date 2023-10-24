@@ -12,7 +12,8 @@
     "start:example": "lerna run example:start --scope @bunicorn/example",
     "docs:dev": "npm run docs:dev --workspace @bunicorn/docs",
     "docs:build": "npm run docs:build --workspace @bunicorn/docs",
-    "docs:preview": "npm run docs:preview --workspace @bunicorn/docs"
+    "docs:preview": "npm run docs:preview --workspace @bunicorn/docs",
+    "test": "bun test"
   },
   "workspaces": [
     "packages/*",

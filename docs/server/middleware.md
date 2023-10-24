@@ -18,7 +18,7 @@ const routeBuilder = new RouteBuilder().use(ctx => {
   // Here, we have access to the base context (untyped body, params, query, etc)
 
   // Get header from the context (it is probably a string, it is best to cast on a real use case)
-  const count = getHeader(ctx, "count") ?? 0;
+  const count = ctx.getHeader("count") ?? 0;
   const newCount = count + 1;
   // When we do ctx.setHeader, we are setting the header for the response, when we send the response, it will be sent with the headers we set
   ctx.setHeader("count", newCount);
@@ -100,7 +100,7 @@ import { createMiddleware, BunicornError } from "@bunicorn/server";
 
 function authMiddleware(role: IRole) {
   return createMiddleware(async ctx => {
-    const jwtToken = getHeader(ctx, "Authorization");
+    const jwtToken = ctx.getHeader("Authorization");
     if (!jwtToken) {
       // BunicornError makes Bunicorn to send a a detailed error, instead of sending status 500.
       throw new BunicornError("Unauthorized", 401);

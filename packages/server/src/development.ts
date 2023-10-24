@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { z } from "zod";
 import { BunicornApp } from "./app/index.ts";
-import { getBody, getSearchParams } from "./context/helpers.ts";
 import staticHandler from "./handlers/static.ts";
 import { RouteBuilder } from "./router/builder.ts";
 
@@ -18,7 +17,7 @@ const R = app
       .use(() => ({ a: 1 }))
       .input(z.object({ message: z.string() }))
       .post("/hello", async ctx => {
-        const { message } = await getBody(ctx);
+        const { message } = await ctx.getBody();
         return ctx.json({
           msg: `Hello ${message}!`
         });
@@ -31,7 +30,7 @@ const R = app
 
     rb.get("/...rest/:args", ctx => {
       console.log("params", ctx.params);
-      console.log("search params", getSearchParams(ctx));
+      console.log("search params", ctx.getSearchParams());
       return ctx.raw("Hello world!" + JSON.stringify(ctx.params));
     })
   ]);

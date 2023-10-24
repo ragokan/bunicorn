@@ -1,19 +1,29 @@
 import { BunicornApp } from "../app/index.ts";
 import { BunicornError } from "../error/index.ts";
 import { type GetDependencyFn } from "../helpers/di.ts";
+import { formDataToObject } from "../helpers/formDataToObject.ts";
+import { __getSearchParams } from "../helpers/pathRegexps.ts";
 import { __getParams } from "../helpers/pathUtils.ts";
+import { type Route } from "../router/route.ts";
 import {
   type BasePath,
   type __BuiltRoute,
   type __ExtractParams
 } from "../router/types.ts";
+import {
+  type BunicornSchema,
+  type __InferBunicornOutput
+} from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
 import { type BuniResponseInit } from "./types.ts";
+
+// TODO: Split this file into multiple files.
 
 export interface BunicornContext<
   TPath extends BasePath = BasePath,
   InputSchema = never
 > {
+  // Base
   request: Request;
   url: TPath;
   route: __BuiltRoute<TPath>;
@@ -21,7 +31,19 @@ export interface BunicornContext<
   get: GetDependencyFn;
   params: __ExtractParams<TPath>;
 
+  // Getters
+  getText(): Promise<string>;
+  getBody(): Promise<InputSchema>;
+  getSearchParams<Body extends Record<string, string>>(): Body;
+  getSearchParams<TSchema extends BunicornSchema>(
+    schema: TSchema
+  ): __InferBunicornOutput<TSchema>;
+  getHeader(name: string): string | null;
+
+  // Setters
   setHeader(name: string, value: string): void;
+
+  // Responses
   ok(): any;
   raw<T>(body: T, init?: BuniResponseInit): T;
   text(body: string, init?: BuniResponseInit): string;
@@ -30,11 +52,9 @@ export interface BunicornContext<
     body: ReadableStream<T>,
     init?: BuniResponseInit
   ): ReadableStream<T>;
-
-  [__inputType]: InputSchema;
 }
 
-interface PrivateBunicornContext<
+export interface __PrivateBunicornContext<
   TPath extends BasePath = BasePath,
   InputSchema = never
 > extends BunicornContext<TPath, InputSchema> {
@@ -56,13 +76,14 @@ export interface BunicornContextConstructor<
 }
 
 const __BunicornContext = function <TPath extends BasePath = BasePath>(
-  this: PrivateBunicornContext<any, any>,
+  this: __PrivateBunicornContext<any, any>,
   request: Request,
   url: TPath,
   route: __BuiltRoute<TPath>,
   match: string[] | boolean,
   get: GetDependencyFn
 ) {
+  // Base
   this.request = request;
   this.url = url;
   this.route = route;
@@ -71,8 +92,64 @@ const __BunicornContext = function <TPath extends BasePath = BasePath>(
   this.params = __getParams(route.path, match);
 } as any as BunicornContextConstructor;
 
+// Getters
+__BunicornContext.prototype.getText = async function (
+  this: __PrivateBunicornContext & { __text: string }
+) {
+  return (this.__text ??= await this.request.text());
+};
+
+__BunicornContext.prototype.getBody = async function (
+  this: __PrivateBunicornContext & { __body: any; _route: Route }
+) {
+  // Cache body.
+  if (this.__body) {
+    return this.__body;
+  }
+  const route = this._route;
+  const request = this.request;
+  const contentType = request.headers.get("Content-Type") ?? "";
+  let _body: any;
+
+  if (contentType.includes("application/json")) {
+    // TODO: Convert JSON.parse to global converter.
+    _body = JSON.parse(await this.getText());
+  } else if (contentType.includes("multipart/form-data")) {
+    _body = await request
+      .formData()
+      .then(data => formDataToObject(data, route.input));
+  } else {
+    _body = await request.text();
+  }
+
+  if (!route.input) {
+    return (this.__body = _body);
+  }
+
+  return (this.__body = __validate(route.input!, _body));
+};
+
+__BunicornContext.prototype.getSearchParams = function (
+  this: __PrivateBunicornContext & { __searchParams: any },
+  schema?: BunicornSchema
+) {
+  const result = (this.__searchParams ??= __getSearchParams(this.url));
+  if (schema) {
+    return __validate(schema, result);
+  }
+  return result;
+};
+
+__BunicornContext.prototype.getHeader = function (
+  this: __PrivateBunicornContext,
+  name: string
+) {
+  return this.request.headers.get(name);
+};
+
+// Setters
 __BunicornContext.prototype.setHeader = function (
-  this: PrivateBunicornContext,
+  this: __PrivateBunicornContext,
   name: string,
   value: string
 ) {
@@ -80,7 +157,8 @@ __BunicornContext.prototype.setHeader = function (
   this.resultHeaders[name] = value;
 };
 
-__BunicornContext.prototype.ok = function (this: PrivateBunicornContext) {
+// Responses
+__BunicornContext.prototype.ok = function (this: __PrivateBunicornContext) {
   return new Response(undefined, {
     status: 200,
     headers: this.resultHeaders
@@ -95,13 +173,13 @@ __BunicornContext.prototype.raw = function <
     | FormData
     | URLSearchParams
     | null
->(this: PrivateBunicornContext, body: T, init: BuniResponseInit = {}) {
+>(this: __PrivateBunicornContext, body: T, init: BuniResponseInit = {}) {
   this.applyHeaders(init);
   return new Response(body, init) as unknown as T;
 };
 
 __BunicornContext.prototype.text = function (
-  this: PrivateBunicornContext,
+  this: __PrivateBunicornContext,
   body: string,
   init: any = {}
 ) {
@@ -112,7 +190,7 @@ __BunicornContext.prototype.text = function (
 };
 
 __BunicornContext.prototype.json = function <T extends Record<any, any>>(
-  this: PrivateBunicornContext,
+  this: __PrivateBunicornContext,
   body: T,
   init: BuniResponseInit = {}
 ) {
@@ -150,7 +228,7 @@ __BunicornContext.prototype.json = function <T extends Record<any, any>>(
 };
 
 __BunicornContext.prototype.stream = function <T>(
-  this: PrivateBunicornContext,
+  this: __PrivateBunicornContext,
   body: ReadableStream<T>,
   init: BuniResponseInit = {}
 ) {
@@ -160,8 +238,9 @@ __BunicornContext.prototype.stream = function <T>(
   return new Response(body, init) as unknown as ReadableStream<T>;
 };
 
+// Helpers
 __BunicornContext.prototype.applyHeaders = function (
-  this: PrivateBunicornContext,
+  this: __PrivateBunicornContext,
   init: any
 ) {
   if (!this.resultHeaders) {
@@ -172,13 +251,5 @@ __BunicornContext.prototype.applyHeaders = function (
     init.headers[key] = this.resultHeaders[key];
   }
 };
-
-declare const __inputType: unique symbol;
-
-export type __GetContextInput<
-  TContext extends BunicornContext<any, any> | object
-> = TContext extends BunicornContext<any, any>
-  ? TContext[typeof __inputType]
-  : never;
 
 export { __BunicornContext };

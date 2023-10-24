@@ -5,8 +5,6 @@ import {
   RB,
   RouteBuilder,
   dependency,
-  getBody,
-  getHeader,
   groupRoutes
 } from "@bunicorn/server";
 import { randomNumber } from "@bunicorn/utils";
@@ -37,7 +35,7 @@ const todoStore = dependency(() => {
 const baseApp = new BunicornApp({ basePath: "/api" });
 
 const routeBuilder = new RB().use(ctx => {
-  if (getHeader(ctx, "x-token") !== "123") {
+  if (ctx.getHeader("x-token") !== "123") {
     throw new BunicornError("Unique token is required", 401);
   }
   return { token: "123" };
@@ -62,7 +60,7 @@ const createTodoRoute = new RouteBuilder()
   .input(createTodoSchema)
   .output(todoSchema)
   .post("/", async ctx => {
-    const body = await getBody(ctx);
+    const body = await ctx.getBody();
     const todo = ctx.get(todoStore).addTodo(body.title);
     return ctx.json(todo, { status: 201 });
   });
@@ -71,7 +69,7 @@ const updateTodoRoute = routeBuilder
   .input(updateTodoSchema)
   .output(todoSchema)
   .patch("/:id", async ctx => {
-    const body = await getBody(ctx);
+    const body = await ctx.getBody();
     const todo = ctx
       .get(todoStore)
       .todos.find(todo => todo.id === parseInt(ctx.params.id));

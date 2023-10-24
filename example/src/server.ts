@@ -3,8 +3,6 @@ import {
   BunicornError,
   BunicornNotFoundError,
   RouteBuilder,
-  getBody,
-  getHeader,
   groupRoutes,
   dependency,
   RB
@@ -44,7 +42,7 @@ const baseApp = new BunicornApp({ basePath: "/api" });
 
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
 const routeBuilder = new RB().use(ctx => {
-  if (getHeader(ctx, "x-token") !== "123") {
+  if (ctx.getHeader("x-token") !== "123") {
     throw new BunicornError("Unique token is required", 401);
   }
   // Now, we can use ctx.token and anything else we add to the context
@@ -64,7 +62,7 @@ const createTodoRoute = new RouteBuilder()
   .output(todoSchema)
   .post("/", async ctx => {
     // BODY IS INFERRED TO BE A CREATE TODO
-    const body = await getBody(ctx);
+    const body = await ctx.getBody();
     const todo = ctx.get(todoStore).addTodo(body.title);
     return ctx.json(todo);
   });
@@ -75,7 +73,7 @@ const updateTodoRoute = routeBuilder
   .output(todoSchema)
   .patch("/:id", async ctx => {
     // BODY IS INFERRED TO BE AN UPDATE TODO
-    const body = await getBody(ctx);
+    const body = await ctx.getBody();
     // CTX.PARAMS.ID IS ALSO INFERRED, BUT IT IS A STRING
     const todo = ctx
       .get(todoStore)

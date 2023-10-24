@@ -18,10 +18,9 @@ const createTodoRoute = routeBuilder
   // Use the validator
   .input(createTodoSchema)
   .post("/todo", async ctx => {
-    // getBody is exported from @bunicorn/server
     // Validation is only executed when you call getBody
     // todo is typed as returned type of createTodoSchema
-    const todo = await getBody(ctx);
+    const todo = await ctx.getBody();
     // Handle and return
   });
 ```
@@ -60,13 +59,13 @@ const chatRouteBuilder = routeBuilder.input(messageSchema);
 
 const sendMessageRoute = chatRouteBuilder.post("/chat", async ctx => {
   // message is typed as returned type of messageSchema
-  const message = await getBody(ctx);
+  const message = await ctx.getBody();
   // Handle and return
 });
 
 const updateMessageRoute = chatRouteBuilder.patch("/chat/:id", async ctx => {
   // message is typed as returned type of messageSchema
-  const message = await getBody(ctx);
+  const message = await ctx.getBody();
   // Handle and return
 });
 ```
@@ -98,7 +97,7 @@ const createTodoRoute = routeBuilder
   .output(todoSchema)
   .post("/todo", async ctx => {
     // todo is typed as returned type of createTodoSchema
-    const todo = await getBody(ctx);
+    const todo = await ctx.getBody();
     // Handle and return
   });
 ```
@@ -117,7 +116,7 @@ const createTodoRoute = routeBuilder
   .output(valibotTodoSchema)
   .post("/todo", async ctx => {
     // todo is typed as returned type of zodTodoCreateSchema
-    const todo = await getBody(ctx);
+    const todo = await ctx.getBody();
     // Handle and return
     const createdTodo = await createTodo(todo);
     // createdTodo is typed as returned type of valibotTodoSchema
