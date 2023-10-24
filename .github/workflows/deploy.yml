@@ -33,19 +33,19 @@ jobs:
         with:
           fetch-depth: 0 # Not needed if lastUpdated is not enabled
       # - uses: pnpm/action-setup@v2 # Uncomment this if you're using pnpm
-      # - uses: oven-sh/setup-bun@v1 # Uncomment this if you're using Bun
-      - name: Setup Node
+      - uses: oven-sh/setup-bun@v1 # Uncomment this if you're using Bun
+      - name: Setup Bun
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: pnpm
+          cache: bun
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
       - name: Build with VitePress
         run: |
-          pnpm run docs:build
+          bun run docs:build
           touch docs/.vitepress/dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
