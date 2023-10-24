@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.18] - 2023-10-24
+
+- Update internal context api.
+
 ## [0.0.17] - 2023-10-23
 
 - Update type imports

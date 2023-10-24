@@ -6,14 +6,16 @@
     "build": "lerna run build --stream",
     "pretty-lint": "lerna run pretty-lint --stream",
     "update-deps": "ncu -u && lerna run update-deps --stream",
-    "prepublish": "bun run build && bun test",
+    "prepublish": "bun run test",
     "publish": "lerna publish --no-private",
     "dev:example": "lerna run example:dev --scope @bunicorn/example",
     "start:example": "lerna run example:start --scope @bunicorn/example",
     "docs:dev": "npm run docs:dev --workspace @bunicorn/docs",
     "docs:build": "npm run docs:build --workspace @bunicorn/docs",
     "docs:preview": "npm run docs:preview --workspace @bunicorn/docs",
-    "test": "bun test"
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "pretest": "bun run build"
   },
   "workspaces": [
     "packages/*",
