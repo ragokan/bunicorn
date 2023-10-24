@@ -4,7 +4,7 @@ import { __mergePaths } from "../helpers/pathUtils.ts";
 import { matchAll } from "../matchers/constants.ts";
 import { type BasePath } from "../router/types.ts";
 import { createHandler } from "./index.ts";
-import { type BunicornContext } from "../context/base.ts";
+import { type BunicornContext } from "../context/types.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 
 export interface StaticHandlerArgs {

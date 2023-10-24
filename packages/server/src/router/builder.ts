@@ -5,7 +5,7 @@ import {
   type __ValidateOptions
 } from "../validation/types.ts";
 import type { BaseSchema as vBaseSchema } from "valibot";
-import { type BunicornContext } from "../context/base.ts";
+import { type BunicornContext } from "../context/types.ts";
 import { type BaseMiddleware } from "../middleware.ts";
 import { type Route } from "./route.ts";
 import { type BaseMethod, type BasePath, type __BuiltRoute } from "./types.ts";

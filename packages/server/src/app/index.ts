@@ -1,4 +1,5 @@
-import { __BunicornContext, type BunicornContext } from "../context/base.ts";
+import { __BunicornContext } from "../context/base.ts";
+import { type BunicornContext } from "../context/types.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";

@@ -5,75 +5,14 @@ import { formDataToObject } from "../helpers/formDataToObject.ts";
 import { __getSearchParams } from "../helpers/pathRegexps.ts";
 import { __getParams } from "../helpers/pathUtils.ts";
 import { type Route } from "../router/route.ts";
-import {
-  type BasePath,
-  type __BuiltRoute,
-  type __ExtractParams
-} from "../router/types.ts";
-import {
-  type BunicornSchema,
-  type __InferBunicornOutput
-} from "../validation/types.ts";
+import { type BasePath, type __BuiltRoute } from "../router/types.ts";
+import { type BunicornSchema } from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
-import { type BuniResponseInit } from "./types.ts";
-
-// TODO: Split this file into multiple files.
-
-export interface BunicornContext<
-  TPath extends BasePath = BasePath,
-  InputSchema = never
-> {
-  // Base
-  request: Request;
-  url: TPath;
-  route: __BuiltRoute<TPath>;
-  match: string[] | boolean;
-  get: GetDependencyFn;
-  params: __ExtractParams<TPath>;
-
-  // Getters
-  getText(): Promise<string>;
-  getBody(): Promise<InputSchema>;
-  getSearchParams<Body extends Record<string, string>>(): Body;
-  getSearchParams<TSchema extends BunicornSchema>(
-    schema: TSchema
-  ): __InferBunicornOutput<TSchema>;
-  getHeader(name: string): string | null;
-
-  // Setters
-  setHeader(name: string, value: string): void;
-
-  // Responses
-  ok(): any;
-  raw<T>(body: T, init?: BuniResponseInit): T;
-  text(body: string, init?: BuniResponseInit): string;
-  json<T>(body: T, init?: BuniResponseInit): T;
-  stream<T>(
-    body: ReadableStream<T>,
-    init?: BuniResponseInit
-  ): ReadableStream<T>;
-}
-
-export interface __PrivateBunicornContext<
-  TPath extends BasePath = BasePath,
-  InputSchema = never
-> extends BunicornContext<TPath, InputSchema> {
-  resultHeaders?: Record<string, string>;
-  applyHeaders(init: any): void;
-}
-
-export interface BunicornContextConstructor<
-  TPath extends BasePath = BasePath,
-  InputSchema = never
-> {
-  new (
-    request: Request,
-    url: TPath,
-    route: __BuiltRoute<TPath>,
-    match: string[] | boolean,
-    get: GetDependencyFn
-  ): BunicornContext<TPath, InputSchema>;
-}
+import {
+  type BuniResponseInit,
+  type BunicornContextConstructor,
+  type __PrivateBunicornContext
+} from "./types.ts";
 
 const __BunicornContext = function <TPath extends BasePath = BasePath>(
   this: __PrivateBunicornContext<any, any>,
