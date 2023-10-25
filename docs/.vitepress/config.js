@@ -2,7 +2,6 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: process.env.IS_VERCEL ? "/" : "/bunicorn/",
   title: "Bunicorn",
   description:
     "Bunicorn - Fast and type safe Bun, Deno and Edge backend framework!",
