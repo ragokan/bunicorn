@@ -1,4 +1,4 @@
-{
+export default {
   "$schema": "https://json.schemastore.org/eslintrc.json",
   "extends": [
     "eslint:recommended",
@@ -9,6 +9,7 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
+    "tsconfigRootDir": import.meta.dir,
     "sourceType": "module"
   },
   "ignorePatterns": ["node_modules", "dist", "build.js"],
