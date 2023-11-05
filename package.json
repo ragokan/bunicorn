@@ -36,5 +36,5 @@
     "sherif": "^0.4.1",
     "typescript": "^5.2.2"
   },
-  "packageManager": "bun@1.0.4"
+  "packageManager": "bun@1.0.9"
 }
