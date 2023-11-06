@@ -9,10 +9,5 @@
 
   "files.exclude": {
     "**/.eslintcache": true
-  },
-
-  "jsdoc-generator.author": "",
-  "jsdoc-generator.includeDate": false,
-  "jsdoc-generator.includeTime": false,
-  "jsdoc-generator.functionVariablesAsFunctions": true
+  }
 }

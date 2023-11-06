@@ -10,18 +10,19 @@ const app = new BunicornApp({
 
 const rb = new RouteBuilder();
 
+const c = new RouteBuilder()
+  .input(z.object({ message: z.string() }))
+  .post("/hello", async ctx => {
+    const { message } = await ctx.getBody();
+    return ctx.json({
+      msg: `Hello ${message}!`
+    });
+  });
+
 const R = app
   .addHandler(staticHandler({ path: "/static", directory: "./src" }))
   .addRoutes([
-    new RouteBuilder()
-      .use(() => ({ a: 1 }))
-      .input(z.object({ message: z.string() }))
-      .post("/hello", async ctx => {
-        const { message } = await ctx.getBody();
-        return ctx.json({
-          msg: `Hello ${message}!`
-        });
-      }),
+    c,
     rb.output(z.string()).get("/", ctx => ctx.raw("Hello world!")),
     rb.get("/:id", ctx => ctx.json({ params: ctx.params })),
     rb.get("/hello", ctx => {
