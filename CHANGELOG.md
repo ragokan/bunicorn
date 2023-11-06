@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.19] - 2023-11-06
+
+- Update deps and types.
+- Optimizations for Deno.
+
 ## [0.0.18] - 2023-10-24
 
 - Update internal context api.
