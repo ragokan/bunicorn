@@ -1,11 +1,11 @@
 {
   "name": "@bunicorn/root",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "lerna run dev --stream",
     "build": "lerna run build --stream",
-    "pretty-lint": "lerna run pretty-lint --stream",
-    "update-deps": "ncu -u && lerna run update-deps --stream",
+    "deps:update": "ncu -u && lerna run deps:update --stream",
     "prepublish": "bun run test",
     "publish": "lerna publish --no-private",
     "dev:example": "lerna run example:dev --scope @bunicorn/example",
@@ -16,6 +16,7 @@
     "test": "bun test",
     "test:watch": "bun test --watch",
     "pretest": "bun run build",
+    "lint:format": "lerna run lint:format --stream",
     "lint:monorepo": "sherif --fix"
   },
   "workspaces": [

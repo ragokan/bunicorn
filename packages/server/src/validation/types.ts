@@ -3,7 +3,7 @@ import type * as z from "zod";
 
 export type RawSchema<Output = any> = (input: unknown) => Output;
 
-export type BunicornSchema =  z.ZodSchema<any> | RawSchema | v.BaseSchema<any> ;
+export type BunicornSchema = z.ZodSchema<any> | RawSchema | v.BaseSchema<any>;
 
 export type __InferBunicornInput<TSchema> = TSchema extends v.BaseSchema
   ? v.Input<TSchema>

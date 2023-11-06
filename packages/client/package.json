@@ -6,9 +6,9 @@
   "private": false,
   "scripts": {
     "build": "tsc && bun run build.js",
-    "pretty-lint": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
+    "lint:format": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
     "prebuild": "rm -rf dist",
-    "update-deps": "ncu -u"
+    "deps:update": "ncu -u"
   },
   "source": "src/index.ts",
   "main": "dist/index.js",
