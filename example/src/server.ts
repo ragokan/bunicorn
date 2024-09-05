@@ -21,7 +21,7 @@ const todoSchema = z.object({
 const createTodoSchema = todoSchema.pick({ title: true });
 const updateTodoSchema = todoSchema
   .pick({ title: true, completed: true })
-  .optional();
+  .partial();
 
 // DATA LAYER
 

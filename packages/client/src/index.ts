@@ -2,7 +2,6 @@ import type {
   BaseMethod,
   BasePath,
   BunicornApp,
-  BunicornSchema,
   __ExtractParams,
   __InferBunicornInput,
   Route
@@ -20,40 +19,46 @@ function withoutTrailingSlash(path: string) {
 type ExtractPathsByMethod<
   TApp extends BunicornApp<any, any[]>,
   Method extends BaseMethod
-> = TApp extends BunicornApp<any, infer Routes>
-  ? Extract<Routes extends (infer R)[] ? R : never, { method: Method }>["path"]
-  : never;
+> =
+  TApp extends BunicornApp<any, infer Routes>
+    ? Extract<
+        Routes extends (infer R)[] ? R : never,
+        { method: Method }
+      >["path"]
+    : never;
 
 type FindRouteByPathAndMethod<
   TApp extends BunicornApp<any, any[]> = any,
   Path extends BasePath = any,
   Method extends BaseMethod = any
-> = TApp extends BunicornApp<any, infer Routes>
-  ? Extract<
-      Routes extends (infer R)[] ? R : never,
-      { path: Path; method: Method }
-    >
-  : never;
+> =
+  TApp extends BunicornApp<any, infer Routes>
+    ? Extract<
+        Routes extends (infer R)[] ? R : never,
+        { path: Path; method: Method }
+      >
+    : never;
 
 type NonEmptyKeys<T> = {
-  [K in keyof T]: {} extends T[K]
-    ? never
-    : T[K] extends never
+  [K in keyof T]: T[K] extends never
     ? never
     : T[K] extends undefined
-    ? never
-    : K;
+      ? never
+      : {} extends T[K]
+        ? T[K] extends object
+          ? keyof T[K] extends never
+            ? never
+            : K
+          : K
+        : K;
 }[keyof T];
 
 type FilterNeverAndEmpty<T> = Pick<T, NonEmptyKeys<T>>;
 
-type GetInputFromSchema<TSchema extends BunicornSchema | never> =
-  TSchema extends BunicornSchema ? __InferBunicornInput<TSchema> : never;
-
 type BaseConfig<TRoute extends Route<any, any, any, any>> =
   FilterNeverAndEmpty<{
     params: __ExtractParams<TRoute["path"]>;
-    input: GetInputFromSchema<TRoute["input"]>;
+    input: __InferBunicornInput<TRoute["input"]>;
   }> & {
     with?: Omit<RequestInit, "body" | "method">;
     query?: Record<string, string>;
@@ -61,7 +66,7 @@ type BaseConfig<TRoute extends Route<any, any, any, any>> =
 
 type Config<
   TRoute extends Route<any, any, any, any>,
-  Config extends BaseConfig<any> = BaseConfig<TRoute>
+  Config extends BaseConfig<TRoute> = BaseConfig<TRoute>
 > = Config extends { input: infer TInput }
   ? Omit<Config, "input"> & ({ input: TInput } | { formData: FormData })
   : Config;
@@ -129,9 +134,10 @@ export default function bunicornClient<App extends BunicornApp<any>>({
 
   function handler(
     path: string,
-    config: Config<any>,
+    _config: any,
     method: BaseMethod
   ): BunicornPromise<BunicornResult<any>, any> {
+    const config = _config as Config<any>;
     return new BunicornPromise(async resolve => {
       let url = withoutTrailingSlash(basePath) + path;
 
