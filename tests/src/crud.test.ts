@@ -1,5 +1,5 @@
 import { type Server } from "bun";
-import { test, expect, beforeAll, afterAll, describe } from "bun:test";
+import { expect, beforeAll, afterAll, describe, it } from "bun:test";
 import bunicornClient, {
   BunicornError,
   BunicornNotFoundError,
@@ -18,7 +18,7 @@ afterAll(() => {
   server.stop(true);
 });
 
-test("api tests", async end => {
+describe("api tests", () => {
   let giveToken = false;
   const client = bunicornClient<AppType>({
     basePath: "http://localhost:8000",
@@ -31,7 +31,7 @@ test("api tests", async end => {
     }
   });
 
-  describe("header tests", async () => {
+  it("header tests", async () => {
     const r1 = await client.get("/api/todos", {});
     expect(r1.success).toBe(false);
     assert(r1.success === false);
@@ -50,7 +50,7 @@ test("api tests", async end => {
 
   let todoId: number;
 
-  describe("validation", async () => {
+  it("validation", async () => {
     // as any to avoid type error, because we want to get error
     const r1 = await client.post("/api/todos", { input: {} as any });
     assert(r1.success === false);
@@ -79,7 +79,7 @@ test("api tests", async end => {
     expect(r2.data.completed).toBe(false);
   });
 
-  describe("get tests", async () => {
+  it("get tests", async () => {
     const r1 = await client
       .get("/api/todos/:id", {
         params: { id: todoId.toString() }
@@ -116,6 +116,4 @@ test("api tests", async end => {
     });
     expect(r3.response.headers.get("content-type")).toBe("application/json");
   });
-
-  end();
 });
