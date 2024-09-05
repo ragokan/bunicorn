@@ -6,3 +6,4 @@ dist
 bun.lockb
 docs/.vitepress/cache
 docs/docs/.vitepress/cache/
+.nx

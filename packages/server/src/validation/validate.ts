@@ -11,11 +11,14 @@ export function __validate<T extends BunicornSchema>(
 ) {
   // Check is Valibot
   if ("schema" in schema) {
-    const result = (schema as v.BaseSchema)._parse(input, opts);
+    const result = (schema as v.BaseSchema<any, any, any>)._run(
+      input as v.Dataset<unknown, never>,
+      opts
+    );
     if (result.issues) {
       throw new BunicornValidationError(__formatIssues(result.issues));
     }
-    return result.output;
+    return result.value;
   }
   // Check is Zod
   if ("safeParse" in schema) {
@@ -53,5 +56,5 @@ function __rawSchemaWrapper<Output>(schema: RawSchema<Output>) {
       }
     },
     schema: {}
-  } as unknown as v.BaseSchema;
+  } as unknown as v.BaseSchema<any, any, any>;
 }

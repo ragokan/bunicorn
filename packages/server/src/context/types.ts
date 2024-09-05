@@ -21,7 +21,7 @@ export interface __CreateContextArgs<TPath extends BasePath> {
 export interface BuniResponseInit {
   headers?: Record<string, string>;
   /** @default 200 */
-  status?: number | bigint;
+  status?: number;
 
   /** @default "OK" */
   statusText?: string;

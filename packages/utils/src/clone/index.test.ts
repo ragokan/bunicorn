@@ -38,7 +38,7 @@ describe("simple clone test", () => {
   function checkDeepEquality(key: keyof typeof original) {
     expect(cloned[key]).not.toBe(original[key]);
     expect(cloned[key]).toEqual(original[key]);
-    expect(cloned[key]).toMatchObject(original[key]);
+    expect(cloned[key]).toMatchObject(original[key] as object);
     expect(cloned[key]).toStrictEqual(original[key]);
   }
 

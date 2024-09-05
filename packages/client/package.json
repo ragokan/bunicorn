@@ -8,7 +8,7 @@
     "build": "tsc && bun run build.js",
     "lint:format": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --ext .ts,.tsx --fix",
     "prebuild": "rm -rf dist",
-    "deps:update": "ncu -u"
+    "deps:update": "ncu -u -p bun --peer"
   },
   "source": "src/index.ts",
   "main": "dist/index.js",

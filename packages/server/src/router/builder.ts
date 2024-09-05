@@ -42,7 +42,9 @@ export class RouteBuilder<
 
   public input<TSchema extends BunicornSchema>(
     schema: TSchema,
-    ...options: TSchema extends vBaseSchema ? [options?: __ValidateOptions] : []
+    ...options: TSchema extends vBaseSchema<any, any, any>
+      ? [options?: __ValidateOptions]
+      : []
   ) {
     this.route.input = schema;
     this.route.__inputOptions = options?.[0];
@@ -54,7 +56,9 @@ export class RouteBuilder<
 
   public output<TSchema extends BunicornSchema>(
     schema: TSchema,
-    ...options: TSchema extends vBaseSchema ? [options?: __ValidateOptions] : []
+    ...options: TSchema extends vBaseSchema<any, any, any>
+      ? [options?: __ValidateOptions]
+      : []
   ) {
     this.route.output = schema;
     this.route.__outputOptions = options?.[0];

@@ -104,15 +104,11 @@ __BunicornContext.prototype.ok = function (this: __PrivateBunicornContext) {
   }) as any;
 };
 
-__BunicornContext.prototype.raw = function <
-  T extends
-    | ReadableStream
-    | BlobPart
-    | BlobPart[]
-    | FormData
-    | URLSearchParams
-    | null
->(this: __PrivateBunicornContext, body: T, init: BuniResponseInit = {}) {
+__BunicornContext.prototype.raw = function <T extends BodyInit | null>(
+  this: __PrivateBunicornContext,
+  body: T,
+  init: BuniResponseInit = {}
+) {
   this.applyHeaders(init);
   return new Response(body, init) as unknown as T;
 };

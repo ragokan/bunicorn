@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "lerna run dev --stream",
     "build": "lerna run build --stream",
-    "deps:update": "ncu -u && lerna run deps:update --stream",
+    "deps:update": "ncu -u -p bun --peer && lerna run deps:update --stream",
     "prepublish": "bun run test",
     "publish": "lerna publish --no-private",
     "dev:example": "lerna run example:dev --scope @bunicorn/example",
@@ -26,16 +26,17 @@
     "tests"
   ],
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.9.1",
-    "@typescript-eslint/parser": "^6.9.1",
-    "bun-types": "^1.0.8",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "lerna": "^7.4.2",
-    "prettier": "^3.0.3",
-    "sherif": "^0.4.1",
-    "typescript": "^5.2.2"
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "bun-types": "^1.1.26",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "lerna": "^8.1.8",
+    "npm-check-updates": "^17.1.1",
+    "prettier": "^3.3.3",
+    "sherif": "^1.0.0",
+    "typescript": "^5.5.4"
   },
-  "packageManager": "bun@1.0.9"
+  "packageManager": "bun@1.1.26"
 }
