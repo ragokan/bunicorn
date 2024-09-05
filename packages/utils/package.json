@@ -1,6 +1,6 @@
 {
   "name": "@bunicorn/utils",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Utils that help you while coding",
   "type": "module",
   "private": false,
