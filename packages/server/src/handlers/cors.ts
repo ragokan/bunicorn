@@ -3,10 +3,11 @@ import { createHandler } from "./index.ts";
 
 export interface CorsHandlerArgs {
   origins?: string[];
+  allowCredentials?: boolean;
 }
 
 export default function corsHandler(args: CorsHandlerArgs = {}) {
-  const { origins } = args;
+  const { origins, allowCredentials } = args;
   const originRegexes = origins?.map(origin => new RegExp(origin));
 
   return createHandler(app => {
@@ -17,7 +18,7 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
       regexp: new RegExp(`^${matchAll}`),
       async handler(ctx) {
         if (!originRegexes) {
-          return getSuccessResponse();
+          return getSuccessResponse({ allowCredentials });
         }
         const origin = ctx.request.headers.get("Origin");
         if (!origin) {
@@ -27,21 +28,32 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
         if (!match) {
           return getFailureResponse();
         }
-        return getSuccessResponse([origin]);
+        return getSuccessResponse({ origins: [origin], allowCredentials });
       }
     });
   });
 }
 
-function getSuccessResponse(origins?: string[]) {
+function getSuccessResponse({
+  origins,
+  allowCredentials
+}: {
+  origins?: string[];
+  allowCredentials?: boolean;
+}) {
+  const headers: HeadersInit = {
+    "Access-Control-Allow-Origin": origins ? origins.join(", ") : "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization"
+  };
+  if (allowCredentials) {
+    headers["Access-Control-Allow-Credentials"] = "true";
+  }
+
   return new Response(null, {
     status: 204,
     statusText: "No Content",
-    headers: {
-      "Access-Control-Allow-Origin": origins ? origins.join(", ") : "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
-    }
+    headers: headers
   });
 }
 function getFailureResponse(origins?: string[]) {
