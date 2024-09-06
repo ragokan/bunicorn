@@ -5,11 +5,11 @@
 	"type": "module",
 	"scripts": {},
 	"dependencies": {
-		"@bunicorn/server": "workspace:*",
 		"@bunicorn/client": "workspace:*",
-		"@bunicorn/utils": "workspace:*",
 		"@bunicorn/example": "workspace:*",
-		"zod": "^3.23.8",
-		"valibot": "^0.41.0"
+		"@bunicorn/server": "workspace:*",
+		"@bunicorn/utils": "workspace:*",
+		"valibot": "^0.41.0",
+		"zod": "^3.23.8"
 	}
 }

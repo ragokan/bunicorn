@@ -6,6 +6,6 @@
     "source.organizeImports.biome": "explicit"
   },
   "files.exclude": {
-    "**/.eslintcache": true
+    ".nx": true,
   }
 }
