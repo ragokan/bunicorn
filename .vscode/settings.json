@@ -1,12 +1,10 @@
 {
   // Format on save, so uses eslint, too
   "editor.formatOnSave": true,
-
   // This is called on save
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.organizeImports.biome": "explicit"
   },
-
   "files.exclude": {
     "**/.eslintcache": true
   }

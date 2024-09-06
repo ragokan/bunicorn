@@ -1,19 +1,19 @@
 {
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "clean"]
-      }
-    }
-  },
-  "targetDefaults": {
-    "build": {
-      "dependsOn": ["clean", "^build"],
-      "outputs": ["{projectRoot}/dist"]
-    },
-    "clean": {
-      "dependsOn": ["^clean"]
-    }
-  }
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "nx/tasks-runners/default",
+			"options": {
+				"cacheableOperations": ["build", "clean"]
+			}
+		}
+	},
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["clean", "^build"],
+			"outputs": ["{projectRoot}/dist"]
+		},
+		"clean": {
+			"dependsOn": ["^clean"]
+		}
+	}
 }

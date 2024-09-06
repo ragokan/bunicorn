@@ -1,5 +1,5 @@
 {
-  "nodeModulesDir": true,
-  "lock": false,
-  "unstable": ["byonm"]
+	"nodeModulesDir": true,
+	"lock": false,
+	"unstable": ["byonm"]
 }

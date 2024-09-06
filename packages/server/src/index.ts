@@ -1,6 +1,6 @@
 declare global {
-  // Which is true for the current build
-  export const IS_BUN: boolean;
+	// Which is true for the current build
+	export const IS_BUN: boolean;
 }
 
 export * from "./app/index.ts";

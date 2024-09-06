@@ -1,108 +1,110 @@
 import {
-  BunicornApp,
-  BunicornError,
-  BunicornNotFoundError,
-  RB,
-  RouteBuilder,
-  dependency,
-  groupRoutes
+	BunicornApp,
+	BunicornError,
+	BunicornNotFoundError,
+	RB,
+	RouteBuilder,
+	dependency,
+	groupRoutes,
 } from "@bunicorn/server";
 import { randomNumber } from "@bunicorn/utils";
 import z from "zod";
 
 const todoSchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  completed: z.boolean()
+	id: z.number(),
+	title: z.string(),
+	completed: z.boolean(),
 });
 const createTodoSchema = todoSchema.pick({ title: true });
 const updateTodoSchema = todoSchema
-  .pick({ title: true, completed: true })
-  .optional();
+	.pick({ title: true, completed: true })
+	.optional();
 
 const todoStore = dependency(() => {
-  const todos: z.infer<typeof todoSchema>[] = [];
+	const todos: z.infer<typeof todoSchema>[] = [];
 
-  function addTodo(title: string) {
-    const todo = { id: randomNumber(), title, completed: false };
-    todos.push(todo);
-    return todo;
-  }
+	function addTodo(title: string) {
+		const todo = { id: randomNumber(), title, completed: false };
+		todos.push(todo);
+		return todo;
+	}
 
-  return { todos, addTodo };
+	return { todos, addTodo };
 });
 
 const baseApp = new BunicornApp({ basePath: "/api" });
 
-const routeBuilder = new RB().use(ctx => {
-  if (ctx.getHeader("x-token") !== "123") {
-    throw new BunicornError("Unique token is required", 401);
-  }
-  return { token: "123" };
+const routeBuilder = new RB().use((ctx) => {
+	if (ctx.getHeader("x-token") !== "123") {
+		throw new BunicornError("Unique token is required", 401);
+	}
+	return { token: "123" };
 });
 
-const getTodos = routeBuilder.output(todoSchema.array()).get("/", ctx => {
-  const todos = ctx.get(todoStore).todos;
-  return ctx.json(todos);
+const getTodos = routeBuilder.output(todoSchema.array()).get("/", (ctx) => {
+	const todos = ctx.get(todoStore).todos;
+	return ctx.json(todos);
 });
 
-const getTodo = routeBuilder.output(todoSchema).get("/:id", ctx => {
-  const todos = ctx.get(todoStore).todos;
-  const todo = todos.find(todo => todo.id === parseInt(ctx.params.id));
-  if (!todo) {
-    throw new BunicornNotFoundError("Todo not found");
-  }
-  return ctx.json(todo);
+const getTodo = routeBuilder.output(todoSchema).get("/:id", (ctx) => {
+	const todos = ctx.get(todoStore).todos;
+	const todo = todos.find((todo) => todo.id === parseInt(ctx.params.id));
+	if (!todo) {
+		throw new BunicornNotFoundError("Todo not found");
+	}
+	return ctx.json(todo);
 });
 
 const createTodoRoute = new RouteBuilder()
-  .use(() => ({ a: 1 }))
-  .input(createTodoSchema)
-  .output(todoSchema)
-  .post("/", async ctx => {
-    const body = await ctx.getBody();
-    const todo = ctx.get(todoStore).addTodo(body.title);
-    return ctx.json(todo, { status: 201 });
-  });
+	.use(() => ({ a: 1 }))
+	.input(createTodoSchema)
+	.output(todoSchema)
+	.post("/", async (ctx) => {
+		const body = await ctx.getBody();
+		const todo = ctx.get(todoStore).addTodo(body.title);
+		return ctx.json(todo, { status: 201 });
+	});
 
 const updateTodoRoute = routeBuilder
-  .input(updateTodoSchema)
-  .output(todoSchema)
-  .patch("/:id", async ctx => {
-    const body = await ctx.getBody();
-    const todo = ctx
-      .get(todoStore)
-      .todos.find(todo => todo.id === parseInt(ctx.params.id));
-    if (!todo) {
-      throw new BunicornNotFoundError("Todo not found");
-    }
-    Object.assign(todo, body);
-    return ctx.json(todo);
-  });
+	.input(updateTodoSchema)
+	.output(todoSchema)
+	.patch("/:id", async (ctx) => {
+		const body = await ctx.getBody();
+		const todo = ctx
+			.get(todoStore)
+			.todos.find((todo) => todo.id === parseInt(ctx.params.id));
+		if (!todo) {
+			throw new BunicornNotFoundError("Todo not found");
+		}
+		Object.assign(todo, body);
+		return ctx.json(todo);
+	});
 
 const deleteTodoRoute = routeBuilder
-  .output(v => {
-    if (!v || typeof v !== "object" || !("success" in v)) {
-      throw new BunicornError("Invalid response for delete");
-    }
-    return v as { success: boolean };
-  })
-  .delete("/:id", ctx => {
-    const todos = ctx.get(todoStore).todos;
-    const index = todos.findIndex(todo => todo.id === parseInt(ctx.params.id));
-    if (index === -1) {
-      throw new BunicornNotFoundError("Todo not found");
-    }
-    todos.splice(index, 1);
-    return ctx.json({ success: true });
-  });
+	.output((v) => {
+		if (!v || typeof v !== "object" || !("success" in v)) {
+			throw new BunicornError("Invalid response for delete");
+		}
+		return v as { success: boolean };
+	})
+	.delete("/:id", (ctx) => {
+		const todos = ctx.get(todoStore).todos;
+		const index = todos.findIndex(
+			(todo) => todo.id === parseInt(ctx.params.id),
+		);
+		if (index === -1) {
+			throw new BunicornNotFoundError("Todo not found");
+		}
+		todos.splice(index, 1);
+		return ctx.json({ success: true });
+	});
 
 const todoRoutes = groupRoutes("/todos", [
-  getTodos,
-  getTodo,
-  createTodoRoute,
-  updateTodoRoute,
-  deleteTodoRoute
+	getTodos,
+	getTodo,
+	createTodoRoute,
+	updateTodoRoute,
+	deleteTodoRoute,
 ]);
 
 export const app = baseApp.addRoutes(todoRoutes);

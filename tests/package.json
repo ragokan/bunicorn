@@ -1,15 +1,15 @@
 {
-  "name": "@bunicorn/tests",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {},
-  "dependencies": {
-    "@bunicorn/server": "workspace:*",
-    "@bunicorn/client": "workspace:*",
-    "@bunicorn/utils": "workspace:*",
-    "@bunicorn/example": "workspace:*",
-    "zod": "^3.23.8",
-    "valibot": "^0.41.0"
-  }
+	"name": "@bunicorn/tests",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {},
+	"dependencies": {
+		"@bunicorn/server": "workspace:*",
+		"@bunicorn/client": "workspace:*",
+		"@bunicorn/utils": "workspace:*",
+		"@bunicorn/example": "workspace:*",
+		"zod": "^3.23.8",
+		"valibot": "^0.41.0"
+	}
 }

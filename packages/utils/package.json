@@ -1,44 +1,38 @@
 {
-  "name": "@bunicorn/utils",
-  "version": "0.0.20",
-  "description": "Utils that help you while coding",
-  "type": "module",
-  "private": false,
-  "scripts": {
-    "build": "tsc && bun run build.js",
-    "lint:format": "prettier --loglevel silent --write --cache \"**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}\" && eslint . --cache --fix",
-    "prebuild": "rm -rf dist",
-    "deps:update": "ncu -u -p bun --peer"
-  },
-  "source": "src/index.ts",
-  "main": "dist/index.cjs",
-  "unpkg": "dist/index.global.js",
-  "jsdelivr": "dist/index.global.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "keywords": [
-    "bunicorn",
-    "bun",
-    "utils",
-    "utility"
-  ],
-  "homepage": "https://github.com/ragokan/bunicorn",
-  "author": "ragokan",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ragokan/bunicorn.git",
-    "directory": "packages/utils"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@bunicorn/utils",
+	"version": "0.0.20",
+	"description": "Utils that help you while coding",
+	"type": "module",
+	"private": false,
+	"scripts": {
+		"build": "tsc && bun run build.js",
+		"prebuild": "rm -rf dist",
+		"deps:update": "ncu -u -p bun --peer"
+	},
+	"source": "src/index.ts",
+	"main": "dist/index.cjs",
+	"unpkg": "dist/index.global.js",
+	"jsdelivr": "dist/index.global.js",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"keywords": ["bunicorn", "bun", "utils", "utility"],
+	"homepage": "https://github.com/ragokan/bunicorn",
+	"author": "ragokan",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ragokan/bunicorn.git",
+		"directory": "packages/utils"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

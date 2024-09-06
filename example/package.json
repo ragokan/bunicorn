@@ -1,17 +1,17 @@
 {
-  "name": "@bunicorn/example",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "example:dev": "bun run --watch src/index.ts",
-    "example:start": "bun run src/index.ts"
-  },
-  "dependencies": {
-    "@bunicorn/client": "workspace:*",
-    "@bunicorn/server": "workspace:*",
-    "@bunicorn/utils": "workspace:*",
-    "valibot": "^0.41.0",
-    "zod": "^3.23.8"
-  }
+	"name": "@bunicorn/example",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"example:dev": "bun run --watch src/index.ts",
+		"example:start": "bun run src/index.ts"
+	},
+	"dependencies": {
+		"@bunicorn/client": "workspace:*",
+		"@bunicorn/server": "workspace:*",
+		"@bunicorn/utils": "workspace:*",
+		"valibot": "^0.41.0",
+		"zod": "^3.23.8"
+	}
 }
