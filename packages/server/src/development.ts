@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { z } from "zod";
 import { BunicornApp } from "./app/index.ts";
 import staticHandler from "./handlers/static.ts";

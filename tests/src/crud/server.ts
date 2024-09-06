@@ -18,7 +18,7 @@ const todoSchema = z.object({
 const createTodoSchema = todoSchema.pick({ title: true });
 const updateTodoSchema = todoSchema
 	.pick({ title: true, completed: true })
-	.optional();
+	.partial();
 
 const todoStore = dependency(() => {
 	const todos: z.infer<typeof todoSchema>[] = [];

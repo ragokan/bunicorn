@@ -13,7 +13,7 @@
 			"style": {
 				"noNonNullAssertion": "off",
 				"useNumberNamespace": "off",
-				"noUselessElse": { "fix": "safe", "level": "error" }
+				"noUselessElse": { "fix": "unsafe", "level": "error" }
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
