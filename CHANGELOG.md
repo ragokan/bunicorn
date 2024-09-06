@@ -1,5 +1,15 @@
 # Change Log
 
+## [0.0.21] - 2024-09-06
+
+- Update all deps to the latest
+- Fix Valibot errors because of breaking API changes
+- Fix old type errors
+
+## [0.0.20] - 2024-09-04
+
+- Update deps
+
 ## [0.0.19] - 2023-11-06
 
 - Update deps and types.
