@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.22] - 2024-09-08
+
+- Add InferDependencyType to the dependency injection package
+
 ## [0.0.21] - 2024-09-06
 
 - Update all deps to the latest
