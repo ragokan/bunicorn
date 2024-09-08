@@ -11,7 +11,11 @@ export interface __DependencyStore {
 	get: GetDependencyFn;
 }
 
-export type InferDependencyType<T> = T extends Dependency<infer U> ? U : never;
+export type InferDependencyType<T> = T extends Dependency<infer U>
+	? U extends Promise<infer V>
+		? V
+		: U
+	: never;
 
 export function dependency<T>(create: __CreateFn<T>): Dependency<T> {
 	return {
