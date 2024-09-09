@@ -18,7 +18,7 @@ export async function createDocument(
 			scheme: "bearer",
 			bearerFormat: "JWT",
 			description:
-				"JWT Token. Add the prefix such as 'Bearer' before the token.",
+				"JWT Token. It automacially adds the prefix Bearer before the token.",
 		},
 	};
 
