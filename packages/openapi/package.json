@@ -1,0 +1,59 @@
+{
+	"name": "@bunicorn/openapi",
+	"version": "0.0.22",
+	"description": "Openapi generator for server",
+	"type": "module",
+	"private": false,
+	"scripts": {
+		"build": "tsc && bun run build.js",
+		"dev": "bun run --hot --watch src/development.ts",
+		"prebuild": "rm -rf dist",
+		"deps:update": "ncu -u -p bun --peer"
+	},
+	"source": "src/index.ts",
+	"main": "dist/index.cjs",
+	"unpkg": "dist/index.global.js",
+	"jsdelivr": "dist/index.global.js",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"keywords": ["bunicorn", "bun", "openapi"],
+	"homepage": "https://github.com/ragokan/bunicorn",
+	"author": "ragokan",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ragokan/bunicorn.git",
+		"directory": "packages/openapi"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"@bunicorn/server": "workspace:*"
+	},
+	"devDependencies": {
+		"@gcornut/valibot-json-schema": "^0.41.1",
+		"openapi-types": "^12.1.3",
+		"zod-to-json-schema": "^3.23.2"
+	},
+	"peerDependencies": {
+		"valibot": "^0.41.0",
+		"zod": "^3.23.8"
+	},
+	"peerDependenciesMeta": {
+		"valibot": {
+			"optional": true
+		},
+		"zod": {
+			"optional": true
+		}
+	}
+}

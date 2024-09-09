@@ -13,7 +13,8 @@
 			"style": {
 				"noNonNullAssertion": "off",
 				"useNumberNamespace": "off",
-				"noUselessElse": { "fix": "unsafe", "level": "error" }
+				"noUselessElse": { "fix": "unsafe", "level": "error" },
+				"useBlockStatements": { "fix": "unsafe", "level": "warn" }
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
@@ -25,6 +26,12 @@
 			"complexity": {
 				"noForEach": "off",
 				"noBannedTypes": "off"
+			},
+			"nursery": {
+				"useImportExtensions": { "fix": "unsafe", "level": "error" },
+				"noEmptyBlock": { "level": "error" },
+				"noDuplicateElseIf": { "level": "error" },
+				"noDuplicateJsonKeys": { "level": "error" }
 			}
 		}
 	},

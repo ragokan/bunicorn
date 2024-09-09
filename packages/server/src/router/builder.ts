@@ -7,7 +7,7 @@ import type {
 	__InferBunicornOutput,
 	__ValidateOptions,
 } from "../validation/types.ts";
-import type { Route } from "./route.ts";
+import type { MetaProperties, Route } from "./route.ts";
 import type { BaseMethod, BasePath, __BuiltRoute } from "./types.ts";
 
 export class RouteBuilder<
@@ -65,6 +65,14 @@ export class RouteBuilder<
 		return this.copy() as unknown as Omit<
 			RouteBuilder<TContextResults, TInput, TSchema>,
 			"output"
+		>;
+	}
+
+	public meta(meta: MetaProperties) {
+		this.route.meta = Object.assign({}, meta, this.route.meta ?? {});
+		return this.copy() as unknown as Omit<
+			RouteBuilder<TContextResults, TInput, TOutput>,
+			"meta"
 		>;
 	}
 

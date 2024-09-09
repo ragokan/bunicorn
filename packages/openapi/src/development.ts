@@ -1,7 +1,6 @@
+import { BunicornApp, RouteBuilder } from "@bunicorn/server";
+import staticHandler from "@bunicorn/server/staticHandler";
 import { z } from "zod";
-import { BunicornApp } from "./app/index.ts";
-import staticHandler from "./handlers/static.ts";
-import { RouteBuilder } from "./router/builder.ts";
 
 const app = new BunicornApp({
 	basePath: "/api",

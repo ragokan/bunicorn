@@ -10,7 +10,7 @@ export function __validate<T extends BunicornSchema>(
 	opts?: any,
 ) {
 	// Check is Valibot
-	if ("schema" in schema) {
+	if ("async" in schema) {
 		const result = (schema as v.BaseSchema<any, any, any>)._run(
 			input as v.Dataset<unknown, never>,
 			opts,
@@ -21,7 +21,7 @@ export function __validate<T extends BunicornSchema>(
 		return result.value;
 	}
 	// Check is Zod
-	if ("safeParse" in schema) {
+	if ("_def" in schema) {
 		const result = (schema as unknown as z.ZodSchema).safeParse(input);
 		if (!result.success) {
 			throw new BunicornValidationError(__formatIssues(result.error.issues));

@@ -16,6 +16,7 @@ export interface Route<
 	output?: TOutput;
 	__inputOptions?: __ValidateOptions;
 	__outputOptions?: __ValidateOptions;
+	meta?: MetaProperties;
 }
 
 export type __AddBasePathTo<
@@ -36,3 +37,11 @@ export type __AddBasePathToAll<
 > = {
 	[key in keyof TRoutes]: __AddBasePathTo<TBasePath, TRoutes[key]>;
 };
+
+export interface MetaProperties {
+	summary?: string;
+	description?: string;
+	deprecated?: boolean;
+	auth?: boolean;
+	group?: string;
+}
