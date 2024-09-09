@@ -16,6 +16,8 @@ const formattedIssueSchema: OpenAPIV3.SchemaObject = {
 
 // Define the validation error response schema
 export const validationErrorSchema: OpenAPIV3.SchemaObject = {
+	description:
+		"Validation error response from Zod, Valibot or other validation options. It is formatted by Bunicorn to send exact response always.",
 	type: "object",
 	properties: {
 		message: { type: "string", enum: ["Validation Error"] },

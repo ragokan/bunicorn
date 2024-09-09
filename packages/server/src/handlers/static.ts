@@ -18,6 +18,7 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
 			method: "GET",
 			middlewares: [],
 			regexp: new RegExp(`^${finalPath}/${matchAll}`),
+			meta: { hidden: true },
 			async handler(ctx: BunicornContext) {
 				try {
 					const target = __getPath(ctx.url).replace(finalPath, directory);

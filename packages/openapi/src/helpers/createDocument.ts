@@ -17,112 +17,122 @@ export async function createDocument(
 			type: "http",
 			scheme: "bearer",
 			bearerFormat: "JWT",
+			description:
+				"JWT Token. Add the prefix such as 'Bearer' before the token.",
 		},
 	};
 
-	for (const method of httpMethods) {
-		const endpoints = app.routes[method];
-		if (endpoints) {
-			for (const endpoint of endpoints) {
-				const apiPath = endpoint.path
-					.replace(/:(\w+)/g, "{$1}")
-					.replace(/\.\.\.(\w+)/g, "{$1}");
-				if (!paths[apiPath]) {
-					paths[apiPath] = {};
-				}
+	// Define the global schemas
+	const schemas: OpenAPIV3.ComponentsObject["schemas"] = {
+		ValidationError: validationErrorSchema,
+	};
 
-				const meta = endpoint.meta ?? {};
-				const operation: Partial<OpenAPIV3.OperationObject> = {
-					summary: meta.summary ?? `${method as string} ${apiPath}`,
-					description: meta.description,
-					deprecated: meta.deprecated,
+	for (const method of httpMethods) {
+		const methodRoutes = app.routes[method];
+		for (const route of methodRoutes) {
+			if (route.meta?.hidden) {
+				continue;
+			}
+			const apiPath = route.path
+				.replace(/:(\w+)/g, "{$1}")
+				.replace(/\.\.\.(\w+)/g, "{$1}");
+			if (!paths[apiPath]) {
+				paths[apiPath] = {};
+			}
+
+			const meta = route.meta ?? {};
+			const operation: Partial<OpenAPIV3.OperationObject> = {
+				summary: meta.summary ?? `${method as string} ${apiPath}`,
+				description: meta.description,
+				deprecated: meta.deprecated,
+			};
+
+			if (meta.auth === true) {
+				operation.security = [{ bearerAuth: [] }];
+			}
+
+			const group = meta.group;
+			if (group && group !== "default") {
+				operation.tags = [group];
+				tags.add(group);
+			}
+
+			// Handle optional input
+			if (route.input && method !== "GET") {
+				const inputSchema = await getSchema(route.input);
+				const contentType = getContentType(inputSchema);
+				operation.requestBody = {
+					content: {
+						[contentType]: {
+							schema: inputSchema,
+						},
+					},
 				};
 
-				if (meta.auth === true) {
-					operation.security = [{ bearerAuth: [] }];
-				}
+				// Add validation error response
+				operation.responses = {
+					...(operation.responses || {}),
+					"403": {
+						description: "Validation Error",
+						content: {
+							"application/json": {
+								schema: {
+									$ref: "#/components/schemas/ValidationError",
+								},
+							},
+						},
+					},
+				};
+			}
 
-				const group = meta.group;
-				if (group && group !== "default") {
-					operation.tags = [group];
-					tags.add(group);
-				}
-
-				// Handle optional input
-				if (endpoint.input && method !== "GET") {
-					const inputSchema = await getSchema(endpoint.input);
-					const contentType = getContentType(inputSchema);
-					operation.requestBody = {
+			// Handle optional output
+			if (route.output) {
+				const outputSchema = await getSchema(route.output);
+				const contentType = getContentType(outputSchema);
+				operation.responses = {
+					...(operation.responses || {}),
+					"200": {
+						description: "Successful response",
 						content: {
 							[contentType]: {
-								schema: inputSchema,
+								schema: outputSchema,
 							},
 						},
-					};
-
-					// Add validation error response
-					operation.responses = {
-						...(operation.responses || {}),
-						"403": {
-							description: "Validation Error",
-							content: {
-								"application/json": {
-									schema: validationErrorSchema,
-								},
-							},
-						},
-					};
-				}
-
-				// Handle optional output
-				if (endpoint.output) {
-					const outputSchema = await getSchema(endpoint.output);
-					const contentType = getContentType(outputSchema);
-					operation.responses = {
-						...(operation.responses || {}),
-						"200": {
-							description: "Successful response",
-							content: {
-								[contentType]: {
-									schema: outputSchema,
-								},
-							},
-						},
-					};
-				} else if (!operation.responses) {
-					operation.responses = {
-						"200": {
-							description: "Successful response with no content",
-						},
-					};
-				}
-
-				operation.parameters = [];
-
-				// Handle path parameters including ...key
-				const pathParams = endpoint.path.match(/(?::|\.\.\.)(\w+)/g);
-				if (pathParams) {
-					for (const param of pathParams) {
-						const isWildcard = param.startsWith("...");
-						const paramName = param.replace(/^[:.]*/g, "");
-						operation.parameters.push({
-							name: paramName,
-							in: "path",
-							required: true,
-							schema: isWildcard
-								? { type: "string", pattern: ".*" }
-								: { type: "string" },
-							description: isWildcard
-								? "Wildcard parameter that can match multiple path segments"
-								: undefined,
-						});
-					}
-				}
-
-				(paths[apiPath] as Record<string, object>)[
-					(method as string).toLowerCase()
-				] = operation;
+					},
+				};
+			} else if (!operation.responses) {
+				operation.responses = {
+					"200": {
+						description: "Successful response with no content",
+					},
+				};
 			}
+
+			operation.parameters = [];
+
+			// Handle path parameters including ...key
+			const pathParams = route.path.match(/(?::|\.\.\.)(\w+)/g);
+			if (pathParams) {
+				for (const param of pathParams) {
+					const isWildcard = param.startsWith("...");
+					const paramName = param.replace(/^[:.]*/g, "");
+					operation.parameters.push({
+						name: paramName,
+						in: "path",
+						required: true,
+						schema: isWildcard
+							? { type: "string", pattern: ".*" }
+							: { type: "string" },
+						description: isWildcard
+							? "Wildcard parameter that can match multiple path segments"
+							: undefined,
+					});
+				}
+			}
+
+			(paths[apiPath] as Record<string, object>)[
+				(method as string).toLowerCase()
+			] = operation;
 		}
 	}
 
@@ -136,7 +146,10 @@ export async function createDocument(
 		paths,
 		tags: Array.from(tags).map((tag) => ({ name: tag })),
 		servers: [{ url: args.apiUrl, description: "API server" }],
-		components: { securitySchemes },
+		components: {
+			securitySchemes,
+			schemas,
+		},
 	};
 
 	return openAPIDocument;

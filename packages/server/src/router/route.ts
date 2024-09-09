@@ -44,4 +44,5 @@ export interface MetaProperties {
 	deprecated?: boolean;
 	auth?: boolean;
 	group?: string;
+	hidden?: boolean;
 }
