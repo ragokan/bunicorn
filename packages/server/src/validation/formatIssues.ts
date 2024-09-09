@@ -17,7 +17,7 @@ export function __formatIssues(
 	return issues.map((issue) => ({
 		message: issue.message,
 		validation:
-			(issue as v.BaseIssue<any>).kind ?? (issue as z.ZodIssue).code ?? "",
+			(issue as z.ZodIssue).code ?? (issue as v.BaseIssue<any>).kind ?? "",
 		path:
 			issue.path?.map((k) => (__isPathItem(k) ? k.key : (k as string))) ?? [],
 	}));
