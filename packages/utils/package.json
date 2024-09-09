@@ -1,6 +1,6 @@
 {
 	"name": "@bunicorn/utils",
-	"version": "0.0.22",
+	"version": "0.0.23",
 	"description": "Utils that help you while coding",
 	"type": "module",
 	"private": false,
@@ -23,7 +23,12 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"keywords": ["bunicorn", "bun", "utils", "utility"],
+	"keywords": [
+		"bunicorn",
+		"bun",
+		"utils",
+		"utility"
+	],
 	"homepage": "https://github.com/ragokan/bunicorn",
 	"author": "ragokan",
 	"license": "MIT",
