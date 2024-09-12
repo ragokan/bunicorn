@@ -41,7 +41,7 @@ __BunicornContext.prototype.getText = async function (
 __BunicornContext.prototype.getBody = async function (
 	this: __PrivateBunicornContext & { __body: any; _route: Route },
 ) {
-	// Cache body.
+	// Cache body
 	if (this.__body !== undefined) {
 		return this.__body;
 	}
@@ -61,11 +61,7 @@ __BunicornContext.prototype.getBody = async function (
 		_body = await request.text();
 	}
 
-	if (!route.input) {
-		return (this.__body = _body);
-	}
-
-	return (this.__body = __validate(route.input, _body));
+	return (this.__body = route.input ? __validate(route.input, _body) : _body);
 };
 
 __BunicornContext.prototype.getSearchParams = function (
@@ -73,10 +69,7 @@ __BunicornContext.prototype.getSearchParams = function (
 	schema?: BunicornSchema,
 ) {
 	const result = (this.__searchParams ??= __getSearchParams(this.url));
-	if (schema) {
-		return __validate(schema, result);
-	}
-	return result;
+	return schema ? __validate(schema, result) : result;
 };
 
 __BunicornContext.prototype.getHeader = function (
@@ -92,8 +85,7 @@ __BunicornContext.prototype.setHeader = function (
 	name: string,
 	value: string,
 ) {
-	this.resultHeaders ??= {};
-	this.resultHeaders[name] = value;
+	(this.resultHeaders ??= {})[name] = value;
 };
 
 // Responses
@@ -118,8 +110,7 @@ __BunicornContext.prototype.text = function (
 	body: string,
 	init: any = {},
 ) {
-	init.headers ??= {};
-	init.headers["Content-Type"] = "text/plain";
+	(init.headers ??= {})["Content-Type"] = "text/plain";
 	this.applyHeaders(init);
 	return new Response(body, init) as any;
 };
@@ -129,8 +120,7 @@ __BunicornContext.prototype.json = function <T extends Record<any, any>>(
 	body: T,
 	init: BuniResponseInit = {},
 ) {
-	const headers = init.headers || (init.headers = {});
-
+	const headers = (init.headers ??= {});
 	Object.assign(headers, this.resultHeaders);
 
 	const { route } = this;
@@ -179,12 +169,9 @@ __BunicornContext.prototype.applyHeaders = function (
 	init: any,
 ) {
 	const resultHeaders = this.resultHeaders;
-	if (!resultHeaders) {
-		return;
+	if (resultHeaders) {
+		Object.assign((init.headers ??= {}), resultHeaders);
 	}
-
-	const initHeaders = init.headers || (init.headers = {});
-	Object.assign(initHeaders, resultHeaders);
 };
 
 export { __BunicornContext };
