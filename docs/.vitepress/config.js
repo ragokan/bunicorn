@@ -87,6 +87,21 @@ export default defineConfig({
 						],
 					},
 					{
+						text: "OpenAPI",
+						link: "/server/openapi",
+						items: [
+							{
+								text: "OpenAPI JSON",
+								link: "/server/openapi#openapi-json",
+							},
+							{
+								text: "Swagger UI",
+								link: "/server/openapi#swagger-ui",
+							},
+						
+						],
+					},
+					{
 						text: "Dependency Injection",
 						link: "/server/di",
 					},

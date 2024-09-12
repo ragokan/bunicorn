@@ -40,7 +40,8 @@ features:
   - title: Lightweight
     icon: 🌱
     details: Zero dependencies, raw JavaScript and nothing else that affects performance
-  - title: Utils
+  - title: OpenApi Support
     icon: 🧰
-    details: Bunicorn also provide many type-safe utility functions for both server and client
+    details: Bunicorn provides built in OpenApi and SwaggerUI generators
+    link: /server/openapi
 ---

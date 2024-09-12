@@ -1,9 +1,8 @@
 import { BunicornApp, RouteBuilder, groupRoutes } from "@bunicorn/server";
-import staticHandler from "@bunicorn/server/staticHandler";
 import * as v from "valibot";
 import openApiHandler from "./index.ts";
 
-const app = new BunicornApp({
+const baseApp = new BunicornApp({
 	basePath: "/api",
 });
 
@@ -37,16 +36,13 @@ const defaultRoute = rb
 	.output(v.string())
 	.get("/", (ctx) => ctx.raw("Hello world!"));
 
-const R = app
-	.addHandler(staticHandler({ path: "/static", directory: "./src" }))
-	.addRoutes([defaultRoute])
-	.addRoutes(helloRoutes);
+const app = baseApp.addRoutes([defaultRoute]).addRoutes(helloRoutes);
 
-await R.addAsyncHandler(
+await app.addAsyncHandler(
 	openApiHandler({ apiUrl: "http://localhost:8000", title: "Development API" }),
 );
 
-console.log(R.staticRoutes);
+console.log(app.staticRoutes);
 
-R.serve({ port: 8000 });
+app.serve({ port: 8000 });
 console.log("Server running on http://localhost:8000");

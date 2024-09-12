@@ -38,7 +38,7 @@ const getTodosRoute = routeBuilder.get("/todos", async ctx => {
 });
 ```
 
-## Usage outside of routes
+## Usage outside of routes
 
 ```ts
 function globalFunction() {
