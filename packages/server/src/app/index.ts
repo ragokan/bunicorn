@@ -5,7 +5,12 @@ import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
 import { __testPath } from "../helpers/testPath.ts";
-import { type BaseMiddleware, BunicornError, type Handler } from "../index.ts";
+import {
+	type AsyncHandler,
+	type BaseMiddleware,
+	BunicornError,
+	type Handler,
+} from "../index.ts";
 import type {
 	Route,
 	__AddBasePathTo,
@@ -52,6 +57,11 @@ export class BunicornApp<
 
 	public addHandler(handler: Handler) {
 		handler(this as unknown as PrivateBunicornApp);
+		return this;
+	}
+
+	public async addAsyncHandler(handler: AsyncHandler) {
+		await handler(this as unknown as PrivateBunicornApp);
 		return this;
 	}
 
@@ -112,81 +122,101 @@ export class BunicornApp<
 		route: __BuiltRoute,
 	): Promise<Response | void> {
 		const match = __testPath(route, path);
-		if (match) {
-			try {
-				const context = new __BunicornContext(
-					request,
-					url as TBasePath,
-					route,
-					match,
-					BunicornApp.getFromStore,
-				) as BunicornContext<BasePath, never> & { _route: Route };
-				context._route = route;
+		if (!match) {
+			return;
+		}
 
-				for (const middleware of route.middlewares) {
-					const result = await middleware(context);
-					if (!result) {
-						continue;
-					}
-					if (result instanceof Response) {
-						return result;
-					}
-					for (const key in result) {
-						// @ts-expect-error - This is fine because result[key] is any/unknown
-						context[key] = result[key];
-					}
-				}
+		try {
+			const context = new __BunicornContext(
+				request,
+				url as TBasePath,
+				route,
+				match,
+				BunicornApp.getFromStore,
+			) as BunicornContext<BasePath, never> & { _route: Route };
+			context._route = route;
 
-				const result = await route.handler(context);
+			const { middlewares, handler } = route;
+			const middlewaresLength = middlewares.length;
+
+			for (let i = 0; i < middlewaresLength; i++) {
+				const result = await middlewares[i]!(context);
 				if (result instanceof Response) {
 					return result;
 				}
-				return new Response(
-					JSON.stringify({ message: "Internal Server Error", status: 500 }),
-					{ status: 500, headers: { "Content-Type": "application/json" } },
-				);
-			} catch (error) {
-				if (error instanceof BunicornError) {
-					return new Response(error.toString(), {
-						status: error.status,
-						headers: { "Content-Type": "application/json" },
-					});
+				if (result) {
+					Object.assign(context, result);
 				}
-				if (error instanceof Error) {
-					BunicornApp.onGlobalError(error);
-				}
-				return new Response(
-					JSON.stringify({ message: "Internal Server Error", status: 500 }),
-					{ status: 500, headers: { "Content-Type": "application/json" } },
-				);
 			}
+
+			const result = await handler(context);
+			if (result instanceof Response) {
+				return result;
+			}
+
+			return Response.json(
+				{ message: "Internal Server Error", status: 500 },
+				{ status: 500 },
+			);
+		} catch (error) {
+			if (error instanceof BunicornError) {
+				return new Response(error.toString(), {
+					status: error.status,
+					headers: { "Content-Type": "application/json" },
+				});
+			}
+
+			if (error instanceof Error) {
+				BunicornApp.onGlobalError(error);
+			}
+
+			return Response.json(
+				{ message: "Internal Server Error", status: 500 },
+				{ status: 500 },
+			);
 		}
 	}
 
 	public async handleRequest(request: Request, _server?: import("bun").Server) {
 		const path = __getPath(request.url);
+		const method = request.method as BaseMethod;
+		const methodRoutes = this.routes[method];
+		const allRoutes = this.routes.ALL;
 
-		for (const route of this.routes[request.method as BaseMethod]) {
-			const result = await this.useRoute(request, request.url, path, route);
+		for (let i = 0, len = methodRoutes.length; i < len; i++) {
+			const result = await this.useRoute(
+				request,
+				request.url,
+				path,
+				methodRoutes[i]!,
+			);
 			if (result) {
 				return result;
 			}
 		}
-		for (const route of this.routes.ALL) {
-			const result = await this.useRoute(request, request.url, path, route);
+
+		for (let i = 0, len = allRoutes.length; i < len; i++) {
+			const result = await this.useRoute(
+				request,
+				request.url,
+				path,
+				allRoutes[i]!,
+			);
 			if (result) {
 				return result;
 			}
 		}
 
-		return new Response(
-			JSON.stringify({
-				message: `The method '${request.method}' to path '${path}' does not exists.`,
+		return Response.json(
+			{
+				message: `The method '${method}' to path '${path}' does not exist.`,
 				status: 404,
-			}),
-			{ status: 404, headers: { "Content-Type": "application/json" } },
+			},
+			{ status: 404 },
 		);
 	}
+
+	public readonly staticRoutes: Record<`/${string}`, Response> = {};
 
 	// Only available in Bun
 	public serve(
@@ -202,6 +232,7 @@ export class BunicornApp<
 		return Bun.serve({
 			...options,
 			fetch: this.handleRequest,
+			static: Object.assign({}, this.staticRoutes, options.static),
 		});
 	}
 }

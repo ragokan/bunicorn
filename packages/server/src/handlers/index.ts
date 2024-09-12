@@ -1,7 +1,12 @@
 import type { PrivateBunicornApp } from "../app/index.ts";
 
-export type Handler = (app: PrivateBunicornApp) => any;
+export type Handler = (app: PrivateBunicornApp) => void;
+export type AsyncHandler = (app: PrivateBunicornApp) => Promise<void>;
 
 export function createHandler(handler: Handler) {
+	return handler;
+}
+
+export function createAsyncHandler(handler: AsyncHandler) {
 	return handler;
 }

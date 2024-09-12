@@ -14,7 +14,7 @@
 				"noNonNullAssertion": "off",
 				"useNumberNamespace": "off",
 				"noUselessElse": { "fix": "unsafe", "level": "error" },
-				"useBlockStatements": { "fix": "unsafe", "level": "warn" }
+				"useBlockStatements": { "fix": "safe", "level": "warn" }
 			},
 			"suspicious": {
 				"noExplicitAny": "off",

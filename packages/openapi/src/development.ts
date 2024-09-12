@@ -42,8 +42,11 @@ const R = app
 	.addRoutes([defaultRoute])
 	.addRoutes(helloRoutes);
 
-R.addHandler(
+await R.addAsyncHandler(
 	openApiHandler({ apiUrl: "http://localhost:8000", title: "Development API" }),
 );
 
+console.log(R.staticRoutes);
+
 R.serve({ port: 8000 });
+console.log("Server running on http://localhost:8000");

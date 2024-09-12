@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.0.24] - 2024-09-x
+## [0.0.24] - 2024-09-12
 
 - Finish OpenApi generator
 - Add docs for OpenApi generator
