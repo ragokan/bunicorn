@@ -1,6 +1,13 @@
 # Change Log
 
-## [0.0.22] - 2024-09-08
+## [0.0.24] - 2024-09-x
+
+- Finish OpenApi generator
+- Add docs for OpenApi generator
+
+## [0.0.23] - 2024-09-09
+
+- Add OpenApi generator
 
 - Add InferDependencyType to the dependency injection package
 

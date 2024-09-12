@@ -51,7 +51,9 @@ describe("api tests", () => {
 		expect(r2.success).toBe(true);
 		expect(r2.response.status).toBe(200);
 		expect(r2.data).toEqual([]);
-		expect(r2.response.headers.get("content-type")).toBe("application/json");
+		expect(r2.response.headers.get("content-type")).toStartWith(
+			"application/json",
+		);
 	});
 
 	let todoId: number;
@@ -120,6 +122,8 @@ describe("api tests", () => {
 			title: "Hello world!",
 			completed: false,
 		});
-		expect(r3.response.headers.get("content-type")).toBe("application/json");
+		expect(r3.response.headers.get("content-type")).toStartWith(
+			"application/json",
+		);
 	});
 });

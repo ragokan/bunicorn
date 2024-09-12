@@ -42,18 +42,18 @@ __BunicornContext.prototype.getBody = async function (
 	this: __PrivateBunicornContext & { __body: any; _route: Route },
 ) {
 	// Cache body.
-	if (this.__body) {
+	if (this.__body !== undefined) {
 		return this.__body;
 	}
-	const route = this._route;
-	const request = this.request;
-	const contentType = request.headers.get("Content-Type") ?? "";
+
+	const { _route: route, request } = this;
+	const contentType = request.headers.get("Content-Type") || "";
+
 	let _body: any;
 
-	if (contentType.includes("application/json")) {
-		// TODO: Convert JSON.parse to global converter.
-		_body = JSON.parse(await this.getText());
-	} else if (contentType.includes("multipart/form-data")) {
+	if (contentType.startsWith("application/json")) {
+		_body = await request.json();
+	} else if (contentType.startsWith("multipart/form-data")) {
 		_body = await request
 			.formData()
 			.then((data) => formDataToObject(data, route.input));
@@ -65,7 +65,7 @@ __BunicornContext.prototype.getBody = async function (
 		return (this.__body = _body);
 	}
 
-	return (this.__body = __validate(route.input!, _body));
+	return (this.__body = __validate(route.input, _body));
 };
 
 __BunicornContext.prototype.getSearchParams = function (
@@ -129,17 +129,16 @@ __BunicornContext.prototype.json = function <T extends Record<any, any>>(
 	body: T,
 	init: BuniResponseInit = {},
 ) {
-	init.headers ??= {};
-	init.headers["Content-Type"] = "application/json";
-	for (const key in this.resultHeaders) {
-		init.headers[key] = this.resultHeaders[key]!;
-	}
-	const route = this.route;
+	const headers = init.headers || (init.headers = {});
+
+	Object.assign(headers, this.resultHeaders);
+
+	const { route } = this;
 
 	if (route.output) {
 		try {
 			const parseResult = __validate(route.output, body, route.__outputOptions);
-			return new Response(JSON.stringify(parseResult), init) as any as T;
+			return Response.json(parseResult, init) as any as T;
 		} catch (error) {
 			BunicornApp.onGlobalError(
 				new BunicornError(
@@ -159,7 +158,8 @@ __BunicornContext.prototype.json = function <T extends Record<any, any>>(
 			);
 		}
 	}
-	return new Response(JSON.stringify(body), init) as unknown as T;
+
+	return Response.json(body, init) as unknown as T;
 };
 
 __BunicornContext.prototype.stream = function <T>(
@@ -178,13 +178,13 @@ __BunicornContext.prototype.applyHeaders = function (
 	this: __PrivateBunicornContext,
 	init: any,
 ) {
-	if (!this.resultHeaders) {
+	const resultHeaders = this.resultHeaders;
+	if (!resultHeaders) {
 		return;
 	}
-	init.headers ??= {};
-	for (const key in this.resultHeaders) {
-		init.headers[key] = this.resultHeaders[key];
-	}
+
+	const initHeaders = init.headers || (init.headers = {});
+	Object.assign(initHeaders, resultHeaders);
 };
 
 export { __BunicornContext };
