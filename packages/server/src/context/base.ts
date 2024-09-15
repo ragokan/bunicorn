@@ -4,7 +4,6 @@ import type { GetDependencyFn } from "../helpers/di.ts";
 import { formDataToObject } from "../helpers/formDataToObject.ts";
 import { __getSearchParams } from "../helpers/pathRegexps.ts";
 import { __getParams } from "../helpers/pathUtils.ts";
-import type { Route } from "../router/route.ts";
 import type { BasePath, __BuiltRoute } from "../router/types.ts";
 import type { BunicornSchema } from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
@@ -39,14 +38,14 @@ __BunicornContext.prototype.getText = async function (
 };
 
 __BunicornContext.prototype.getBody = async function (
-	this: __PrivateBunicornContext & { __body: any; _route: Route },
+	this: __PrivateBunicornContext & { __body: any },
 ) {
 	// Cache body
 	if (this.__body !== undefined) {
 		return this.__body;
 	}
 
-	const { _route: route, request } = this;
+	const { route, request } = this;
 	const contentType = request.headers.get("Content-Type") || "";
 
 	let _body: any;

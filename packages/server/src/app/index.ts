@@ -133,8 +133,7 @@ export class BunicornApp<
 				route,
 				match,
 				BunicornApp.getFromStore,
-			) as BunicornContext<BasePath, never> & { _route: Route };
-			context._route = route;
+			) as BunicornContext<BasePath, never>;
 
 			const { middlewares, handler } = route;
 			const middlewaresLength = middlewares.length;
