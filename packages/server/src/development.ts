@@ -23,7 +23,7 @@ const defaultRoute = rb
 	.output(z.string())
 	.get("/", (ctx) => ctx.raw("Hello world!"));
 
-const getHelloRoute = rb.output(z.string()).get("/hello/:id/:xyz", (ctx) => {
+const getHelloRoute = rb.output(z.string()).get("/hello/:id/...xyz", (ctx) => {
 	ctx.params;
 	return ctx.raw("Hello world!");
 });

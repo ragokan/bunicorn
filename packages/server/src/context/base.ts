@@ -4,7 +4,11 @@ import type { GetDependencyFn } from "../helpers/di.ts";
 import { formDataToObject } from "../helpers/formDataToObject.ts";
 import { __getSearchParams } from "../helpers/pathRegexps.ts";
 import { __getParams } from "../helpers/pathUtils.ts";
-import type { BasePath, __BuiltRoute } from "../router/types.ts";
+import type {
+	BasePath,
+	__BuiltRoute,
+	__ExtractParams,
+} from "../router/types.ts";
 import type { BunicornSchema } from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
 import type { BuniResponseInit, __PrivateBunicornContext } from "./types.ts";
@@ -28,7 +32,10 @@ export class BunicornContext<
 	) {}
 
 	public get params() {
-		return (this.__params ??= __getParams(this.route.path, this.match));
+		return (this.__params ??= __getParams(
+			this.route.path,
+			this.match,
+		)) as __ExtractParams<TPath>;
 	}
 
 	public async getText() {
