@@ -104,7 +104,7 @@ export class BunicornContext<
 		const headers = (init.headers ??= {});
 		Object.assign(headers, this.resultHeaders);
 
-		const { route } = this;
+		const route = this.route;
 
 		if (route.output) {
 			try {
