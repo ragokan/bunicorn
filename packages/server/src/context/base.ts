@@ -1,5 +1,3 @@
-import { BunicornApp } from "../app/index.ts";
-import { BunicornError } from "../error/index.ts";
 import type { GetDependencyFn } from "../helpers/di.ts";
 import { formDataToObject } from "../helpers/formDataToObject.ts";
 import { __getSearchParams } from "../helpers/pathRegexps.ts";
@@ -11,6 +9,7 @@ import type {
 } from "../router/types.ts";
 import type { BunicornSchema } from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
+import { throwValidationError } from "./errors.ts";
 import type { BuniResponseInit, __PrivateBunicornContext } from "./types.ts";
 
 export class BunicornContext<
@@ -116,22 +115,7 @@ export class BunicornContext<
 				);
 				return Response.json(parseResult, init) as any as T;
 			} catch (error) {
-				BunicornApp.onGlobalError(
-					new BunicornError(
-						`Failed to parse output for the method '${route.method}' to path '${route.path}'.`,
-						{
-							data: {
-								path: route.path,
-								output: body,
-								schema: route.output,
-								issues: error,
-							},
-						},
-					),
-				);
-				throw new BunicornError(
-					"Failed to parse output. This should be handled internally.",
-				);
+				throwValidationError(route, body, error);
 			}
 		}
 
