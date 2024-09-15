@@ -1,4 +1,4 @@
-import { __BunicornContext } from "src/context/base.ts";
+import type { BunicornContext } from "src/context/base.ts";
 import type { __BuiltRoute } from "src/router/types.ts";
 import { matchAll } from "../matchers/constants.ts";
 import { createHandler } from "./index.ts";
@@ -19,7 +19,7 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
 			method: "OPTIONS",
 			middlewares: [],
 			regexp: new RegExp(`^${matchAll}`),
-			async handler(ctx) {
+			async handler(ctx: BunicornContext) {
 				if (!originRegexes) {
 					return getSuccessResponse({
 						allowCredentials,

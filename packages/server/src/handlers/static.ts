@@ -1,4 +1,4 @@
-import type { BunicornContext } from "../context/types.ts";
+import type { BunicornContext } from "../context/base.ts";
 import { BunicornNotFoundError } from "../error/index.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";

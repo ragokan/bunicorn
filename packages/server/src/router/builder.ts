@@ -1,5 +1,5 @@
 import type { BaseSchema as vBaseSchema } from "valibot";
-import type { BunicornContext } from "../context/types.ts";
+import type { BunicornContext } from "../context/base.ts";
 import type { BaseMiddleware } from "../middleware.ts";
 import type {
 	BunicornSchema,

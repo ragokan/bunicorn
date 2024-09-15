@@ -1,5 +1,4 @@
-import { __BunicornContext } from "../context/base.ts";
-import type { BunicornContext } from "../context/types.ts";
+import { BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
@@ -127,13 +126,13 @@ export class BunicornApp<
 		}
 
 		try {
-			const context = new __BunicornContext(
+			const context = new BunicornContext(
 				request,
 				url as TBasePath,
-				route,
-				match,
 				BunicornApp.getFromStore,
-			) as BunicornContext<BasePath, never>;
+				match,
+				route,
+			);
 
 			const { middlewares, handler } = route;
 			const middlewaresLength = middlewares.length;

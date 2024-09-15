@@ -1,4 +1,4 @@
-import type { BunicornContext } from "./context/types.ts";
+import type { BunicornContext } from "./context/base.ts";
 import type { BasePath } from "./router/types.ts";
 
 export type BaseMiddleware<TPath extends BasePath = BasePath, TResult = any> = (
