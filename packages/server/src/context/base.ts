@@ -74,8 +74,13 @@ export class BunicornContext<
 		return this.request.headers.get(name);
 	}
 
-	public setHeader(name: string, value: string) {
-		(this.resultHeaders ??= {})[name] = value;
+	public setHeader(name: string, value: string, merge = false) {
+		if (!merge) {
+			(this.resultHeaders ??= {})[name] = value;
+		} else {
+			const headers = (this.resultHeaders ??= {});
+			headers[name] = headers[name] ? `${headers[name]}, ${value}` : value;
+		}
 		return this;
 	}
 
