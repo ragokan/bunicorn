@@ -32,12 +32,13 @@ export class RouteBuilder<
 	public use<TResult extends object | void | Promise<object> | Promise<void>>(
 		cb: (context: BunicornContext & TContextResults) => TResult,
 	) {
-		this.route.middlewares!.push(cb as unknown as BaseMiddleware);
+		const newBuilder = this.copy();
+		newBuilder.route.middlewares!.push(cb as unknown as BaseMiddleware);
 		type Result = Awaited<TResult>;
 		type NewContext = Result extends void
 			? TContextResults
 			: TContextResults & Result;
-		return this.copy() as unknown as RouteBuilder<NewContext, TInput, TOutput>;
+		return newBuilder as unknown as RouteBuilder<NewContext, TInput, TOutput>;
 	}
 
 	public input<TSchema extends BunicornSchema>(
@@ -46,9 +47,10 @@ export class RouteBuilder<
 			? [options?: __ValidateOptions]
 			: []
 	) {
-		this.route.input = schema;
-		this.route.__inputOptions = options?.[0];
-		return this.copy() as unknown as Omit<
+		const newBuilder = this.copy();
+		newBuilder.route.input = schema;
+		newBuilder.route.__inputOptions = options?.[0];
+		return newBuilder as unknown as Omit<
 			RouteBuilder<TContextResults, TSchema, TOutput>,
 			"input" | "get" | "head" | "options"
 		>;
@@ -60,17 +62,23 @@ export class RouteBuilder<
 			? [options?: __ValidateOptions]
 			: []
 	) {
-		this.route.output = schema;
-		this.route.__outputOptions = options?.[0];
-		return this.copy() as unknown as Omit<
+		const newBuilder = this.copy();
+		newBuilder.route.output = schema;
+		newBuilder.route.__outputOptions = options?.[0];
+		return newBuilder as unknown as Omit<
 			RouteBuilder<TContextResults, TInput, TSchema>,
 			"output"
 		>;
 	}
 
 	public meta(meta: MetaProperties) {
-		this.route.meta = Object.assign({}, meta, this.route.meta ?? {});
-		return this.copy() as unknown as Omit<
+		const newBuilder = this.copy();
+		newBuilder.route.meta = Object.assign(
+			{},
+			meta,
+			newBuilder.route.meta ?? {},
+		);
+		return newBuilder as unknown as Omit<
 			RouteBuilder<TContextResults, TInput, TOutput>,
 			"meta"
 		>;
