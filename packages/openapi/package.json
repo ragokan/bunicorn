@@ -24,11 +24,7 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"bun",
-		"openapi"
-	],
+	"keywords": ["bunicorn", "bun", "openapi"],
 	"homepage": "https://github.com/ragokan/bunicorn",
 	"author": "ragokan",
 	"license": "MIT",
@@ -44,7 +40,7 @@
 		"@bunicorn/server": "workspace:*"
 	},
 	"devDependencies": {
-		"@gcornut/valibot-json-schema": "^0.41.1",
+		"@gcornut/valibot-json-schema": "^0.42.0",
 		"openapi-types": "^12.1.3",
 		"zod-to-json-schema": "^3.23.3"
 	},

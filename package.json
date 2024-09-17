@@ -16,17 +16,14 @@
 		"test": "bun test",
 		"test:watch": "bun test --watch",
 		"pretest": "bun run build",
-		"lint:all": "biome check --write && sherif --fix",
-		"lint:fix": "biome check --write",
-		"lint:monorepo": "sherif --fix"
+		"lint:fix": "biome check --write"
 	},
 	"workspaces": ["packages/*", "example", "docs", "tests"],
 	"devDependencies": {
-		"@biomejs/biome": "1.8.3",
+		"@biomejs/biome": "1.9.1",
 		"bun-types": "^1.1.27",
 		"lerna": "^8.1.8",
 		"npm-check-updates": "^17.1.1",
-		"sherif": "^1.0.0",
 		"typescript": "^5.6.2"
 	},
 	"packageManager": "bun@1.1.27"

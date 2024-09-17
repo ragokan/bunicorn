@@ -50,14 +50,7 @@
 			"types": "./dist/app/edgeApp.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"server",
-		"fast",
-		"edge",
-		"bun",
-		"node"
-	],
+	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "node"],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"
