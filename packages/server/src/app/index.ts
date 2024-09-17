@@ -1,3 +1,4 @@
+import type { Serve, ServeOptions } from "bun";
 import { BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
@@ -217,20 +218,23 @@ export class BunicornApp<
 	public readonly staticRoutes: Record<`/${string}`, Response> = {};
 
 	// Only available in Bun
-	public serve(
-		options: Partial<
-			Omit<import("bun").ServeOptions & import("bun").TLSServeOptions, "fetch">
-		> = {},
-	) {
-		if (!IS_BUN) {
-			throw new Error("This method can only be called in Bun.");
+	public serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
+		if (IS_BUN) {
+			Bun.gc(true);
+			return Bun.serve({
+				...options,
+				fetch: this.handleRequest,
+				static: Object.assign({}, this.staticRoutes, options.static),
+			});
 		}
 
-		Bun.gc(true);
-		return Bun.serve({
-			...options,
-			fetch: this.handleRequest,
-			static: Object.assign({}, this.staticRoutes, options.static),
-		});
+		if ("Deno" in globalThis) {
+			// @ts-expect-error Deno is not defined in the global scope + req is typed as "any"
+			Deno.serve({ reusePort: options.reusePort }, (req) => {
+				return this.handleRequest(req);
+			});
+		}
+
+		throw new Error("This method can only be called in Bun and Deno.");
 	}
 }
