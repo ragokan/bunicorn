@@ -8,7 +8,9 @@
 		"dev": "bun run --hot --watch src/development.ts",
 		"build": "tsc && bun run build.js",
 		"prebuild": "rm -rf dist",
-		"deps:update": "ncu -u -p bun --peer"
+		"deps:update": "ncu -u -p bun --peer",
+		"test": "bun test",
+		"test:watch": "bun test --watch"
 	},
 	"source": "./src/index.ts",
 	"main": "./dist/index.js",
@@ -48,14 +50,7 @@
 			"types": "./dist/app/edgeApp.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"server",
-		"fast",
-		"edge",
-		"bun",
-		"node"
-	],
+	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "node"],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"
