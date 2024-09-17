@@ -179,7 +179,6 @@ export class BunicornApp<
 		const path = __getPath(request.url);
 		const method = request.method as BaseMethod;
 		const methodRoutes = this.routes[method];
-		const allRoutes = this.routes.ALL;
 
 		for (let i = 0, len = methodRoutes.length; i < len; i++) {
 			const result = await this.useRoute(
@@ -193,6 +192,7 @@ export class BunicornApp<
 			}
 		}
 
+		const allRoutes = this.routes.ALL;
 		for (let i = 0, len = allRoutes.length; i < len; i++) {
 			const result = await this.useRoute(
 				request,
