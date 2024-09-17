@@ -20,15 +20,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitOverride": true,
 		"skipLibCheck": true,
-		"types": [
-			"bun-types"
-		],
+		"types": ["bun-types"],
 		"module": "NodeNext",
-		"lib": [
-			"ES2020",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["ES2020", "DOM", "DOM.Iterable"],
 		"target": "ES2020",
 		"declaration": true,
 		"declarationMap": true,
@@ -43,8 +37,5 @@
 		"esModuleInterop": true,
 		"baseUrl": "."
 	},
-	"exclude": [
-		"node_modules",
-		"./node_modules"
-	]
+	"exclude": ["node_modules", "./node_modules"]
 }
