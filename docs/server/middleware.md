@@ -12,16 +12,16 @@ Middlewares are the way to
 In the previous pages, you must have seen that we use _RouteBuilder_ to create routes. There, we have the `use` method that allows us to add middlewares to a route.
 
 ```ts
-import { RouteBuilder, getHeader } from "@bunicorn/server";
+import { RouteBuilder } from "@bunicorn/server";
 
 const routeBuilder = new RouteBuilder().use(ctx => {
   // Here, we have access to the base context (untyped body, params, query, etc)
 
   // Get header from the context (it is probably a string, it is best to cast on a real use case)
-  const count = ctx.getHeader("count") ?? 0;
+  const count = ctx.req.headers.get("count") ?? 0;
   const newCount = count + 1;
-  // When we do ctx.setHeader, we are setting the header for the response, when we send the response, it will be sent with the headers we set
-  ctx.setHeader("count", newCount);
+  // When we do headers.set, we are setting the header for the response, when we send the response, it will be sent with the headers we set
+  ctx.headers.set("count", newCount);
 
   // Return the count, so that the next middleware/route can use it
   return {
@@ -100,7 +100,7 @@ import { createMiddleware, BunicornError } from "@bunicorn/server";
 
 function authMiddleware(role: IRole) {
   return createMiddleware(async ctx => {
-    const jwtToken = ctx.getHeader("Authorization");
+    const jwtToken = ctx.req.headers.get("Authorization");
     if (!jwtToken) {
       // BunicornError makes Bunicorn to send a a detailed error, instead of sending status 500.
       throw new BunicornError("Unauthorized", 401);

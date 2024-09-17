@@ -19,16 +19,19 @@ export class BunicornContext<
 	private __text: string | undefined;
 	private __body: object | undefined;
 	private __searchParams: object | undefined;
-	private resultHeaders: Record<string, string> | undefined;
 	private __params: Record<string, string> | undefined;
+	public headers: Headers;
 
 	constructor(
-		public request: Request,
+		public req: Request,
 		public url: TPath,
 		public get: GetDependencyFn,
 		protected match: string[] | boolean,
 		protected route: __BuiltRoute<TPath>,
-	) {}
+		// TODO: Add global headers
+	) {
+		this.headers = new Headers();
+	}
 
 	public get params() {
 		return (this.__params ??= __getParams(
@@ -38,7 +41,7 @@ export class BunicornContext<
 	}
 
 	public async getText() {
-		return (this.__text ??= await this.request.text());
+		return (this.__text ??= await this.req.text());
 	}
 
 	public async getBody(): Promise<InputSchema> {
@@ -47,7 +50,7 @@ export class BunicornContext<
 			return this.__body as InputSchema;
 		}
 
-		const { route, request } = this;
+		const { route, req: request } = this;
 		const contentType = request.headers.get("Content-Type") || "";
 
 		let _body: any;
@@ -70,24 +73,10 @@ export class BunicornContext<
 		return schema ? __validate(schema, result) : result;
 	}
 
-	public getHeader(name: string) {
-		return this.request.headers.get(name);
-	}
-
-	public setHeader(name: string, value: string, merge = false) {
-		if (!merge) {
-			(this.resultHeaders ??= {})[name] = value;
-		} else {
-			const headers = (this.resultHeaders ??= {});
-			headers[name] = headers[name] ? `${headers[name]}, ${value}` : value;
-		}
-		return this;
-	}
-
 	public ok() {
 		return new Response(undefined, {
 			status: 200,
-			headers: this.resultHeaders,
+			headers: this.headers,
 		}) as any;
 	}
 
@@ -97,7 +86,7 @@ export class BunicornContext<
 	}
 
 	public text(body: string, init: BuniResponseInit = {}) {
-		(init.headers ??= {})["Content-Type"] = "text/plain";
+		this.headers.set("Content-Type", "text/plain");
 		this.applyHeaders(init);
 		return new Response(body, init) as any;
 	}
@@ -106,10 +95,9 @@ export class BunicornContext<
 		body: T,
 		init: BuniResponseInit = {},
 	) {
-		const headers = (init.headers ??= {});
-		Object.assign(headers, this.resultHeaders);
-
 		const route = this.route;
+		this.headers.set("Content-Type", "application/json");
+		this.applyHeaders(init);
 
 		if (route.output) {
 			try {
@@ -127,17 +115,14 @@ export class BunicornContext<
 		return Response.json(body, init) as unknown as T;
 	}
 
+	// TODO: Move this to a separate handler
 	public stream<T>(body: ReadableStream<T>, init: BuniResponseInit = {}) {
-		init.headers ??= {};
-		init.headers["Content-Type"] = "text/event-stream";
+		this.headers.set("Content-Type", "text/event-stream");
 		this.applyHeaders(init);
 		return new Response(body, init) as unknown as ReadableStream<T>;
 	}
 
 	private applyHeaders(init: BuniResponseInit) {
-		const resultHeaders = this.resultHeaders;
-		if (resultHeaders !== undefined) {
-			Object.assign((init.headers ??= {}), resultHeaders);
-		}
+		(init as ResponseInit).headers = this.headers;
 	}
 }

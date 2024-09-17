@@ -35,7 +35,7 @@ const todoStore = dependency(() => {
 const baseApp = new BunicornApp({ basePath: "/api" });
 
 const routeBuilder = new RB().use((ctx) => {
-	if (ctx.getHeader("x-token") !== "123") {
+	if (ctx.req.headers.get("x-token") !== "123") {
 		throw new BunicornError("Unique token is required", 401);
 	}
 	return { token: "123" };

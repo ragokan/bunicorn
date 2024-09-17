@@ -17,7 +17,6 @@ export interface __CreateContextArgs<TPath extends BasePath> {
 }
 
 export interface BuniResponseInit {
-	headers?: Record<string, string>;
 	/** @default 200 */
 	status?: number;
 
@@ -29,6 +28,6 @@ export type __PrivateBunicornContext<
 	TPath extends BasePath = BasePath,
 	InputSchema = never,
 > = BunicornContext<TPath, InputSchema> & {
-	resultHeaders?: Record<string, string>;
+	headers?: Headers;
 	applyHeaders(init: any): void;
 };

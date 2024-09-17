@@ -39,7 +39,7 @@ interface Context {
 
   // Response modifiers
   // You can set headers for the response, you can also use this on middleware
-  setHeader(name: string, value: string): void;
+  headers: Headers;
 
   // Response types
   // Returns a 200 response with no body and with headers set before

@@ -24,10 +24,10 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
 					return getSuccessResponse({
 						allowCredentials,
 						allowedHeaders,
-						request: ctx.request,
+						request: ctx.req,
 					});
 				}
-				const origin = ctx.request.headers.get("Origin");
+				const origin = ctx.req.headers.get("Origin");
 				if (!origin) {
 					return getFailureResponse();
 				}
@@ -38,18 +38,18 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
 				return getSuccessResponse({
 					allowCredentials,
 					allowedHeaders,
-					request: ctx.request,
+					request: ctx.req,
 				});
 			},
 		} satisfies __BuiltRoute);
 
 		app.addMiddleware((ctx) => {
-			const origin = ctx.request.headers.get("Origin");
+			const origin = ctx.req.headers.get("Origin");
 			if (origin) {
-				ctx.setHeader("Access-Control-Allow-Origin", origin);
+				ctx.headers.set("Access-Control-Allow-Origin", origin);
 			}
 			if (allowCredentials) {
-				ctx.setHeader("Access-Control-Allow-Credentials", "true");
+				ctx.headers.set("Access-Control-Allow-Credentials", "true");
 			}
 		});
 	});

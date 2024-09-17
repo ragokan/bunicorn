@@ -40,7 +40,7 @@ const baseApp = new BunicornApp({ basePath: "/api" });
 
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
 const routeBuilder = new RB().use((ctx) => {
-	if (ctx.getHeader("x-token") !== "123") {
+	if (ctx.req.headers.get("x-token") !== "123") {
 		throw new BunicornError("Unique token is required", 401);
 	}
 	// Now, we can use ctx.token and anything else we add to the context

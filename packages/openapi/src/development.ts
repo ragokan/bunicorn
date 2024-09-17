@@ -21,7 +21,7 @@ const postHelloMessage = new RouteBuilder()
 	.output(v.object({ msg: v.string() }))
 	.meta({ auth: true })
 	.post("/", async (ctx) => {
-		console.log(ctx.getHeader("Authorization"));
+		console.log(ctx.req.headers.get("Authorization"));
 		const { message } = await ctx.getBody();
 		return ctx.json({
 			msg: `Hello ${message}!`,
