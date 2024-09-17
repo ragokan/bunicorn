@@ -45,4 +45,5 @@ export interface MetaProperties {
 	auth?: boolean;
 	group?: string;
 	hidden?: boolean;
+	version?: number;
 }
