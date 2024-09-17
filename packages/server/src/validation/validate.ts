@@ -28,33 +28,23 @@ export function __validate<T extends BunicornSchema>(
 		}
 		return result.data;
 	}
-	return __validate(
-		__rawSchemaWrapper(schema as RawSchema) as unknown as BunicornSchema,
-		input,
-	);
+	return __rawSchemaWrapper(schema).parse(input);
 }
 
 function __rawSchemaWrapper<Output>(schema: RawSchema<Output>) {
 	return {
-		_parse: (
-			input: unknown,
-		): { output?: Output; issues?: FormattedIssue[] } => {
+		parse: (input: unknown) => {
 			try {
-				return {
-					output: schema(input),
-				};
+				return schema(input);
 			} catch (e: any) {
-				return {
-					issues: [
-						<FormattedIssue>{
-							message: e.message ?? "Validation error",
-							validation: e.expected ?? "custom_validation",
-							path: [e.path ?? "_"],
-						},
-					],
-				};
+				throw new BunicornValidationError([
+					<FormattedIssue>{
+						message: e.message ?? "Validation error",
+						validation: e.expected ?? "custom_validation",
+						path: [e.path ?? "_"],
+					},
+				]);
 			}
 		},
-		schema: {},
-	} as unknown as v.BaseSchema<any, any, any>;
+	};
 }
