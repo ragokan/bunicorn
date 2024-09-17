@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.0.25] - 2024-09-17
+
+- Add tests for many cases
+- Update how context is working internally (for future)
+- Add option to merge headers
+- Fix function validator
+
 ## [0.0.24] - 2024-09-12
 
 - Finish OpenApi generator
