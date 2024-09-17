@@ -59,3 +59,5 @@ export interface __BuiltRoute<TPath extends BasePath = BasePath>
 	regexp?: RegExp;
 	middlewares: BaseMiddleware<any>[];
 }
+
+export type BunicornResponse<Returns> = Response & { __brand: Returns };

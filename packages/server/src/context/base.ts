@@ -4,6 +4,7 @@ import { __getSearchParams } from "../helpers/pathRegexps.ts";
 import { __getParams } from "../helpers/pathUtils.ts";
 import type {
 	BasePath,
+	BunicornResponse,
 	__BuiltRoute,
 	__ExtractParams,
 } from "../router/types.ts";
@@ -77,18 +78,18 @@ export class BunicornContext<
 		return new Response(undefined, {
 			status: 200,
 			headers: this.headers,
-		}) as any;
+		}) as BunicornResponse<never>;
 	}
 
 	public raw<T extends BodyInit | null>(body: T, init: BuniResponseInit = {}) {
 		this.applyHeaders(init);
-		return new Response(body, init) as unknown as T;
+		return new Response(body, init) as BunicornResponse<T>;
 	}
 
 	public text(body: string, init: BuniResponseInit = {}) {
 		this.headers.set("Content-Type", "text/plain");
 		this.applyHeaders(init);
-		return new Response(body, init) as any;
+		return new Response(body, init) as BunicornResponse<string>;
 	}
 
 	public json<T extends Record<any, any>>(
@@ -106,20 +107,20 @@ export class BunicornContext<
 					body,
 					route.__outputOptions,
 				);
-				return Response.json(parseResult, init) as any as T;
+				return Response.json(parseResult, init) as BunicornResponse<T>;
 			} catch (error) {
 				throwValidationError(route, body, error);
 			}
 		}
 
-		return Response.json(body, init) as unknown as T;
+		return Response.json(body, init) as BunicornResponse<T>;
 	}
 
 	// TODO: Move this to a separate handler
 	public stream<T>(body: ReadableStream<T>, init: BuniResponseInit = {}) {
 		this.headers.set("Content-Type", "text/event-stream");
 		this.applyHeaders(init);
-		return new Response(body, init) as unknown as ReadableStream<T>;
+		return new Response(body, init) as BunicornResponse<ReadableStream<T>>;
 	}
 
 	private applyHeaders(init: BuniResponseInit) {

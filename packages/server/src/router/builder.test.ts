@@ -44,7 +44,7 @@ describe("RouteBuilder", () => {
 
 	it("should create a GET route using get()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.get("/test", handler);
 		expect(route.method).toBe("GET");
 		expect(route.path).toBe("/test");
@@ -53,7 +53,7 @@ describe("RouteBuilder", () => {
 
 	it("should create a POST route using post()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.post("/test", handler);
 		expect(route.method).toBe("POST");
 		expect(route.path).toBe("/test");
@@ -62,7 +62,7 @@ describe("RouteBuilder", () => {
 
 	it("should create a PUT route using put()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.put("/test", handler);
 		expect(route.method).toBe("PUT");
 		expect(route.path).toBe("/test");
@@ -71,7 +71,7 @@ describe("RouteBuilder", () => {
 
 	it("should create a PATCH route using patch()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.patch("/test", handler);
 		expect(route.method).toBe("PATCH");
 		expect(route.path).toBe("/test");
@@ -80,7 +80,7 @@ describe("RouteBuilder", () => {
 
 	it("should create a DELETE route using delete()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.delete("/test", handler);
 		expect(route.method).toBe("DELETE");
 		expect(route.path).toBe("/test");
@@ -89,7 +89,7 @@ describe("RouteBuilder", () => {
 
 	it("should create a HEAD route using head()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.head("/test", handler);
 		expect(route.method).toBe("HEAD");
 		expect(route.path).toBe("/test");
@@ -98,7 +98,7 @@ describe("RouteBuilder", () => {
 
 	it("should create an OPTIONS route using options()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.options("/test", handler);
 		expect(route.method).toBe("OPTIONS");
 		expect(route.path).toBe("/test");
@@ -107,7 +107,7 @@ describe("RouteBuilder", () => {
 
 	it("should create an ALL route using all()", () => {
 		const builder = new RouteBuilder();
-		const handler = (_: BunicornContext) => ({});
+		const handler = (ctx: BunicornContext) => ctx.json({});
 		const route = builder.all("/test", handler);
 		expect(route.method).toBe("ALL");
 		expect(route.path).toBe("/test");

@@ -8,8 +8,8 @@ describe("groupRoutes", () => {
 	it("merges base path with route paths", () => {
 		const basePath = "/api";
 		const routes: Route<any, any, any, any>[] = [
-			routeBuilder.get("/users", () => {}),
-			routeBuilder.get("/posts", () => {}),
+			routeBuilder.get("/users", (ctx) => ctx.json({})),
+			routeBuilder.get("/posts", (ctx) => ctx.json({})),
 		];
 
 		const result = groupRoutes(basePath, routes);
@@ -21,8 +21,8 @@ describe("groupRoutes", () => {
 	it("handles root base path correctly", () => {
 		const basePath = "/";
 		const routes: Route<any, any, any, any>[] = [
-			routeBuilder.get("/users", () => {}),
-			routeBuilder.get("/posts", () => {}),
+			routeBuilder.get("/users", (ctx) => ctx.json({})),
+			routeBuilder.get("/posts", (ctx) => ctx.json({})),
 		];
 
 		const result = groupRoutes(basePath, routes);
@@ -34,8 +34,8 @@ describe("groupRoutes", () => {
 	it("adds meta properties to routes", () => {
 		const basePath = "/api";
 		const routes: Route<any, any, any, any>[] = [
-			routeBuilder.meta({ auth: true }).get("/users", () => {}),
-			routeBuilder.meta({ auth: false }).get("/posts", () => {}),
+			routeBuilder.meta({ auth: true }).get("/users", (ctx) => ctx.json({})),
+			routeBuilder.meta({ auth: false }).get("/posts", (ctx) => ctx.json({})),
 		];
 
 		const result = groupRoutes(basePath, routes, { description: "test" });
@@ -47,8 +47,8 @@ describe("groupRoutes", () => {
 	it("handles routes without meta properties", () => {
 		const basePath = "/api";
 		const routes: Route<any, any, any, any>[] = [
-			routeBuilder.get("/users", () => {}),
-			routeBuilder.get("/posts", () => {}),
+			routeBuilder.get("/users", (ctx) => ctx.json({})),
+			routeBuilder.get("/posts", (ctx) => ctx.json({})),
 		];
 		const metaProps = { version: 1 };
 

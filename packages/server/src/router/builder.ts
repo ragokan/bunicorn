@@ -8,7 +8,12 @@ import type {
 	__ValidateOptions,
 } from "../validation/types.ts";
 import type { MetaProperties, Route } from "./route.ts";
-import type { BaseMethod, BasePath, __BuiltRoute } from "./types.ts";
+import type {
+	BaseMethod,
+	BasePath,
+	BunicornResponse,
+	__BuiltRoute,
+} from "./types.ts";
 
 export class RouteBuilder<
 	TContextResults extends object = {},
@@ -94,7 +99,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) {
 		return Object.assign(this.copy().route, { path, handler, method }) as Route<
 			TPath,
@@ -112,7 +117,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("GET", path, handler);
 
 	public post = <
@@ -123,7 +128,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("POST", path, handler);
 
 	public put = <
@@ -134,7 +139,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("PUT", path, handler);
 
 	public patch = <
@@ -145,7 +150,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("PATCH", path, handler);
 
 	public delete = <
@@ -156,7 +161,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("DELETE", path, handler);
 
 	public head = <
@@ -167,7 +172,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("HEAD", path, handler);
 
 	public options = <
@@ -178,7 +183,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("OPTIONS", path, handler);
 
 	public all = <
@@ -189,7 +194,7 @@ export class RouteBuilder<
 		handler: (
 			ctx: BunicornContext<TPath, __InferBunicornOutput<TInput>> &
 				TContextResults,
-		) => Out | Promise<Out>,
+		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("ALL", path, handler);
 }
 
