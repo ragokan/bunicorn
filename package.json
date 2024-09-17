@@ -16,7 +16,7 @@
 		"test": "bun test",
 		"test:watch": "bun test --watch",
 		"pretest": "bun run build",
-		"lint:all": "biome check --fix && sherif --fix",
+		"lint:all": "biome check --write && sherif --fix",
 		"lint:fix": "biome check --write",
 		"lint:monorepo": "sherif --fix"
 	},
