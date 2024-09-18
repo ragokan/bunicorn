@@ -116,6 +116,14 @@ export class BunicornContext<
 		return Response.json(body, init) as BunicornResponse<T>;
 	}
 
+	public redirect(url: string, status = 302) {
+		this.headers.set("Location", url);
+		return new Response(undefined, {
+			status,
+			headers: this.headers,
+		}) as BunicornResponse<never>;
+	}
+
 	// TODO: Move this to a separate handler
 	public stream<T>(body: ReadableStream<T>, init: BuniResponseInit = {}) {
 		this.headers.set("Content-Type", "text/event-stream");
