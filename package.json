@@ -6,7 +6,7 @@
 		"dev": "lerna run dev --stream",
 		"build": "lerna run build --stream",
 		"deps:update": "ncu -u -p bun --peer && lerna run deps:update --stream",
-		"prepublish": "bun run lint:all && bun run build && bun run test",
+		"prepublish": "bun run lint:fix && bun run build && bun run test",
 		"publish": "lerna publish --no-private",
 		"dev:example": "lerna run example:dev --scope @bunicorn/example",
 		"start:example": "lerna run example:start --scope @bunicorn/example",
