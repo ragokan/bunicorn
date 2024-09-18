@@ -3,7 +3,7 @@ import { createMiddleware } from "src/middleware.ts";
 import * as v from "valibot";
 import type { BunicornContext } from "../context/base.ts";
 import type { BunicornSchema } from "../validation/types.ts";
-import { Router } from "./builder.ts";
+import { Router } from "./base.ts";
 
 describe("Router", () => {
 	it("should add middleware using use()", () => {

@@ -8,7 +8,7 @@ export * from "./error/index.ts";
 export * from "./handlers/index.ts";
 export * from "./context/base.ts";
 export * from "./middleware.ts";
-export * from "./router/builder.ts";
+export * from "./router/base.ts";
 export * from "./router/group.ts";
 export * from "./router/types.ts";
 export * from "./router/route.ts";

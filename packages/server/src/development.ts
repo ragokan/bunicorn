@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Router } from "./router/builder.ts";
+import { Router } from "./router/base.ts";
 
 const rb = new Router().output(z.object({ message: z.string() }));
 

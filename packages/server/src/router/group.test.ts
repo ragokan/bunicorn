@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { Router } from "./builder.ts";
+import { Router } from "./base.ts";
 import { groupRoutes } from "./group.ts";
 import type { Route } from "./route.ts";
 
