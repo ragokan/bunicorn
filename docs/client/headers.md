@@ -8,7 +8,7 @@ You can specify headers while creating client.
 
 ```ts
 const client = bunicornClient<AppType>({
-  basePath: "http://localhost:8000",
+  serverPath: "http://localhost:8000",
   // Will be merged, so you can override on local usage.
   headers: { "x-token": "123" }
 });
@@ -16,7 +16,7 @@ const client = bunicornClient<AppType>({
 // Or as function
 
 const client = bunicornClient<AppType>({
-  basePath: "http://localhost:8000",
+  serverPath: "http://localhost:8000",
   // Will be merged, so you can override on local usage.
   headers: () => ({ "x-token": localStorage.get("x-token") })
 });

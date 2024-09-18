@@ -34,7 +34,7 @@ import { type AppType } from "./server.ts"; // This is exported from server, in 
 
 // Simplest client
 export const client = bunicornClient<AppType>({
-  basePath: "http://localhost:8000"
+  serverPath: "http://localhost:8000"
 });
 
 // Use it

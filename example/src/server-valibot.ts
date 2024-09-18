@@ -8,7 +8,6 @@ import {
 	groupRoutes,
 } from "@bunicorn/server";
 import corsHandler from "@bunicorn/server/corsHandler";
-import { matchAll } from "@bunicorn/server/matchers";
 import { randomNumber } from "@bunicorn/utils";
 import * as v from "valibot";
 
@@ -113,7 +112,7 @@ const todoRoutes = groupRoutes("/todos", [
 
 // Add cors handler and routes to app to infer types
 export const app = baseApp
-	.addHandler(corsHandler({ origins: [matchAll] }))
+	.addHandler(corsHandler({ origins: ["*"] }))
 	.addRoutes(todoRoutes);
 
 export type AppType = typeof app;

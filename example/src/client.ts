@@ -6,7 +6,7 @@ import type { AppType } from "./server.ts";
 // WE INITIALIZE THE CLIENT WITH THE PATH THAT OUR SERVER IS GOING TO USE
 // AND PROVIDE THE TYPE OF OUR APP
 export const client = bunicornClient<AppType>({
-	basePath: "http://localhost:8000",
+	serverPath: "http://localhost:8000",
 	headers: { "x-token": "123" },
 });
 

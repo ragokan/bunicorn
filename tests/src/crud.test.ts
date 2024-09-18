@@ -5,7 +5,7 @@ import bunicornClient, {
 	BunicornValidationError,
 } from "@bunicorn/client";
 import type { Server } from "bun";
-import { type AppType, app } from "./crud/server.ts";
+import { type AppType, app } from "./server/crud.server.ts";
 
 function assert(value: unknown, message?: string): asserts value;
 function assert(value: unknown, message?: string) {
@@ -17,7 +17,7 @@ function assert(value: unknown, message?: string) {
 let server: Server;
 // @ts-ignore
 beforeAll(async () => {
-	server = app.serve({ port: 8000 });
+	server = app.serve({ port: 8100 });
 });
 
 afterAll(() => {
@@ -27,7 +27,7 @@ afterAll(() => {
 describe("api tests", () => {
 	let giveToken = false;
 	const client = bunicornClient<AppType>({
-		basePath: "http://localhost:8000",
+		serverPath: "http://localhost:8100",
 		headers: () => {
 			const headers: Record<string, string> = {};
 			if (giveToken) {

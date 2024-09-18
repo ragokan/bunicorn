@@ -67,7 +67,7 @@ type Config<
 	: Config;
 
 interface ClientOptions {
-	basePath: string;
+	serverPath: string;
 	headers?: Record<string, string> | (() => Record<string, string>);
 	onError?: (error: BunicornError) => void;
 	onRequest?: (request: Request) => void;
@@ -119,7 +119,7 @@ class BunicornPromise<
 
 export function bunicornClient<App extends BunicornApp<any>>({
 	headers,
-	basePath,
+	serverPath,
 	onError,
 	onRequest,
 	onResult,
@@ -134,7 +134,7 @@ export function bunicornClient<App extends BunicornApp<any>>({
 	): BunicornPromise<BunicornResult<any>, any> {
 		const config = _config as Config<any>;
 		return new BunicornPromise(async (resolve) => {
-			let url = withoutTrailingSlash(basePath) + path;
+			let url = withoutTrailingSlash(serverPath) + path;
 
 			const init: RequestInit & { headers: Record<string, string> } =
 				Object.assign(config.with ?? {}, {
