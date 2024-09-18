@@ -62,7 +62,7 @@ export class BunicornContext<
 	}
 
 	public getSearchParams(schema?: BunicornSchema) {
-		const result = (this.__searchParams ??= __getSearchParams(this.url));
+		const result = (this.__searchParams ??= __getSearchParams(this.req.url));
 		return schema ? __validate(schema, result) : result;
 	}
 

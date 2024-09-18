@@ -16,7 +16,11 @@ const getHelloMessage = new Router()
 		});
 	});
 
-const app = new BunicornApp({ basePath: "/api" }).addRoute(getHelloMessage);
+const app = new BunicornApp().addRoute(getHelloMessage).addRoute(
+	new Router().get("/", (ctx) => {
+		return ctx.json({ message: "Hello World!" });
+	}),
+);
 
 app.serve({
 	port: 8080,

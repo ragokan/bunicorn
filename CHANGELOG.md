@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.27] - 2024-09-17
+
+- Fixes to query parsing
+
 ## [0.0.26] - 2024-09-17
 
 - Add new route tree matching for faster routing (up to 10x faster with many routes)

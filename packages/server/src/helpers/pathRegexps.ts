@@ -1,4 +1,3 @@
-const getPathRegex = /^(https?:\/\/)?[^/]+(\/[^?#]*)/;
 const getSearchParamsRegexp = /[?&]([^=#]+)=([^&#]*)/g;
 
 export function __getSearchParams(
@@ -30,6 +29,7 @@ export function __getSearchParams(
 	return params;
 }
 
+const getPathRegex = /^(https?:\/\/)?[^/]+(\/[^?#]*)/;
 export function __getPath(url: string) {
 	return getPathRegex.exec(url)?.[2] ?? "";
 }

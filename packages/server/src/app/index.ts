@@ -1,10 +1,8 @@
 import type { Serve, ServeOptions } from "bun";
 import { RouteTrieMatcher } from "src/matchers/routeTrie.ts";
 import { BunicornContext } from "../context/base.ts";
-import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
-import { __mergePaths } from "../helpers/pathUtils.ts";
 import {
 	type AsyncHandler,
 	type BaseMiddleware,
