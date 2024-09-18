@@ -140,26 +140,3 @@ const combinedRoute = rb.get("/todos/:id/...keys/:lastId", ctx => {
 ::: warning Warning
 Dynamic route arguments are always _**string**_. Even if it is something like /todos/1, it will be -> "1". If it is required, you can convert it.
 :::
-
-## Edge Router
-
-To use your routes on Edge, you don't need to do anything to the App. You can just use BunicornEdgeApp and it will work.
-
-::: code-group
-
-```ts [bun/node]
-import { BunicornEdgeApp } from "@bunicorn/server/edgeApp";
-const baseApp = new BunicornEdgeApp();
-const app = baseApp.addRoutes(todoRoutes);
-```
-
-```ts [deno]
-import { BunicornEdgeApp } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/app/edgeApp.ts";
-const baseApp = new BunicornEdgeApp();
-const app = baseApp.addRoutes(todoRoutes);
-```
-
-EdgeApp will make routes lazy evaluated. For example, regexes of routes only will be created when they are going to be tested.
-
-- For example, if your app got a GET route, it will compile till it finds, then it will stop. It will not compile all routes.
-- It means, other METHOD's routes will not even be compiled.

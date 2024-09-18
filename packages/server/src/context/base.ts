@@ -20,25 +20,17 @@ export class BunicornContext<
 	private __text: string | undefined;
 	private __body: object | undefined;
 	private __searchParams: object | undefined;
-	private __params: Record<string, string> | undefined;
 	public headers: Headers;
 
 	constructor(
 		public req: Request,
 		public url: TPath,
 		public get: GetDependencyFn,
-		protected match: string[] | boolean,
+		public params: __ExtractParams<TPath>,
 		protected route: __BuiltRoute<TPath>,
 		// TODO: Add global headers
 	) {
 		this.headers = new Headers();
-	}
-
-	public get params() {
-		return (this.__params ??= __getParams(
-			this.route.path,
-			this.match,
-		)) as __ExtractParams<TPath>;
 	}
 
 	public async getText() {

@@ -117,7 +117,7 @@ class BunicornPromise<
 	}
 }
 
-export default function bunicornClient<App extends BunicornApp<any>>({
+export function bunicornClient<App extends BunicornApp<any>>({
 	headers,
 	basePath,
 	onError,
@@ -324,3 +324,4 @@ export default function bunicornClient<App extends BunicornApp<any>>({
 }
 
 export { BunicornError, BunicornNotFoundError, BunicornValidationError };
+export default bunicornClient;

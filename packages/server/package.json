@@ -42,12 +42,6 @@
 			"require": "./dist/handlers/static.js",
 			"default": "./dist/handlers/static.js",
 			"types": "./dist/handlers/static.d.ts"
-		},
-		"./edgeApp": {
-			"import": "./dist/app/edgeApp.js",
-			"require": "./dist/app/edgeApp.js",
-			"default": "./dist/app/edgeApp.js",
-			"types": "./dist/app/edgeApp.d.ts"
 		}
 	},
 	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "node"],

@@ -3,6 +3,7 @@ import type { OpenAPIV3 } from "openapi-types";
 import type { OpenApiHandlerArgs } from "../index.ts";
 import { getContentType, getSchema } from "./getSchema.ts";
 import { validationErrorSchema } from "./issues.ts";
+import { routeTrieToObject } from "./routeTrieToObject.ts";
 
 export async function createDocument(
 	app: PrivateBunicornApp,
@@ -28,7 +29,8 @@ export async function createDocument(
 	};
 
 	for (const method of httpMethods) {
-		const methodRoutes = app.routes[method];
+		// TODO: Fix this.
+		const methodRoutes = routeTrieToObject(app.routeTrie, method);
 		for (const route of methodRoutes) {
 			if (route.meta?.hidden) {
 				continue;

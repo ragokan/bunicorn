@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.26] - 2024-09-17
+
+- Add new route tree matching for faster routing (up to 10x faster with many routes)
+- Fix some tests
+
 ## [0.0.25] - 2024-09-17
 
 - Add tests for many cases

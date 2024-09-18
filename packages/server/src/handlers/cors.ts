@@ -1,6 +1,6 @@
 import type { BunicornContext } from "src/context/base.ts";
 import type { __BuiltRoute } from "src/router/types.ts";
-import { matchAll } from "../matchers/constants.ts";
+import { restPath } from "../matchers/constants.ts";
 import { createHandler } from "./index.ts";
 
 export interface CorsHandlerArgs {
@@ -14,12 +14,11 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
 	const originRegexes = origins?.map((origin) => new RegExp(origin));
 
 	return createHandler((app) => {
-		app.routes.OPTIONS.push({
-			path: `/${matchAll}`,
+		app.addRoute({
+			path: `/${restPath}`,
 			method: "OPTIONS",
-			middlewares: [],
-			regexp: new RegExp(`^${matchAll}`),
-			async handler(ctx: BunicornContext) {
+			meta: { hidden: true },
+			handler(ctx: BunicornContext) {
 				if (!originRegexes) {
 					return getSuccessResponse({
 						allowCredentials,
@@ -41,7 +40,7 @@ export default function corsHandler(args: CorsHandlerArgs = {}) {
 					request: ctx.req,
 				});
 			},
-		} satisfies __BuiltRoute);
+		});
 
 		app.addMiddleware((ctx) => {
 			const origin = ctx.req.headers.get("Origin");

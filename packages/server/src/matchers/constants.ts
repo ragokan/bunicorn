@@ -1,2 +1,1 @@
-export const matchAll = ".*";
-export const matchOne = "[^/]+";
+export const restPath = "...restPath" as const;

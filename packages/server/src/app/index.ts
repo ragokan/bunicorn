@@ -1,10 +1,10 @@
 import type { Serve, ServeOptions } from "bun";
+import { RouteTrieMatcher } from "src/matchers/routeTrie.ts";
 import { BunicornContext } from "../context/base.ts";
 import { __checkPathIsRegex } from "../helpers/checkIsRegex.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
-import { __testPath } from "../helpers/testPath.ts";
 import {
 	type AsyncHandler,
 	type BaseMiddleware,
@@ -19,7 +19,7 @@ import type {
 import type { BaseMethod, BasePath, __BuiltRoute } from "../router/types.ts";
 
 export type PrivateBunicornApp = BunicornApp<any> & {
-	routes: Record<BasePath, __BuiltRoute[]>;
+	routeTrie: RouteTrieMatcher;
 	args: AppArgs<any>;
 };
 
@@ -35,6 +35,7 @@ export class BunicornApp<
 		protected args: AppArgs<TBasePath> = { basePath: "/" as TBasePath },
 	) {
 		this.handleRequest = this.handleRequest.bind(this);
+		this.routeTrie = new RouteTrieMatcher(args.basePath);
 	}
 	public static onGlobalError(error: Error) {
 		console.error(error);
@@ -42,18 +43,8 @@ export class BunicornApp<
 
 	public static getFromStore = __createDependencyStore().get;
 
-	protected routes: Record<BaseMethod, __BuiltRoute[]> = {
-		GET: [],
-		POST: [],
-		PATCH: [],
-		PUT: [],
-		DELETE: [],
-		OPTIONS: [],
-		HEAD: [],
-		ALL: [],
-	};
-
 	protected middlewares: BaseMiddleware[] = [];
+	protected routeTrie: RouteTrieMatcher;
 
 	public addHandler(handler: Handler) {
 		handler(this as unknown as PrivateBunicornApp);
@@ -71,32 +62,11 @@ export class BunicornApp<
 	}
 
 	public addRoute<TRoute extends Route<any, any, any, any>>(route: TRoute) {
-		route.path = (
-			(this.args.basePath as string) == "/"
-				? route.path
-				: __mergePaths(this.args.basePath, route.path)
-		) as TBasePath;
 		route.middlewares ??= [];
 		route.middlewares = [...this.middlewares, ...route.middlewares];
-		if (__checkPathIsRegex(route.path)) {
-			(route as __BuiltRoute).regexp = new RegExp(
-				new RegExp(
-					`^${(route.path as TBasePath)
-						.split("/")
-						.map((part) => {
-							if (part.startsWith("...")) {
-								return "((?:[^/]+/)*[^/]+)?";
-							}
-							if (part.startsWith(":")) {
-								return "([^/]+)";
-							}
-							return part;
-						})
-						.join("/")}$`,
-				),
-			);
-		}
-		this.routes[route.method as BaseMethod].push(route as __BuiltRoute);
+
+		this.routeTrie.addRoute(route as unknown as Route);
+
 		return this as unknown as BunicornApp<
 			TBasePath,
 			[...TRoutes, __AddBasePathTo<TBasePath, TRoute>]
@@ -118,20 +88,14 @@ export class BunicornApp<
 	protected async useRoute(
 		request: Request,
 		url: string,
-		path: string,
 		route: __BuiltRoute,
-	): Promise<Response | void> {
-		const match = __testPath(route, path);
-		if (!match) {
-			return;
-		}
-
+	): Promise<Response> {
 		try {
 			const context = new BunicornContext(
 				request,
 				url as TBasePath,
 				BunicornApp.getFromStore,
-				match,
+				route.params,
 				route,
 			);
 
@@ -179,31 +143,10 @@ export class BunicornApp<
 	public async handleRequest(request: Request, _server?: import("bun").Server) {
 		const path = __getPath(request.url);
 		const method = request.method as BaseMethod;
-		const methodRoutes = this.routes[method];
 
-		for (let i = 0, len = methodRoutes.length; i < len; i++) {
-			const result = await this.useRoute(
-				request,
-				request.url,
-				path,
-				methodRoutes[i]!,
-			);
-			if (result) {
-				return result;
-			}
-		}
-
-		const allRoutes = this.routes.ALL;
-		for (let i = 0, len = allRoutes.length; i < len; i++) {
-			const result = await this.useRoute(
-				request,
-				request.url,
-				path,
-				allRoutes[i]!,
-			);
-			if (result) {
-				return result;
-			}
+		const route = this.routeTrie.matchRoute(method, path);
+		if (route !== null) {
+			return this.useRoute(request, path, route);
 		}
 
 		return Response.json(
@@ -219,7 +162,7 @@ export class BunicornApp<
 
 	// Only available in Bun
 	public serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
-		if (IS_BUN) {
+		if ("Bun" in globalThis) {
 			Bun.gc(true);
 			return Bun.serve({
 				...options,

@@ -13,7 +13,6 @@ export * from "./router/group.ts";
 export * from "./router/types.ts";
 export * from "./router/route.ts";
 export * from "./helpers/di.ts";
-export * from "./helpers/sortRoutes.ts";
 export type * from "./validation/formatIssues.ts";
 export type * from "./validation/types.ts";
 export type * from "./router/types.ts";

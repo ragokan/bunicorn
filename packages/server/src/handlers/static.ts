@@ -2,7 +2,7 @@ import type { BunicornContext } from "../context/base.ts";
 import { BunicornNotFoundError } from "../error/index.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
-import { matchAll } from "../matchers/constants.ts";
+import { restPath } from "../matchers/constants.ts";
 import type { BasePath } from "../router/types.ts";
 import { createHandler } from "./index.ts";
 
@@ -13,11 +13,9 @@ export interface StaticHandlerArgs {
 export default function staticHandler({ path, directory }: StaticHandlerArgs) {
 	return createHandler((app) => {
 		const finalPath = __mergePaths(app.args.basePath, path);
-		app.routes.GET.push({
-			path: finalPath,
+		app.addRoute({
+			path: `/${finalPath}/${restPath}`,
 			method: "GET",
-			middlewares: [],
-			regexp: new RegExp(`^${finalPath}/${matchAll}`),
 			meta: { hidden: true },
 			async handler(ctx: BunicornContext) {
 				try {

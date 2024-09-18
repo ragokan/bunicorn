@@ -39,10 +39,14 @@ const defaultRoute = rb
 const app = baseApp.addRoutes([defaultRoute]).addRoutes(helloRoutes);
 
 await app.addAsyncHandler(
-	openApiHandler({ apiUrl: "http://localhost:8000", title: "Development API" }),
+	openApiHandler({
+		apiUrl: "http://localhost:8000",
+		title: "Development API",
+		onDocument(document) {
+			console.log(document);
+		},
+	}),
 );
-
-console.log(app.staticRoutes);
 
 app.serve({ port: 8000 });
 console.log("Server running on http://localhost:8000");

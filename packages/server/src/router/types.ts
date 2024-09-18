@@ -56,8 +56,9 @@ export type __MergePaths<
 
 export interface __BuiltRoute<TPath extends BasePath = BasePath>
 	extends Route<TPath> {
-	regexp?: RegExp;
 	middlewares: BaseMiddleware<any>[];
+	isWildcard: boolean;
+	params: Record<string, string>;
 }
 
 export type BunicornResponse<Returns> = Response & { __brand: Returns };
