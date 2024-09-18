@@ -5,9 +5,9 @@ You can group routes with a prefix.
 ```ts
 import { groupRoutes } from "@bunicorn/server";
 
-const createTodoRoute = routeBuilder.post("/", ctx => handleCreateTodo);
-const getTodoRoute = routeBuilder.get("/:id", ctx => handleGetTodo);
-const getTodosRoute = routeBuilder.get("/", ctx => handleGetTodos);
+const createTodoRoute = router.post("/", ctx => handleCreateTodo);
+const getTodoRoute = router.get("/:id", ctx => handleGetTodo);
+const getTodosRoute = router.get("/", ctx => handleGetTodos);
 
 // All of them will be prefixed with /todo
 const todoRoutes = groupRoutes("/todo", [

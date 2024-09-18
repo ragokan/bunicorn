@@ -3,7 +3,7 @@ import {
 	BunicornError,
 	BunicornNotFoundError,
 	RB,
-	RouteBuilder,
+	Router,
 	dependency,
 	groupRoutes,
 } from "@bunicorn/server";
@@ -34,19 +34,19 @@ const todoStore = dependency(() => {
 
 const baseApp = new BunicornApp({ basePath: "/api" });
 
-const routeBuilder = new RB().use((ctx) => {
+const router = new RB().use((ctx) => {
 	if (ctx.req.headers.get("x-token") !== "123") {
 		throw new BunicornError("Unique token is required", 401);
 	}
 	return { token: "123" };
 });
 
-const getTodos = routeBuilder.output(todoSchema.array()).get("/", (ctx) => {
+const getTodos = router.output(todoSchema.array()).get("/", (ctx) => {
 	const todos = ctx.get(todoStore).todos;
 	return ctx.json(todos);
 });
 
-const getTodo = routeBuilder.output(todoSchema).get("/:id", (ctx) => {
+const getTodo = router.output(todoSchema).get("/:id", (ctx) => {
 	const todos = ctx.get(todoStore).todos;
 	const todo = todos.find((todo) => todo.id === parseInt(ctx.params.id));
 	if (!todo) {
@@ -55,7 +55,7 @@ const getTodo = routeBuilder.output(todoSchema).get("/:id", (ctx) => {
 	return ctx.json(todo);
 });
 
-const createTodoRoute = new RouteBuilder()
+const createTodoRoute = new Router()
 	.use(() => ({ a: 1 }))
 	.input(createTodoSchema)
 	.output(todoSchema)
@@ -65,7 +65,7 @@ const createTodoRoute = new RouteBuilder()
 		return ctx.json(todo, { status: 201 });
 	});
 
-const updateTodoRoute = routeBuilder
+const updateTodoRoute = router
 	.input(updateTodoSchema)
 	.output(todoSchema)
 	.patch("/:id", async (ctx) => {
@@ -80,7 +80,7 @@ const updateTodoRoute = routeBuilder
 		return ctx.json(todo);
 	});
 
-const deleteTodoRoute = routeBuilder
+const deleteTodoRoute = router
 	.output((v) => {
 		if (!v || typeof v !== "object" || !("success" in v)) {
 			throw new BunicornError("Invalid response for delete");

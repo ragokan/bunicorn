@@ -1,13 +1,13 @@
 import { z } from "zod";
-import { RouteBuilder } from "./router/builder.ts";
+import { Router } from "./router/builder.ts";
 
-const rb = new RouteBuilder().output(z.object({ message: z.string() }));
+const rb = new Router().output(z.object({ message: z.string() }));
 
 rb.input(z.object({ message: z.string() })).post("/hey", (ctx) => {
 	return ctx.json({ message: "" });
 });
 
-const getHelloMessage = new RouteBuilder()
+const getHelloMessage = new Router()
 	.output(z.object({ msg: z.string() }))
 	.get("/:name", async (ctx) => {
 		return ctx.json({

@@ -9,7 +9,7 @@ Cors handler is a handler that allows you to set cors headers to your responses.
 ::: code-group
 
 ```ts [bun/node]
-import { BunicornApp, RouteBuilder } from "@bunicorn/server";
+import { BunicornApp, Router } from "@bunicorn/server";
 import corsHandler from "@bunicorn/server/corsHandler";
 // We can use matchAll to allow all origins, because we use raw regex, we can't just use "*", instead we use ".*"
 import { matchAll } from "@bunicorn/server/matchers";
@@ -24,7 +24,7 @@ const baseApp = new BunicornApp().addHandler(
 
 ```ts [deno]
 import { BunicornEdgeApp } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/app/edgeApp.ts";
-import {  RouteBuilder } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/index.ts";
+import {  Router } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/index.ts";
 import corsHandler from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/handlers/cors.ts";
 // We can use matchAll to allow all origins, because we use raw regex, we can't just use "*", instead we use ".*"
 import { matchAll } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/matchers/constants.ts";
@@ -60,7 +60,7 @@ Static handler is a handler that allows you to serve static files. It accepts a 
 ::: code-group
 
 ```ts [bun/node]
-import { BunicornApp, RouteBuilder } from "@bunicorn/server";
+import { BunicornApp, Router } from "@bunicorn/server";
 import staticHandler from "@bunicorn/server/staticHandler";
 
 const baseApp = new BunicornApp().addHandler(staticHandler({
@@ -71,7 +71,7 @@ const baseApp = new BunicornApp().addHandler(staticHandler({
 
 ```ts [deno]
 import { BunicornEdgeApp } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/app/edgeApp.ts";
-import {  RouteBuilder } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/index.ts";
+import {  Router } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/index.ts";
 import staticHandler from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/handlers/static.ts";
 
 const baseApp = new BunicornEdgeApp().addHandler(staticHandler({

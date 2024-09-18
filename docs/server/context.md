@@ -5,7 +5,7 @@ Context is the way to carry information from input, output and middlewares to th
 ## Basic context
 
 ```ts
-const routeBuilder = new RouteBuilder().use(ctx => {
+const router = new Router().use(ctx => {
   // this is a simple middleware
   // when we return a value, it will be added to the context
   // if we throw instead, it will be handled by the error handler
@@ -16,7 +16,7 @@ const routeBuilder = new RouteBuilder().use(ctx => {
 ## Consume the context
 
 ```ts
-const getCountRoute = routeBuilder.get("/", ctx => {
+const getCountRoute = router.get("/", ctx => {
   // ctx.count is the value returned by the middleware and it is typed
   return ctx.raw(ctx.count.toString());
 });

@@ -32,7 +32,7 @@ const appDB = dependency(get => {
 ## How to consume the dependency
 
 ```ts
-const getTodosRoute = routeBuilder.get("/todos", async ctx => {
+const getTodosRoute = router.get("/todos", async ctx => {
   const db = ctx.get(appDB); // This will get the appDB dependency
   return db.todos.findMany();
 });

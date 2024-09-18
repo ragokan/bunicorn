@@ -8,13 +8,13 @@ In future, there will be more validators supported.
 
 ```ts
 // First create your route builder
-const routeBuilder = new RouteBuilder();
+const router = new Router();
 
 // Create a schema with zod
 const createTodoSchema = z.object({ title: z.string() });
 
 // Use it
-const createTodoRoute = routeBuilder
+const createTodoRoute = router
   // Use the validator
   .input(createTodoSchema)
   .post("/todo", async ctx => {
@@ -55,15 +55,15 @@ You can use route builders to have global input validators.
 ```ts
 // All the routes created with this route builder will have this validator
 // When you specify input, you can't use 'GET' method
-const chatRouteBuilder = routeBuilder.input(messageSchema);
+const chatRouter = router.input(messageSchema);
 
-const sendMessageRoute = chatRouteBuilder.post("/chat", async ctx => {
+const sendMessageRoute = chatRouter.post("/chat", async ctx => {
   // message is typed as returned type of messageSchema
   const message = await ctx.getBody();
   // Handle and return
 });
 
-const updateMessageRoute = chatRouteBuilder.patch("/chat/:id", async ctx => {
+const updateMessageRoute = chatRouter.patch("/chat/:id", async ctx => {
   // message is typed as returned type of messageSchema
   const message = await ctx.getBody();
   // Handle and return
@@ -81,7 +81,7 @@ const todoSchema = z.object({
   completed: z.boolean()
 });
 
-const getTodos = routeBuilder.output(todoSchema.array()).get("/", ctx => {
+const getTodos = router.output(todoSchema.array()).get("/", ctx => {
   // todos is typed as input type of todoSchema.array()
   // in client, it is typed as output type of todoSchema.array()
   // if todos does not match the schema, it will throw an internal error and log issues.
@@ -92,7 +92,7 @@ const getTodos = routeBuilder.output(todoSchema.array()).get("/", ctx => {
 ## Use both
 
 ```ts
-const createTodoRoute = routeBuilder
+const createTodoRoute = router
   .input(createTodoSchema)
   .output(todoSchema)
   .post("/todo", async ctx => {
@@ -111,7 +111,7 @@ import { object, string } from "valibot";
 const zodTodoCreateSchema = z.object({ title: z.string() });
 const valibotTodoSchema = object({ id: string(), title: string() });
 
-const createTodoRoute = routeBuilder
+const createTodoRoute = router
   .input(zodTodoCreateSchema)
   .output(valibotTodoSchema)
   .post("/todo", async ctx => {

@@ -35,13 +35,13 @@ For Deno, you can directly use Bunicorn from cdn of jsdelivr. Later, it will be 
 ::: code-group
 
 ```ts [bun/node]
-import { BunicornApp, RouteBuilder } from "@bunicorn/server";
+import { BunicornApp, Router } from "@bunicorn/server";
 ```
 
 ```ts [deno]
 import {
   BunicornApp,
-  RouteBuilder
+  Router
 } from "https://cdn.jsdelivr.net/npm/@bunicorn/server/src/index.ts";
 ```
 
@@ -55,7 +55,7 @@ const baseApp = new BunicornApp({ basePath: "/api" });
 // Route builder does not accept any arguments.
 // You can create as many Route Builder as you want.
 // You can think them as *procedures* of tRPC
-const routeBuilder = new RouteBuilder();
+const router = new Router();
 ```
 
 ::: warning
@@ -65,7 +65,7 @@ Every path should start with a slash ('/') and should end without a slash.
 ## Create your routes
 
 ```ts
-const authenticated = routeBuilder.use(context => {
+const authenticated = router.use(context => {
   // There are many utilities that can be tree shaken.
   if (ctx.req.headers.get("x-token") !== "123") {
     throw new BunicornError("Unique token is required", { status: 401 });

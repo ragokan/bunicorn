@@ -3,7 +3,7 @@ import {
 	BunicornError,
 	BunicornNotFoundError,
 	RB,
-	RouteBuilder,
+	Router,
 	dependency,
 	groupRoutes,
 } from "@bunicorn/server";
@@ -39,7 +39,7 @@ const todoStore = dependency(() => {
 const baseApp = new BunicornApp({ basePath: "/api" });
 
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
-const routeBuilder = new RB().use((ctx) => {
+const router = new RB().use((ctx) => {
 	if (ctx.req.headers.get("x-token") !== "123") {
 		throw new BunicornError("Unique token is required", 401);
 	}
@@ -48,13 +48,13 @@ const routeBuilder = new RB().use((ctx) => {
 });
 
 // GET TODOS AND ENFORCE OUT TYPE TO BE AN ARRAY OF TODOS
-const getTodos = routeBuilder.output(v.array(todoSchema)).get("/", (ctx) => {
+const getTodos = router.output(v.array(todoSchema)).get("/", (ctx) => {
 	const todos = ctx.get(todoStore).todos;
 	return ctx.json(todos);
 });
 
 // CREATE TODO AND ENFORCE OUR INPUT TO BE A TODO
-const createTodoRoute = new RouteBuilder()
+const createTodoRoute = new Router()
 	.use(() => ({ a: 1 }))
 	.input(createTodoSchema)
 	.output(todoSchema)
@@ -66,7 +66,7 @@ const createTodoRoute = new RouteBuilder()
 	});
 
 // UPDATE TODO AND ENFORCE OUR INPUT TO BE A TODO
-const updateTodoRoute = routeBuilder
+const updateTodoRoute = router
 	.input(updateTodoSchema)
 	.output(todoSchema)
 	.patch("/:id", async (ctx) => {
@@ -83,7 +83,7 @@ const updateTodoRoute = routeBuilder
 		return ctx.json(todo);
 	});
 
-const deleteTodoRoute = routeBuilder
+const deleteTodoRoute = router
 	.output((v) => {
 		// CUSTOM OUTPUT VALIDATION, YOU CAN USE TYPIA HERE, TOO
 		if (!v || typeof v !== "object" || !("success" in v)) {

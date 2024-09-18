@@ -15,7 +15,7 @@ import type {
 	__BuiltRoute,
 } from "./types.ts";
 
-export class RouteBuilder<
+export class Router<
 	TContextResults extends object = {},
 	TInput extends BunicornSchema | never = never,
 	TOutput extends BunicornSchema | any = any,
@@ -29,7 +29,7 @@ export class RouteBuilder<
 		const { middlewares, ...rest } = this.route;
 		newRoute.middlewares = [...middlewares!];
 		Object.assign(newRoute, rest);
-		const rb = new RouteBuilder<TContextResults>();
+		const rb = new Router<TContextResults>();
 		rb.route = newRoute;
 		return rb;
 	}
@@ -43,7 +43,7 @@ export class RouteBuilder<
 		type NewContext = Result extends void
 			? TContextResults
 			: TContextResults & Result;
-		return newBuilder as unknown as RouteBuilder<NewContext, TInput, TOutput>;
+		return newBuilder as unknown as Router<NewContext, TInput, TOutput>;
 	}
 
 	public input<TSchema extends BunicornSchema>(
@@ -56,7 +56,7 @@ export class RouteBuilder<
 		newBuilder.route.input = schema;
 		newBuilder.route.__inputOptions = options?.[0];
 		return newBuilder as unknown as Omit<
-			RouteBuilder<TContextResults, TSchema, TOutput>,
+			Router<TContextResults, TSchema, TOutput>,
 			"input" | "get" | "head" | "options"
 		>;
 	}
@@ -71,7 +71,7 @@ export class RouteBuilder<
 		newBuilder.route.output = schema;
 		newBuilder.route.__outputOptions = options?.[0];
 		return newBuilder as unknown as Omit<
-			RouteBuilder<TContextResults, TInput, TSchema>,
+			Router<TContextResults, TInput, TSchema>,
 			"output"
 		>;
 	}
@@ -84,7 +84,7 @@ export class RouteBuilder<
 			newBuilder.route.meta ?? {},
 		);
 		return newBuilder as unknown as Omit<
-			RouteBuilder<TContextResults, TInput, TOutput>,
+			Router<TContextResults, TInput, TOutput>,
 			"meta"
 		>;
 	}
@@ -198,7 +198,7 @@ export class RouteBuilder<
 	) => this.createRoute("ALL", path, handler);
 }
 
-export { RouteBuilder as RB };
+export { Router as RB };
 
 // add global parsers
 // add cache to getText -> getJson

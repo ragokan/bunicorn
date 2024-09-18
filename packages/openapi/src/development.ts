@@ -1,4 +1,4 @@
-import { BunicornApp, RouteBuilder, groupRoutes } from "@bunicorn/server";
+import { BunicornApp, Router, groupRoutes } from "@bunicorn/server";
 import * as v from "valibot";
 import openApiHandler from "./index.ts";
 
@@ -6,7 +6,7 @@ const baseApp = new BunicornApp({
 	basePath: "/api",
 });
 
-const rb = new RouteBuilder();
+const rb = new Router();
 
 const getHelloMessage = rb
 	.output(v.object({ msg: v.string() }))
@@ -16,7 +16,7 @@ const getHelloMessage = rb
 		});
 	});
 
-const postHelloMessage = new RouteBuilder()
+const postHelloMessage = new Router()
 	.input(v.object({ message: v.string() }))
 	.output(v.object({ msg: v.string() }))
 	.meta({ auth: true })

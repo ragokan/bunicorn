@@ -5,7 +5,7 @@
 Create route builder. You can create as many as you want.
 
 ```ts
-const rb = new RouteBuilder();
+const rb = new Router();
 ```
 
 ## GET Route

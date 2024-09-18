@@ -9,12 +9,12 @@ Middlewares are the way to
 
 ## Create a middleware
 
-In the previous pages, you must have seen that we use _RouteBuilder_ to create routes. There, we have the `use` method that allows us to add middlewares to a route.
+In the previous pages, you must have seen that we use _Router_ to create routes. There, we have the `use` method that allows us to add middlewares to a route.
 
 ```ts
-import { RouteBuilder } from "@bunicorn/server";
+import { Router } from "@bunicorn/server";
 
-const routeBuilder = new RouteBuilder().use(ctx => {
+const router = new Router().use(ctx => {
   // Here, we have access to the base context (untyped body, params, query, etc)
 
   // Get header from the context (it is probably a string, it is best to cast on a real use case)
@@ -29,7 +29,7 @@ const routeBuilder = new RouteBuilder().use(ctx => {
   };
 });
 
-const helloRoute = routeBuilder.get("/hello", ctx => {
+const helloRoute = router.get("/hello", ctx => {
   // Here, we have access to the context with the count we set in the middleware, it is also typed
   const count = ctx.count;
   return ctx.json({
@@ -44,23 +44,23 @@ We can have local middlewares, that will only be used by the route they are atta
 
 ```ts
 // All routes using this builder will use this middleware
-const routeBuilder = new RouteBuilder().use(middleware);
+const router = new Router().use(middleware);
 
 // This route will use the middleware
-const getTodosRoute = routeBuilder.get("/todos", getTodosHandler);
+const getTodosRoute = router.get("/todos", getTodosHandler);
 
-const secondRouteBuilder = new RouteBuilder();
+const secondRouter = new Router();
 // This route will not use the middleware
-const getTodoRoute = secondRouteBuilder.get("/todos/:id", getTodoHandler);
+const getTodoRoute = secondRouter.get("/todos/:id", getTodoHandler);
 ```
 
 To prevent this, we can use the middleware in the local scope
 
 ```ts
-const routeBuilder = new RouteBuilder();
+const router = new Router();
 
 // Only this route will use the middlewares
-const getTodosRoute = routeBuilder
+const getTodosRoute = router
   .use(middleware)
   .use(anotherMiddleware)
   .get("/todos", getTodosHandler);
@@ -68,26 +68,26 @@ const getTodosRoute = routeBuilder
 
 ## Global Middleware
 
-We can use global middlewares by creating a base _RouteBuilder_ and using it to create all the routes.
+We can use global middlewares by creating a base _Router_ and using it to create all the routes.
 
 ```ts
 // We can use *createMiddleware* to have a typed middleware
-import { createMiddleware, RouteBuilder } from "@bunicorn/server";
+import { createMiddleware, Router } from "@bunicorn/server";
 
 const countMiddleware = createMiddleware(ctx => {
   /* The same code we had above */
 });
 
-const baseRouteBuilder = new RouteBuilder().use(countMiddleware);
+const baseRouter = new Router().use(countMiddleware);
 ```
 
 On another file, we can do this:
 
 ```ts
 // Now, all routes created with this builder will use the count middleware and the another middleware
-const todosRouteBuilder = baseRouteBuilder.use(anotherMiddleware);
+const todosRouter = baseRouter.use(anotherMiddleware);
 
-const getTodosRoute = todosRouteBuilder.get("/todos", getTodosHandler);
+const getTodosRoute = todosRouter.get("/todos", getTodosHandler);
 ```
 
 ## Authentication
@@ -126,11 +126,11 @@ function authMiddleware(role: IRole) {
 Consume the middleware now.
 
 ```ts
-const getPostsRoute = routeBuilder
+const getPostsRoute = router
   .use(authMiddleware("user"))
   .get("/posts", getPostsHandler);
 
-const getAllPostsRoute = routeBuilder
+const getAllPostsRoute = router
   .use(authMiddleware("admin"))
   .get("/admin/posts", getAllPostsHandler);
 ```
