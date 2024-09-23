@@ -129,7 +129,6 @@ const patchRoute = router
 	});
 
 const searchRoute = router
-	.input(z.object({ query: z.string() }))
 	.output(bookSchema.array())
 	.get("/search", async (ctx) => {
 		const { query } = await ctx.getSearchParams();

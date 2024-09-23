@@ -8,7 +8,10 @@ import type {
 	__BuiltRoute,
 	__ExtractParams,
 } from "../router/types.ts";
-import type { BunicornSchema } from "../validation/types.ts";
+import type {
+	BunicornSchema,
+	__InferBunicornOutput,
+} from "../validation/types.ts";
 import { __validate } from "../validation/validate.ts";
 import { throwValidationError } from "./errors.ts";
 import type { BuniResponseInit, __PrivateBunicornContext } from "./types.ts";
@@ -61,7 +64,13 @@ export class BunicornContext<
 		return (this.__body = route.input ? __validate(route.input, _body) : _body);
 	}
 
-	public getSearchParams(schema?: BunicornSchema) {
+	public getSearchParams<
+		TSchema extends BunicornSchema | undefined = undefined,
+	>(
+		schema?: TSchema,
+	): TSchema extends BunicornSchema
+		? __InferBunicornOutput<TSchema>
+		: Record<string, string> {
 		const result = (this.__searchParams ??= __getSearchParams(this.req.url));
 		return schema ? __validate(schema, result) : result;
 	}
