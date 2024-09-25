@@ -22,9 +22,6 @@ describe("simple are equal test", () => {
 		expect(cloned === original).toBe(false);
 		expect(cloned).not.toBe(original);
 
-		// Fail to test
-		expect(cloned).toBe(original);
-
 		// But they are equal
 		expect(cloned).toEqual(original);
 		expect(cloned).toMatchObject(original);
