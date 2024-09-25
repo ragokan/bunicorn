@@ -24,19 +24,13 @@ jobs:
           fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v2
-  
+
       - uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.bun }}-bun-
-
-      - name: Cache VitePress build
-        uses: actions/cache@v4
-        with:
-          path: docs/.vitepress/dist
-          key: ${{ runner.os }}-vitepress-${{ hashFiles('docs/**') }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -52,8 +46,17 @@ jobs:
         run: |
           git diff --quiet HEAD^ HEAD docs/ && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
 
+      - name: Cache VitePress build
+        id: cache-vitepress
+        uses: actions/cache@v4
+        with:
+          path: docs/.vitepress/dist
+          key: ${{ runner.os }}-vitepress-${{ hashFiles('docs/**') }}
+          restore-keys: |
+            ${{ runner.os }}-vitepress-
+
       - name: Build with VitePress
-        if: steps.docs-changed.outputs.changed == 'true'
+        if: steps.docs-changed.outputs.changed == 'true' || steps.cache-vitepress.outputs.cache-hit != 'true'
         run: |
           bun run docs:build
           touch docs/.vitepress/dist/.nojekyll
