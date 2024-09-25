@@ -108,6 +108,12 @@ export default defineConfig({
 					{
 						text: "Errors",
 						link: "/server/errors",
+						items: [
+							{
+								text: "Custom Errors",
+								link: "/server/errors#custom-errors",
+							},
+						]
 					},
 				],
 			},

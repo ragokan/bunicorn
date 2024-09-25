@@ -1,5 +1,4 @@
 import type { Serve, ServeOptions } from "bun";
-import { RouteTrieMatcher } from "src/matchers/routeTrie.ts";
 import { BunicornContext } from "../context/base.ts";
 import { __createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
@@ -9,6 +8,7 @@ import {
 	BunicornError,
 	type Handler,
 } from "../index.ts";
+import { RouteTrieMatcher } from "../matchers/routeTrie.ts";
 import type {
 	Route,
 	__AddBasePathTo,

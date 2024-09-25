@@ -1,6 +1,6 @@
 import type { FormattedIssue } from "../validation/formatIssues.ts";
 
-export type ErrorType = "default" | "validation" | "notFound";
+export type ErrorType = "default" | "validation" | "notFound" | (string & {});
 
 export function createError<TData = any>(
 	message: string,
@@ -8,16 +8,14 @@ export function createError<TData = any>(
 	status?: number,
 	type: ErrorType = "default",
 ) {
-	if (type == "default") {
-		return new BunicornError(message, data, status, type);
+	switch (type) {
+		case "validation":
+			return new BunicornValidationError(data as FormattedIssue[]);
+		case "notFound":
+			return new BunicornNotFoundError(message);
+		default:
+			return new BunicornError(message, data, status, type);
 	}
-	if (type == "validation") {
-		return new BunicornValidationError(data as FormattedIssue[]);
-	}
-	if (type == "notFound") {
-		return new BunicornNotFoundError(message);
-	}
-	return new BunicornError(message, data, status, type);
 }
 
 export class BunicornError<TData = any> extends Error {

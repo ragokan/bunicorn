@@ -26,4 +26,24 @@ class BunicornValidationError extends BunicornError<FormattedIssue[]> {}
 class BunicornNotFoundError extends BunicornError<undefined> {}
 ```
 
-For the next steps, I recommedn you to check [client errors](../client/errors.md) page.
+## Custom Errors
+
+You can create your own errors either by extending `BunicornError` class or sending default error with function. Here is an example:
+
+```ts
+export class CustomError<TPayload> extends BunicornError<TPayload> {
+  constructor(payload: TPayload) {
+    super("Custom error message", payload, 400, "customErrorType");
+  }
+}
+```
+
+Or
+
+```ts
+export function newCustomError<TPayload>(payload: TPayload): BunicornError<TPayload> {
+  return new BunicornError("Custom error message", payload, 400, "customErrorType");
+}
+```
+
+For the next steps, I recommend you to check [client errors](../client/errors.md) page.

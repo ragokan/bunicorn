@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
-import { createMiddleware } from "src/middleware.ts";
 import * as v from "valibot";
 import type { BunicornContext } from "../context/base.ts";
+import { createMiddleware } from "../middleware.ts";
 import type { BunicornSchema } from "../validation/types.ts";
 import { Router } from "./base.ts";
 

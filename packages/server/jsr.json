@@ -1,0 +1,14 @@
+{
+	"name": "@bunicorn/server",
+	"version": "0.0.27",
+	"exports": {
+		".": "./src/index.ts",
+		"./matchers": "./src/matchers/constants.ts",
+		"./corsHandler": "./src/handlers/cors.ts",
+		"./staticHandler": "./src/handlers/static.ts"
+	},
+	"publish": {
+		"include": ["src/**/*.ts"],
+		"exclude": ["src/**/*.test.ts"]
+	}
+}

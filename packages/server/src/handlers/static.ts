@@ -20,13 +20,18 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
 			async handler(ctx: BunicornContext) {
 				try {
 					const target = __getPath(ctx.url).replace(finalPath, directory);
-					if (IS_BUN) {
+					if ("Bun" in globalThis) {
 						const file = Bun.file(target);
 						const exists = await file.exists();
 						if (!exists) {
 							throw new BunicornNotFoundError();
 						}
 						return new Response(file);
+					}
+					if ("Deno" in globalThis) {
+						// @ts-expect-error Deno is not defined
+						const file = await Deno.open(target, { read: true });
+						return new Response(file.readable);
 					}
 					const readFile = await import("node:fs/promises").then(
 						(mod) => mod.readFile,

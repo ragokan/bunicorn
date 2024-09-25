@@ -5,9 +5,6 @@ await Bun.build({
 	splitting: true,
 	sourcemap: "external",
 	target: "browser",
-	define: {
-		IS_BUN: "true",
-	},
 }).then((result) => {
 	if (!result.success) {
 		console.error(result.logs);

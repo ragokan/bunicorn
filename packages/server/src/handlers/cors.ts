@@ -1,5 +1,4 @@
-import type { BunicornContext } from "src/context/base.ts";
-import type { __BuiltRoute } from "src/router/types.ts";
+import type { BunicornContext } from "../context/base.ts";
 import { restPath } from "../matchers/constants.ts";
 import { createHandler } from "./index.ts";
 
