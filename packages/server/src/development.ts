@@ -5,7 +5,8 @@ import { Router } from "./router/base.ts";
 const loggerMiddleware = createMiddleware(async (_, next) => {
 	console.log("Request received.");
 	const response = await next();
-	console.log("Response sent with status:", response.status);
+	// If you use "response", you need to clone it before using it.
+	console.log("Response sent with body:", await response.clone().text());
 	return response;
 });
 
