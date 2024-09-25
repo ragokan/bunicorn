@@ -1,6 +1,6 @@
 import type { BaseSchema as vBaseSchema } from "valibot";
 import type { BunicornContext } from "../context/base.ts";
-import type { BaseMiddleware } from "../middleware.ts";
+import type { BaseMiddleware } from "../middleware/index.ts";
 import type {
 	BunicornSchema,
 	__InferBunicornInput,
@@ -35,12 +35,15 @@ export class Router<
 	}
 
 	public use<TResult extends object | void | Promise<object> | Promise<void>>(
-		cb: (context: BunicornContext & TContextResults) => TResult,
+		cb: (
+			context: BunicornContext & TContextResults,
+			next: () => Promise<Response>,
+		) => TResult,
 	) {
 		const newBuilder = this.copy();
 		newBuilder.route.middlewares!.push(cb as unknown as BaseMiddleware);
 		type Result = Awaited<TResult>;
-		type NewContext = Result extends void
+		type NewContext = Result extends void | Response
 			? TContextResults
 			: TContextResults & Result;
 		return newBuilder as unknown as Router<NewContext, TInput, TOutput>;
@@ -199,18 +202,3 @@ export class Router<
 }
 
 export { Router as RB };
-
-// add global parsers
-// add cache to getText -> getJson
-// then create middleware like
-/* 
-cache(fn, { by: (ctx) => [ctx.params.id], ttl: 1000 })
-cacheAsync(fn, { by: (ctx) => [ctx.params.id], ttl: 1000 })
-*/
-// function wrap<TContext extends BunicornContext<any, any>, Out>(
-//   cb: (ctx: TContext) => Out
-// ) {
-//   return (ctx: TContext): Out => {
-//     return cb(ctx);
-//   };
-// }

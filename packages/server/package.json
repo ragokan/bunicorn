@@ -42,16 +42,15 @@
 			"require": "./dist/handlers/static.js",
 			"default": "./dist/handlers/static.js",
 			"types": "./dist/handlers/static.d.ts"
+		},
+		"./cacheMiddleware": {
+			"import": "./dist/middleware/cacheMiddleware.js",
+			"require": "./dist/middleware/cacheMiddleware.js",
+			"default": "./dist/middleware/cacheMiddleware.js",
+			"types": "./dist/middleware/cacheMiddleware.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"server",
-		"fast",
-		"edge",
-		"bun",
-		"node"
-	],
+	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "node"],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"

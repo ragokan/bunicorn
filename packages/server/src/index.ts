@@ -2,7 +2,7 @@ export * from "./app/index.ts";
 export * from "./error/index.ts";
 export * from "./handlers/index.ts";
 export * from "./context/base.ts";
-export * from "./middleware.ts";
+export * from "./middleware/index.ts";
 export * from "./router/base.ts";
 export * from "./router/group.ts";
 export * from "./router/types.ts";

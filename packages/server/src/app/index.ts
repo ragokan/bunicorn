@@ -83,6 +83,45 @@ export class BunicornApp<
 		>;
 	}
 
+	public async executeMiddlewaresAndHandler(
+		context: BunicornContext,
+		middlewares: Array<
+			(
+				context: BunicornContext,
+				next: () => Promise<Response>,
+			) => Promise<Response | void | Record<string, unknown>>
+		>,
+		handler: (context: BunicornContext) => Promise<Response | void>,
+	): Promise<Response> {
+		let index = 0;
+
+		async function next(): Promise<Response> {
+			if (index < middlewares.length) {
+				const middleware = middlewares[index]!;
+				index++;
+				const result = await middleware(context, next);
+				if (result instanceof Response) {
+					return result;
+				}
+				if (result && typeof result === "object") {
+					Object.assign(context, result);
+				}
+				return await next();
+			}
+			const result = await handler(context);
+			if (result instanceof Response) {
+				return result;
+			}
+
+			return Response.json(
+				{ message: "No Response is returned from handlers.", status: 500 },
+				{ status: 500 },
+			);
+		}
+
+		return await next();
+	}
+
 	protected async useRoute(
 		request: Request,
 		url: string,
@@ -97,28 +136,25 @@ export class BunicornApp<
 				route,
 			);
 
-			const { middlewares, handler } = route;
-			const middlewaresLength = middlewares.length;
+			const middlewares = route.middlewares;
 
-			for (let i = 0; i < middlewaresLength; i++) {
-				const result = await middlewares[i]!(context);
-				if (result instanceof Response) {
-					return result;
+			// Ensure that the handler is only called once
+			let handlerCalled: boolean | undefined;
+			let handlerResult: Response | undefined;
+			async function handler(context: BunicornContext) {
+				if (handlerCalled) {
+					return handlerResult;
 				}
-				if (result) {
-					Object.assign(context, result);
-				}
+				handlerCalled = true;
+				return (handlerResult = await route.handler(context));
 			}
 
-			const result = await handler(context);
-			if (result instanceof Response) {
-				return result;
-			}
-
-			return Response.json(
-				{ message: "Internal Server Error", status: 500 },
-				{ status: 500 },
+			const response = await this.executeMiddlewaresAndHandler(
+				context,
+				middlewares,
+				handler,
 			);
+			return response;
 		} catch (error) {
 			if (error instanceof BunicornError) {
 				return new Response(error.toString(), {

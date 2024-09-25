@@ -1,4 +1,4 @@
-import type { BaseMiddleware } from "../middleware.ts";
+import type { BaseMiddleware } from "../middleware/index.ts";
 import type { BunicornSchema, __ValidateOptions } from "../validation/types.ts";
 import type { BaseMethod, BasePath, __MergePaths } from "./types.ts";
 
