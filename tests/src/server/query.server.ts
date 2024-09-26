@@ -17,9 +17,11 @@ const getMultipleParams = router.get("/multiple-params", async (ctx) => {
 });
 
 const getArrayParam = router.get("/array-param", async (ctx) => {
-	const params = await ctx.getSearchParams();
-	// TODO: Fix this
-	const values = decodeURIComponent(params.values).split(",");
+	const params = ctx.getSearchParams();
+	if (!params.values) {
+		return ctx.json({ values: [] });
+	}
+	const values = decodeURIComponent(params.values!).split(",");
 	return ctx.json({ values });
 });
 

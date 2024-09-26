@@ -131,7 +131,10 @@ const patchRoute = router
 const searchRoute = router
 	.output(bookSchema.array())
 	.get("/search", async (ctx) => {
-		const { query } = await ctx.getSearchParams();
+		const { query } = ctx.getSearchParams();
+		if (!query) {
+			throw new BunicornError("Query parameter is required for test", 400);
+		}
 		const books = ctx.get(bookStore).books;
 		const results = books.filter(
 			(book) =>
