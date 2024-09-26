@@ -4,7 +4,7 @@ await Bun.build({
 		"./src/matchers/constants.ts",
 		"./src/handlers/cors.ts",
 		"./src/handlers/static.ts",
-		"./src/middleware/cacheMiddleware.ts",
+		"./src/middleware/cache/index.ts",
 	],
 	outdir: "./dist",
 	minify: true,

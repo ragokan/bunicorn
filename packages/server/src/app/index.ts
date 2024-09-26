@@ -1,6 +1,6 @@
 import type { Serve, ServeOptions } from "bun";
 import { BunicornContext } from "../context/base.ts";
-import { __createDependencyStore } from "../helpers/di.ts";
+import { createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import {
 	type AsyncHandler,
@@ -39,7 +39,7 @@ export class BunicornApp<
 		console.error(error);
 	}
 
-	public static getFromStore = __createDependencyStore().get;
+	public static getFromStore = createDependencyStore().get;
 
 	protected middlewares: BaseMiddleware[] = [];
 	protected routeTrie: RouteTrieMatcher;
