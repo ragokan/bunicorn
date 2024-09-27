@@ -1,6 +1,10 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { createServer } from "node:http";
 import type { Readable } from "node:stream";
-import type { BunicornApp } from "./index.ts";
+import { Router } from "../router/base.ts";
+import type { Route } from "../router/route.ts";
+import type { BasePath, BunicornResponse } from "../router/types.ts";
+import { BunicornApp } from "./index.ts";
 
 // Convert Node.js Readable to Web API ReadableStream
 function nodeReadableToWebReadableStream(
@@ -68,19 +72,30 @@ async function webToNodeResponse(
 	nodeResponse.end();
 }
 
-export default async function createNodeServer(
-	handleRequest: BunicornApp<any>["handleRequest"],
-) {
+export default function createNodeServer(app: BunicornApp<any>) {
+	// Wrapper for static routes
+	const router = new Router();
+	const routes: Route[] = [];
+	for (const [path, response] of Object.entries(app.staticRoutes)) {
+		const route = router.get(
+			path as BasePath,
+			() => response as BunicornResponse<any>,
+		);
+		routes.push(route);
+	}
+	app.addRoutes(routes);
+
 	// NodeJS HTTP Server
-	const { createServer } = await import("node:http");
 	const server = createServer(async (req, res) => {
 		// Call the handleRequest function
 		try {
 			const webRequest = nodeToWebRequest(req);
-			const webResponse = await handleRequest(webRequest);
+			const webResponse = await app.handleRequest(webRequest);
 			await webToNodeResponse(webResponse, res);
 		} catch (error) {
-			console.error("Error handling request:", error);
+			if (error instanceof Error) {
+				BunicornApp.onGlobalError(error);
+			}
 			res.statusCode = 500;
 			res.end("Internal Server Error");
 		}

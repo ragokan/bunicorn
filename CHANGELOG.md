@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.30] - 2024-09-27
+
+- Update "createNodeServer" to use static routes and handlers, such as openapi
+
 ## [0.0.29] - 2024-09-27
 
 - Add "createNodeServer" wrapper for NodeJS environments

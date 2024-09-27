@@ -56,15 +56,7 @@
 			"types": "./dist/app/createNodeServer.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"server",
-		"fast",
-		"edge",
-		"bun",
-		"deno",
-		"node"
-	],
+	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "deno", "node"],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"

@@ -23,14 +23,7 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"client",
-		"fast",
-		"edge",
-		"bun",
-		"node"
-	],
+	"keywords": ["bunicorn", "client", "fast", "edge", "bun", "node"],
 	"devDependencies": {
 		"@bunicorn/server": "workspace:*"
 	},
