@@ -5,6 +5,7 @@ await Bun.build({
 		"./src/handlers/cors.ts",
 		"./src/handlers/static.ts",
 		"./src/middleware/cache/index.ts",
+		"./src/app/createNodeServer.ts",
 	],
 	outdir: "./dist",
 	minify: true,

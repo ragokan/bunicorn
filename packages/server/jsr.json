@@ -5,7 +5,9 @@
 		".": "./src/index.ts",
 		"./matchers": "./src/matchers/constants.ts",
 		"./corsHandler": "./src/handlers/cors.ts",
-		"./staticHandler": "./src/handlers/static.ts"
+		"./staticHandler": "./src/handlers/static.ts",
+		"./cacheMiddleware": "./src/middleware/cache/index.ts",
+		"./createNodeServer": "./src/app/createNodeServer.ts"
 	},
 	"publish": {
 		"include": ["src/**/*.ts"],

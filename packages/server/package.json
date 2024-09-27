@@ -48,9 +48,15 @@
 			"require": "./dist/middleware/cache/index.js",
 			"default": "./dist/middleware/cache/index.js",
 			"types": "./dist/middleware/cache/index.d.ts"
+		},
+		"./createNodeServer": {
+			"import": "./dist/app/createNodeServer.js",
+			"require": "./dist/app/createNodeServer.js",
+			"default": "./dist/app/createNodeServer.js",
+			"types": "./dist/app/createNodeServer.d.ts"
 		}
 	},
-	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "node"],
+	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "deno", "node"],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"

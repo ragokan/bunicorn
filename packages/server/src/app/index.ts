@@ -194,8 +194,9 @@ export class BunicornApp<
 
 	public readonly staticRoutes: Record<`/${string}`, Response> = {};
 
-	// Only available in Bun
-	public serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
+	// Only use with Bun
+	public async serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
+		// Default to Bun if it's available
 		if ("Bun" in globalThis) {
 			Bun.gc(true);
 			return Bun.serve({
@@ -205,13 +206,8 @@ export class BunicornApp<
 			});
 		}
 
-		if ("Deno" in globalThis) {
-			// @ts-expect-error Deno is not defined in the global scope + req is typed as "any"
-			Deno.serve({ reusePort: options.reusePort }, (req) => {
-				return this.handleRequest(req);
-			});
-		}
-
-		throw new Error("This method can only be called in Bun and Deno.");
+		throw new Error(
+			"For other runtimes, use wrappers or `const res = app.handleRequest(req)`.",
+		);
 	}
 }
