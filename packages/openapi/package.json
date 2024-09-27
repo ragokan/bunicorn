@@ -1,6 +1,6 @@
 {
 	"name": "@bunicorn/openapi",
-	"version": "0.0.28",
+	"version": "0.0.29",
 	"description": "Openapi generator for server",
 	"type": "module",
 	"private": false,
@@ -24,7 +24,11 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"keywords": ["bunicorn", "bun", "openapi"],
+	"keywords": [
+		"bunicorn",
+		"bun",
+		"openapi"
+	],
 	"homepage": "https://github.com/ragokan/bunicorn",
 	"author": "ragokan",
 	"license": "MIT",
