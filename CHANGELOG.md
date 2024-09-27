@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.0.29] - 2024-09-27
+
+- Add "createNodeServer" wrapper for NodeJS environments
+
+## [0.0.28] - 2024-09-25
+
+- Add cache middleware and globam middleware wrappers
+
 ## [0.0.27] - 2024-09-17
 
 - Fixes to query parsing
