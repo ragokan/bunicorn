@@ -1,6 +1,6 @@
 {
 	"name": "@bunicorn/client",
-	"version": "0.0.29",
+	"version": "0.0.30",
 	"description": "Bunicorn client whhich has full type support for the Bunicorn server, ultra fast Bun, Deno and Edge server framework",
 	"type": "module",
 	"private": false,
@@ -23,7 +23,14 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"keywords": ["bunicorn", "client", "fast", "edge", "bun", "node"],
+	"keywords": [
+		"bunicorn",
+		"client",
+		"fast",
+		"edge",
+		"bun",
+		"node"
+	],
 	"devDependencies": {
 		"@bunicorn/server": "workspace:*"
 	},

@@ -1,6 +1,6 @@
 {
 	"name": "@bunicorn/server",
-	"version": "0.0.29",
+	"version": "0.0.30",
 	"description": "Bunicorn server, ultra fast Bun, Deno and Edge server framework",
 	"type": "module",
 	"private": false,
@@ -56,7 +56,15 @@
 			"types": "./dist/app/createNodeServer.d.ts"
 		}
 	},
-	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "deno", "node"],
+	"keywords": [
+		"bunicorn",
+		"server",
+		"fast",
+		"edge",
+		"bun",
+		"deno",
+		"node"
+	],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"
