@@ -195,7 +195,7 @@ export class BunicornApp<
 	public readonly staticRoutes: Record<`/${string}`, Response> = {};
 
 	// Only use with Bun
-	public async serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
+	public serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
 		// Default to Bun if it's available
 		if ("Bun" in globalThis) {
 			Bun.gc(true);
