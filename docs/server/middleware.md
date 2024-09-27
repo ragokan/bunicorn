@@ -38,6 +38,7 @@ const helloRoute = router.get("/hello", ctx => {
 });
 ```
 
+
 ## Local Middleware
 
 We can have local middlewares, that will only be used by the route they are attached to.
@@ -88,6 +89,31 @@ On another file, we can do this:
 const todosRouter = baseRouter.use(anotherMiddleware);
 
 const getTodosRoute = todosRouter.get("/todos", getTodosHandler);
+```
+
+## Wrapper Middleware
+
+You can use the second argument of middleware to call "next" function which calls all next middlewares and the route handler.
+
+You can update the response before sending it if you need.
+
+```ts
+export const loggerMiddleware = createMiddleware(async (_, next) => {
+	console.log("Request received.");
+	const response = await next();
+  // IMPORTANT: Always do response.clone if you want to read the body, 
+  // because it is a stream and it can only be read once
+	console.log("Response sent with body:", await response.clone().text());
+	return response;
+});
+
+export const responseTimeMiddleware = createMiddleware(async (ctx, next) => {
+	const start = Date.now();
+	const response = await next();
+	const time = Date.now() - start;
+	console.log(`Response time for url ${ctx.req.url}: ${time}ms`);
+	return response;
+});
 ```
 
 ## Authentication

@@ -63,6 +63,10 @@ export default defineConfig({
 								link: "/server/middleware#global-middleware",
 							},
 							{
+								text: "Wrapper",
+								link: "/server/middleware#wrapper-middleware",
+							},
+							{
 								text: "Authentication",
 								link: "/server/middleware#authentication",
 							},
