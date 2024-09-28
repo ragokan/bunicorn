@@ -1,16 +1,17 @@
 {
 	"name": "@bunicorn/server",
-	"version": "0.0.27",
+	"version": "0.0.30",
 	"exports": {
 		".": "./src/index.ts",
 		"./matchers": "./src/matchers/constants.ts",
 		"./corsHandler": "./src/handlers/cors.ts",
 		"./staticHandler": "./src/handlers/static.ts",
 		"./cacheMiddleware": "./src/middleware/cache/index.ts",
-		"./createNodeServer": "./src/app/createNodeServer.ts"
+		"./createNodeServer": "./src/app/createNodeServer.ts",
+		"./internal": "./src/internal.ts"
 	},
 	"publish": {
-		"include": ["src/**/*.ts"],
+		"include": ["src/**/*.ts", "./*.json"],
 		"exclude": ["src/**/*.test.ts"]
 	}
 }

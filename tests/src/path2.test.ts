@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import bunicornClient, {
-	BunicornError,
-	BunicornNotFoundError,
-	BunicornValidationError,
+	HttpError,
+	HttpNotFoundError,
+	HttpValidationError,
 } from "@bunicorn/client";
 import type { Server } from "bun";
 import { type LibraryAppType, libraryApp } from "./server/path2.server.ts";
@@ -36,7 +36,7 @@ describe("Library API tests", () => {
 		const r = await client.get("/books", {});
 		expect(r.success).toBe(false);
 		assert(r.success === false);
-		expect(r.error).toBeInstanceOf(BunicornError);
+		expect(r.error).toBeInstanceOf(HttpError);
 		expect(r.error.message).toBe("Invalid API key");
 		expect(r.error.status).toBe(401);
 	});
@@ -120,7 +120,7 @@ describe("Library API tests", () => {
 		const r = await client.get("/books/:id", { params: { id: "999" } });
 		expect(r.success).toBe(false);
 		assert(r.success === false);
-		expect(r.error).toBeInstanceOf(BunicornNotFoundError);
+		expect(r.error).toBeInstanceOf(HttpNotFoundError);
 		expect(r.error.message).toBe("Book not found");
 	});
 
@@ -160,7 +160,7 @@ describe("Library API tests", () => {
 		});
 		expect(r.success).toBe(false);
 		assert(r.success === false);
-		expect(r.error).toBeInstanceOf(BunicornValidationError);
+		expect(r.error).toBeInstanceOf(HttpValidationError);
 		expect(r.error.message).toBe("Validation Error");
 	});
 

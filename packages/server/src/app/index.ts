@@ -5,8 +5,8 @@ import { __getPath } from "../helpers/pathRegexps.ts";
 import {
 	type AsyncHandler,
 	type BaseMiddleware,
-	BunicornError,
 	type Handler,
+	HttpError,
 } from "../index.ts";
 import { RouteTrieMatcher } from "../matchers/routeTrie.ts";
 import type {
@@ -156,7 +156,7 @@ export class BunicornApp<
 			);
 			return response;
 		} catch (error) {
-			if (error instanceof BunicornError) {
+			if (error instanceof HttpError) {
 				return new Response(error.toString(), {
 					status: error.status,
 					headers: { "Content-Type": "application/json" },

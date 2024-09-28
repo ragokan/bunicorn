@@ -68,7 +68,7 @@ Every path should start with a slash ('/') and should end without a slash.
 const authenticated = router.use(context => {
   // There are many utilities that can be tree shaken.
   if (ctx.req.headers.get("x-token") !== "123") {
-    throw new BunicornError("Unique token is required", { status: 401 });
+    throw new HttpError("Unique token is required", { status: 401 });
   }
   // Now, we can use ctx.token and anything else we add to the context
   return { token: "123" };

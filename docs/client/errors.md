@@ -10,7 +10,7 @@ type Success<T> = {
   data: T;
 };
 
-type Error<E extends BunicornError | Error> = {
+type Error<E extends HttpError | Error> = {
   success: false;
   error: E;
 };
@@ -55,7 +55,7 @@ createdTodo.data.title; // we can use it as Success Result
 2: Manual check
 
 ```ts
-import { BunicornValidationError } from "@bunicorn/server";
+import { HttpValidationError } from "@bunicorn/server";
 
 const createdTodo = await client.post("/api/todos", {
   input: { title: "Hello world!" }
@@ -63,10 +63,10 @@ const createdTodo = await client.post("/api/todos", {
 
 if (!createdTodo.success) {
   const error = createdTodo.error;
-  if (error instanceof BunicornValidationError) {
+  if (error instanceof HttpValidationError) {
     console.log("We got validation error", error.data![0]!.message);
   } else {
-    // This can be either not found error or default BunicornError.
+    // This can be either not found error or default HttpError.
     console.log("We got an error", error.message);
   }
 }

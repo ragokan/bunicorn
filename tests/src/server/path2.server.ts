@@ -1,7 +1,7 @@
 import {
 	BunicornApp,
-	BunicornError,
-	BunicornNotFoundError,
+	HttpError,
+	HttpNotFoundError,
 	Router,
 	dependency,
 	groupRoutes,
@@ -35,7 +35,7 @@ const app = new BunicornApp();
 
 const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-api-key") !== "library-key") {
-		throw new BunicornError("Invalid API key", 401);
+		throw new HttpError({ message: "Invalid API key", status: 401 });
 	}
 	return { apiKey: "library-key" };
 });
@@ -49,7 +49,7 @@ const getBook = router.output(bookSchema).get("/books/:id", (ctx) => {
 	const books = ctx.get(bookStore).books;
 	const book = books.find((book) => book.id === parseInt(ctx.params.id));
 	if (!book) {
-		throw new BunicornNotFoundError("Book not found");
+		throw new HttpNotFoundError("Book not found");
 	}
 	return ctx.json(book);
 });
@@ -72,7 +72,7 @@ const updateBookRoute = router
 			.get(bookStore)
 			.books.find((book) => book.id === parseInt(ctx.params.id));
 		if (!book) {
-			throw new BunicornNotFoundError("Book not found");
+			throw new HttpNotFoundError("Book not found");
 		}
 		Object.assign(book, body);
 		return ctx.json(book);
@@ -86,7 +86,7 @@ const deleteBookRoute = router
 			(book) => book.id === parseInt(ctx.params.id),
 		);
 		if (index === -1) {
-			throw new BunicornNotFoundError("Book not found");
+			throw new HttpNotFoundError("Book not found");
 		}
 		books.splice(index, 1);
 		return ctx.json({ success: true });
@@ -122,7 +122,7 @@ const patchRoute = router
 			.get(bookStore)
 			.books.find((book) => book.id === parseInt(ctx.params.id));
 		if (!book) {
-			throw new BunicornNotFoundError("Book not found");
+			throw new HttpNotFoundError("Book not found");
 		}
 		Object.assign(book, body);
 		return ctx.json(book);
@@ -133,7 +133,10 @@ const searchRoute = router
 	.get("/search", async (ctx) => {
 		const { query } = ctx.getSearchParams();
 		if (!query) {
-			throw new BunicornError("Query parameter is required for test", 400);
+			throw new HttpError({
+				message: "Query parameter is required for test",
+				status: 400,
+			});
 		}
 		const books = ctx.get(bookStore).books;
 		const results = books.filter(

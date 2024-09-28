@@ -1,8 +1,8 @@
 export { BunicornApp } from "./app/index.ts";
 export {
-	BunicornError,
-	BunicornNotFoundError,
-	BunicornValidationError,
+	HttpError,
+	HttpNotFoundError,
+	HttpValidationError,
 	createError,
 	type ErrorType,
 } from "./error/index.ts";

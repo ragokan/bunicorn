@@ -1,8 +1,8 @@
 import {
 	type BunicornApp,
-	BunicornError,
-	BunicornNotFoundError,
-	BunicornValidationError,
+	HttpError,
+	HttpNotFoundError,
+	HttpValidationError,
 	createError,
 } from "@bunicorn/server";
 import type {
@@ -69,7 +69,7 @@ type Config<
 interface ClientOptions {
 	serverPath: string;
 	headers?: Record<string, string> | (() => Record<string, string>);
-	onError?: (error: BunicornError) => void;
+	onError?: (error: HttpError) => void;
 	onRequest?: (request: Request) => void;
 	onResult?: (result: BunicornResult, response: Response) => void;
 }
@@ -98,7 +98,7 @@ export interface SuccessResult<T = any> {
 
 export interface FailureResult {
 	success: false;
-	error: BunicornError;
+	error: HttpError;
 	response: Response;
 }
 
@@ -208,7 +208,7 @@ export function bunicornClient<App extends BunicornApp<any>>({
 					data?.type ?? "default",
 				);
 				if (onError) {
-					onError(error);
+					onError(error as HttpError);
 				}
 				return resolve({
 					success: false,
@@ -323,5 +323,5 @@ export function bunicornClient<App extends BunicornApp<any>>({
 	};
 }
 
-export { BunicornError, BunicornNotFoundError, BunicornValidationError };
+export { HttpError, HttpNotFoundError, HttpValidationError };
 export default bunicornClient;

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import bunicornClient, { BunicornValidationError } from "@bunicorn/client";
+import bunicornClient, { HttpValidationError } from "@bunicorn/client";
 import { omit } from "@bunicorn/utils";
 import type { AppType } from "./server.ts";
 
@@ -16,7 +16,7 @@ const createdTodo = await client.post("/api/todos", {
 
 if (!createdTodo.success) {
 	const error = createdTodo.error;
-	if (error instanceof BunicornValidationError) {
+	if (error instanceof HttpValidationError) {
 		console.log("We got validation error", error.data![0]!.message);
 	} else {
 		console.log("We got an error", error.message);

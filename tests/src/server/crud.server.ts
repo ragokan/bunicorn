@@ -1,8 +1,7 @@
 import {
 	BunicornApp,
-	BunicornError,
-	BunicornNotFoundError,
-	Router,
+	HttpError,
+	HttpNotFoundError,
 	Router,
 	dependency,
 	groupRoutes,
@@ -36,7 +35,7 @@ const baseApp = new BunicornApp({ basePath: "/api" });
 
 const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-token") !== "123") {
-		throw new BunicornError("Unique token is required", 401);
+		throw new HttpError({ message: "Unique token is required", status: 401 });
 	}
 	return { token: "123" };
 });
@@ -50,7 +49,7 @@ const getTodo = router.output(todoSchema).get("/:id", (ctx) => {
 	const todos = ctx.get(todoStore).todos;
 	const todo = todos.find((todo) => todo.id === parseInt(ctx.params.id));
 	if (!todo) {
-		throw new BunicornNotFoundError("Todo not found");
+		throw new HttpNotFoundError("Todo not found");
 	}
 	return ctx.json(todo);
 });
@@ -74,7 +73,7 @@ const updateTodoRoute = router
 			.get(todoStore)
 			.todos.find((todo) => todo.id === parseInt(ctx.params.id));
 		if (!todo) {
-			throw new BunicornNotFoundError("Todo not found");
+			throw new HttpNotFoundError("Todo not found");
 		}
 		Object.assign(todo, body);
 		return ctx.json(todo);
@@ -83,7 +82,7 @@ const updateTodoRoute = router
 const deleteTodoRoute = router
 	.output((v) => {
 		if (!v || typeof v !== "object" || !("success" in v)) {
-			throw new BunicornError("Invalid response for delete");
+			throw new HttpError({ message: "Invalid response for delete" });
 		}
 		return v as { success: boolean };
 	})
@@ -93,7 +92,7 @@ const deleteTodoRoute = router
 			(todo) => todo.id === parseInt(ctx.params.id),
 		);
 		if (index === -1) {
-			throw new BunicornNotFoundError("Todo not found");
+			throw new HttpNotFoundError("Todo not found");
 		}
 		todos.splice(index, 1);
 		return ctx.json({ success: true });

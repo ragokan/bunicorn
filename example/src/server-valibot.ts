@@ -1,7 +1,7 @@
 import {
 	BunicornApp,
-	BunicornError,
-	BunicornNotFoundError,
+	HttpError,
+	HttpNotFoundError,
 	Router,
 	Router,
 	dependency,
@@ -40,7 +40,7 @@ const baseApp = new BunicornApp({ basePath: "/api" });
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
 const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-token") !== "123") {
-		throw new BunicornError("Unique token is required", 401);
+		throw new HttpError("Unique token is required", 401);
 	}
 	// Now, we can use ctx.token and anything else we add to the context
 	return { token: "123" };
@@ -76,7 +76,7 @@ const updateTodoRoute = router
 			.get(todoStore)
 			.todos.find((todo) => todo.id === parseInt(ctx.params.id));
 		if (!todo) {
-			throw new BunicornNotFoundError("Todo not found");
+			throw new HttpNotFoundError("Todo not found");
 		}
 		Object.assign(todo, body);
 		return ctx.json(todo);
@@ -86,7 +86,7 @@ const deleteTodoRoute = router
 	.output((v) => {
 		// CUSTOM OUTPUT VALIDATION, YOU CAN USE TYPIA HERE, TOO
 		if (!v || typeof v !== "object" || !("success" in v)) {
-			throw new BunicornError("Invalid response for delete");
+			throw new HttpError("Invalid response for delete");
 		}
 		return v as { success: boolean };
 	})
@@ -96,7 +96,7 @@ const deleteTodoRoute = router
 			(todo) => todo.id === parseInt(ctx.params.id),
 		);
 		if (index === -1) {
-			throw new BunicornNotFoundError("Todo not found");
+			throw new HttpNotFoundError("Todo not found");
 		}
 		todos.splice(index, 1);
 		return ctx.json({ success: true });

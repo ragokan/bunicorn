@@ -1,7 +1,7 @@
 import {
 	BunicornApp,
-	BunicornError,
-	BunicornNotFoundError,
+	HttpError,
+	HttpNotFoundError,
 	Router,
 	dependency,
 	groupRoutes,
@@ -34,7 +34,7 @@ const baseApp = new BunicornApp({ basePath: "/api/v1" });
 
 const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-api-key") !== "secret-key") {
-		throw new BunicornError("Invalid API key", 401);
+		throw new HttpError({ message: "Invalid API key", status: 401 });
 	}
 	return { apiKey: "secret-key" };
 });
@@ -48,7 +48,7 @@ const getUser = router.output(userSchema).get("/users/:id", (ctx) => {
 	const users = ctx.get(userStore).users;
 	const user = users.find((user) => user.id === parseInt(ctx.params.id));
 	if (!user) {
-		throw new BunicornNotFoundError("User not found");
+		throw new HttpNotFoundError("User not found");
 	}
 	return ctx.json(user);
 });
@@ -71,7 +71,7 @@ const updateUserRoute = router
 			.get(userStore)
 			.users.find((user) => user.id === parseInt(ctx.params.id));
 		if (!user) {
-			throw new BunicornNotFoundError("User not found");
+			throw new HttpNotFoundError("User not found");
 		}
 		Object.assign(user, body);
 		return ctx.json(user);
@@ -85,7 +85,7 @@ const deleteUserRoute = router
 			(user) => user.id === parseInt(ctx.params.id),
 		);
 		if (index === -1) {
-			throw new BunicornNotFoundError("User not found");
+			throw new HttpNotFoundError("User not found");
 		}
 		users.splice(index, 1);
 		return ctx.json({ success: true });
@@ -120,7 +120,7 @@ const patchRoute = router
 			.get(userStore)
 			.users.find((user) => user.id === parseInt(ctx.params.id));
 		if (!user) {
-			throw new BunicornNotFoundError("User not found");
+			throw new HttpNotFoundError("User not found");
 		}
 		Object.assign(user, body);
 		return ctx.json(user);

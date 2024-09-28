@@ -122,24 +122,24 @@ We will use the same patterns we used before but with some improvements.
 
 ```ts
 // We will create middlewares depending on the role
-import { createMiddleware, BunicornError } from "@bunicorn/server";
+import { createMiddleware, HttpError } from "@bunicorn/server";
 
 function authMiddleware(role: IRole) {
   return createMiddleware(async ctx => {
     const jwtToken = ctx.req.headers.get("Authorization");
     if (!jwtToken) {
-      // BunicornError makes Bunicorn to send a a detailed error, instead of sending status 500.
-      throw new BunicornError("Unauthorized", 401);
+      // HttpError makes Bunicorn to send a a detailed error, instead of sending status 500.
+      throw new HttpError("Unauthorized", 401);
     }
     // Your logic to verify the token
     const userId = await verifyToken(jwtToken);
     const user = await db.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new BunicornError("Unauthorized", 401);
+      throw new HttpError("Unauthorized", 401);
     }
     // We can check the role here
     if (user.role !== role) {
-      throw new BunicornError("Forbidden", 403);
+      throw new HttpError("Forbidden", 403);
     }
     // We can return the user, so that the next middleware/route can use it
     return {

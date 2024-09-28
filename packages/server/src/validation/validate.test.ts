@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import * as v from "valibot";
 import * as z from "zod";
-import { BunicornValidationError } from "../error/index.ts";
+import { HttpValidationError } from "../error/index.ts";
 import { __validate } from "./validate.ts";
 
 // Mock schema for Valibot
@@ -17,11 +17,9 @@ describe("__validate", () => {
 		expect(result).toBe(input);
 	});
 
-	it("should throw BunicornValidationError for invalid Valibot input", () => {
+	it("should throw HttpValidationError for invalid Valibot input", () => {
 		const input = 123;
-		expect(() => __validate(valibotSchema, input)).toThrow(
-			BunicornValidationError,
-		);
+		expect(() => __validate(valibotSchema, input)).toThrow(HttpValidationError);
 	});
 
 	it("should validate using Zod schema", () => {
@@ -30,9 +28,9 @@ describe("__validate", () => {
 		expect(result).toBe(input);
 	});
 
-	it("should throw BunicornValidationError for invalid Zod input", () => {
+	it("should throw HttpValidationError for invalid Zod input", () => {
 		const input = 123;
-		expect(() => __validate(zodSchema, input)).toThrow(BunicornValidationError);
+		expect(() => __validate(zodSchema, input)).toThrow(HttpValidationError);
 	});
 
 	it("should validate using raw schema", () => {
@@ -47,7 +45,7 @@ describe("__validate", () => {
 		expect(result).toBe(input);
 	});
 
-	it("should throw BunicornValidationError for invalid raw schema input", () => {
+	it("should throw HttpValidationError for invalid raw schema input", () => {
 		const rawSchema = (input: unknown) => {
 			if (typeof input !== "string") {
 				throw new Error("Must be a string");
@@ -55,6 +53,6 @@ describe("__validate", () => {
 			return input;
 		};
 		const input = 123;
-		expect(() => __validate(rawSchema, input)).toThrow(BunicornValidationError);
+		expect(() => __validate(rawSchema, input)).toThrow(HttpValidationError);
 	});
 });

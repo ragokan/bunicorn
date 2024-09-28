@@ -43,7 +43,7 @@ interface FormattedIssue {
 }
 
 // In client, you can do this:
-if (error instanceof BunicornValidationError) {
+if (error instanceof HttpValidationError) {
   console.log("Validation error:", error.args.data[0]!.message);
 }
 ```

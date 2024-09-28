@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import bunicornClient, {
-	BunicornError,
-	BunicornNotFoundError,
-	BunicornValidationError,
+	HttpError,
+	HttpNotFoundError,
+	HttpValidationError,
 } from "@bunicorn/client";
 import type { Server } from "bun";
 import { type AppType, app } from "./server/path1.server.ts";
@@ -36,7 +36,7 @@ describe("path1 api tests", () => {
 		const r = await client.get("/api/v1/users", {});
 		expect(r.success).toBe(false);
 		assert(r.success === false);
-		expect(r.error).toBeInstanceOf(BunicornError);
+		expect(r.error).toBeInstanceOf(HttpError);
 		expect(r.error.message).toBe("Invalid API key");
 		expect(r.error.status).toBe(401);
 	});
@@ -119,7 +119,7 @@ describe("path1 api tests", () => {
 		const r = await client.get("/api/v1/users/:id", { params: { id: "999" } });
 		expect(r.success).toBe(false);
 		assert(r.success === false);
-		expect(r.error).toBeInstanceOf(BunicornNotFoundError);
+		expect(r.error).toBeInstanceOf(HttpNotFoundError);
 		expect(r.error.message).toBe("User not found");
 	});
 
@@ -159,7 +159,7 @@ describe("path1 api tests", () => {
 		});
 		expect(r.success).toBe(false);
 		assert(r.success === false);
-		expect(r.error).toBeInstanceOf(BunicornValidationError);
+		expect(r.error).toBeInstanceOf(HttpValidationError);
 		expect(r.error.message).toBe("Validation Error");
 	});
 

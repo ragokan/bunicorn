@@ -1,5 +1,5 @@
 import type { BunicornContext } from "../context/base.ts";
-import { BunicornNotFoundError } from "../error/index.ts";
+import { HttpNotFoundError } from "../error/index.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
 import { restPath } from "../matchers/constants.ts";
@@ -24,7 +24,7 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
 						const file = Bun.file(target);
 						const exists = await file.exists();
 						if (!exists) {
-							throw new BunicornNotFoundError();
+							throw new HttpNotFoundError();
 						}
 						return new Response(file);
 					}
@@ -39,7 +39,7 @@ export default function staticHandler({ path, directory }: StaticHandlerArgs) {
 					const file = await readFile(target);
 					return new Response(file);
 				} catch (_) {
-					throw new BunicornNotFoundError();
+					throw new HttpNotFoundError();
 				}
 			},
 		});
