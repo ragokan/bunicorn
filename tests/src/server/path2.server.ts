@@ -2,7 +2,7 @@ import {
 	BunicornApp,
 	BunicornError,
 	BunicornNotFoundError,
-	RB,
+	Router,
 	dependency,
 	groupRoutes,
 } from "@bunicorn/server";
@@ -33,7 +33,7 @@ const bookStore = dependency(() => {
 
 const app = new BunicornApp();
 
-const router = new RB().use((ctx) => {
+const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-api-key") !== "library-key") {
 		throw new BunicornError("Invalid API key", 401);
 	}

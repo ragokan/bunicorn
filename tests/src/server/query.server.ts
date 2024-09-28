@@ -1,9 +1,9 @@
-import { BunicornApp, RB, groupRoutes } from "@bunicorn/server";
+import { BunicornApp, Router, groupRoutes } from "@bunicorn/server";
 import z from "zod";
 
 const baseApp = new BunicornApp({ basePath: "/api/v1" });
 
-const router = new RB();
+const router = new Router();
 
 // Without Zod
 const getSingleParam = router.get("/single-param", async (ctx) => {

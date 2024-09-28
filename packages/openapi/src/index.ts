@@ -1,4 +1,5 @@
-import { type BasePath, createAsyncHandler } from "@bunicorn/server";
+import { createAsyncHandler } from "@bunicorn/server";
+import type { BasePath } from "@bunicorn/server/internal";
 import type { OpenAPIV3 } from "openapi-types";
 import { createDocument } from "./helpers/createDocument.ts";
 import { getSwaggerUI } from "./helpers/getSwaggerUi.ts";

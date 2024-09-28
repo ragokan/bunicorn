@@ -6,6 +6,7 @@ await Bun.build({
 		"./src/handlers/static.ts",
 		"./src/middleware/cache/index.ts",
 		"./src/app/createNodeServer.ts",
+		"./src/internal.ts",
 	],
 	outdir: "./dist",
 	minify: true,

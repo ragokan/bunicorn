@@ -1,4 +1,4 @@
-import type { BunicornSchema } from "@bunicorn/server";
+import type { BunicornSchema } from "@bunicorn/server/internal";
 import type { OpenAPIV3 } from "openapi-types";
 
 export function getContentType(schema: OpenAPIV3.SchemaObject) {

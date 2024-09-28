@@ -1,4 +1,5 @@
-import type { BaseMethod, Route } from "@bunicorn/server";
+import type { BaseMethod } from "@bunicorn/server";
+import type { Route } from "@bunicorn/server/internal";
 
 export function routeTrieToObject(
 	routeMatcher: any,

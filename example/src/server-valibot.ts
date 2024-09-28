@@ -2,7 +2,7 @@ import {
 	BunicornApp,
 	BunicornError,
 	BunicornNotFoundError,
-	RB,
+	Router,
 	Router,
 	dependency,
 	groupRoutes,
@@ -38,7 +38,7 @@ const todoStore = dependency(() => {
 const baseApp = new BunicornApp({ basePath: "/api" });
 
 // CREATE ROUTE BUILDER AND USE MIDDLEWARE
-const router = new RB().use((ctx) => {
+const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-token") !== "123") {
 		throw new BunicornError("Unique token is required", 401);
 	}

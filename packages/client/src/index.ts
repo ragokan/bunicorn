@@ -1,17 +1,17 @@
-import type {
-	BaseMethod,
-	BasePath,
-	BunicornApp,
-	Route,
-	__ExtractParams,
-	__InferBunicornInput,
-} from "@bunicorn/server";
 import {
+	type BunicornApp,
 	BunicornError,
 	BunicornNotFoundError,
 	BunicornValidationError,
 	createError,
 } from "@bunicorn/server";
+import type {
+	BaseMethod,
+	BasePath,
+	Route,
+	__ExtractParams,
+	__InferBunicornInput,
+} from "@bunicorn/server/internal";
 
 function withoutTrailingSlash(path: string) {
 	return path.endsWith("/") ? path.slice(0, -1) : path;

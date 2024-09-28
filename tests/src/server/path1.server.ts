@@ -2,7 +2,7 @@ import {
 	BunicornApp,
 	BunicornError,
 	BunicornNotFoundError,
-	RB,
+	Router,
 	dependency,
 	groupRoutes,
 } from "@bunicorn/server";
@@ -32,7 +32,7 @@ const userStore = dependency(() => {
 
 const baseApp = new BunicornApp({ basePath: "/api/v1" });
 
-const router = new RB().use((ctx) => {
+const router = new Router().use((ctx) => {
 	if (ctx.req.headers.get("x-api-key") !== "secret-key") {
 		throw new BunicornError("Invalid API key", 401);
 	}

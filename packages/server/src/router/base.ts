@@ -200,5 +200,3 @@ export class Router<
 		) => BunicornResponse<Out> | Promise<BunicornResponse<Out>>,
 	) => this.createRoute("ALL", path, handler);
 }
-
-export { Router as RB };

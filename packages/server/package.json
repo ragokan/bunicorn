@@ -54,17 +54,15 @@
 			"require": "./dist/app/createNodeServer.js",
 			"default": "./dist/app/createNodeServer.js",
 			"types": "./dist/app/createNodeServer.d.ts"
+		},
+		"./internal": {
+			"import": "./dist/internal.js",
+			"require": "./dist/internal.js",
+			"default": "./dist/internal.js",
+			"types": "./dist/internal.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"server",
-		"fast",
-		"edge",
-		"bun",
-		"deno",
-		"node"
-	],
+	"keywords": ["bunicorn", "server", "fast", "edge", "bun", "deno", "node"],
 	"peerDependencies": {
 		"valibot": "^0.41.0",
 		"zod": "^3.23.8"

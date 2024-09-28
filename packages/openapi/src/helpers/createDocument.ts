@@ -1,4 +1,4 @@
-import type { PrivateBunicornApp } from "@bunicorn/server";
+import type { PrivateBunicornApp } from "@bunicorn/server/internal";
 import type { OpenAPIV3 } from "openapi-types";
 import type { OpenApiHandlerArgs } from "../index.ts";
 import { getContentType, getSchema } from "./getSchema.ts";
