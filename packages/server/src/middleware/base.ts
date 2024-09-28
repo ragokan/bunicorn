@@ -8,6 +8,6 @@ export type BaseMiddleware<TPath extends BasePath = BasePath, TResult = any> = (
 
 export function createMiddleware<TResult>(
 	cb: (ctx: BunicornContext, next: () => Promise<Response>) => TResult,
-) {
+): typeof cb {
 	return cb;
 }

@@ -7,10 +7,10 @@ export function createError<TData = never>(
 	data?: TData,
 	status?: number,
 	type: ErrorType = "default",
-) {
+): HttpError<TData> {
 	switch (type) {
 		case "validation":
-			return new HttpValidationError(data as FormattedIssue[]);
+			return new HttpValidationError(data as FormattedIssue[]) as HttpError;
 		case "notFound":
 			return new HttpNotFoundError(message);
 		default:
@@ -43,7 +43,7 @@ export class HttpError<TData = never> extends Error {
 		this.type = type;
 	}
 
-	public override toString() {
+	public override toString(): string {
 		return JSON.stringify({
 			message: this.message,
 			data: this.data,

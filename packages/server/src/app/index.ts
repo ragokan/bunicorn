@@ -1,6 +1,6 @@
-import type { Serve, ServeOptions } from "bun";
+import type { Serve, ServeOptions, Server } from "bun";
 import { BunicornContext } from "../context/base.ts";
-import { createDependencyStore } from "../helpers/di.ts";
+import { type GetDependencyFn, createDependencyStore } from "../helpers/di.ts";
 import { __getPath } from "../helpers/pathRegexps.ts";
 import {
 	type AsyncHandler,
@@ -39,27 +39,29 @@ export class BunicornApp<
 		console.error(error);
 	}
 
-	public static getFromStore = createDependencyStore().get;
+	public static getFromStore: GetDependencyFn = createDependencyStore().get;
 
 	protected middlewares: BaseMiddleware[] = [];
 	protected routeTrie: RouteTrieMatcher;
 
-	public addHandler(handler: Handler) {
+	public addHandler(handler: Handler): this {
 		handler(this as unknown as PrivateBunicornApp);
 		return this;
 	}
 
-	public async addAsyncHandler(handler: AsyncHandler) {
+	public async addAsyncHandler(handler: AsyncHandler): Promise<this> {
 		await handler(this as unknown as PrivateBunicornApp);
 		return this;
 	}
 
-	public addMiddleware(middleware: BaseMiddleware) {
+	public addMiddleware(middleware: BaseMiddleware): this {
 		this.middlewares.push(middleware);
 		return this;
 	}
 
-	public addRoute<TRoute extends Route<any, any, any, any>>(route: TRoute) {
+	public addRoute<TRoute extends Route<any, any, any, any>>(
+		route: TRoute,
+	): BunicornApp<TBasePath, [...TRoutes, __AddBasePathTo<TBasePath, TRoute>]> {
 		route.middlewares ??= [];
 		route.middlewares = [...this.middlewares, ...route.middlewares];
 
@@ -73,7 +75,10 @@ export class BunicornApp<
 
 	public addRoutes<TNewRoutes extends Route<any, any, any, any>[]>(
 		routes: TNewRoutes,
-	) {
+	): BunicornApp<
+		TBasePath,
+		[...TRoutes, ...__AddBasePathToAll<TBasePath, TNewRoutes>]
+	> {
 		routes.forEach((route) => {
 			this.addRoute(route);
 		});
@@ -174,7 +179,10 @@ export class BunicornApp<
 		}
 	}
 
-	public async handleRequest(request: Request, _server?: import("bun").Server) {
+	public async handleRequest(
+		request: Request,
+		_server?: import("bun").Server,
+	): Promise<Response> {
 		const path = __getPath(request.url);
 		const method = request.method as BaseMethod;
 
@@ -195,7 +203,7 @@ export class BunicornApp<
 	public readonly staticRoutes: Record<`/${string}`, Response> = {};
 
 	// Only use with Bun
-	public serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">) {
+	public serve<T>(options: Omit<ServeOptions & Serve<T>, "fetch">): Server {
 		// Default to Bun if it's available
 		if ("Bun" in globalThis) {
 			Bun.gc(true);

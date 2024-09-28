@@ -1,6 +1,6 @@
 import type { BunicornContext } from "../../context/base.ts";
 import type { GetDependencyFn } from "../../helpers/di.ts";
-import { createMiddleware } from "../base.ts";
+import { type BaseMiddleware, createMiddleware } from "../base.ts";
 import { type CacheStore, MemoryStore } from "./store.ts";
 export type { CacheStore };
 
@@ -14,7 +14,7 @@ export function cacheMiddleware<MergeContext extends Record<string, any> = {}>({
 	getKey,
 	getStore,
 	tls,
-}: Args<MergeContext>) {
+}: Args<MergeContext>): BaseMiddleware {
 	return createMiddleware(async (ctx, next) => {
 		const store = getStore?.(ctx.get) || new MemoryStore();
 		const key = getKey(ctx as BunicornContext & MergeContext);

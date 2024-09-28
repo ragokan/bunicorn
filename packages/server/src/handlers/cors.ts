@@ -1,6 +1,6 @@
 import type { BunicornContext } from "../context/base.ts";
 import { restPath } from "../matchers/constants.ts";
-import { createHandler } from "./index.ts";
+import { type Handler, createHandler } from "./index.ts";
 
 export interface CorsHandlerArgs {
 	origins?: string[];
@@ -8,7 +8,7 @@ export interface CorsHandlerArgs {
 	allowedHeaders?: string[];
 }
 
-export default function corsHandler(args: CorsHandlerArgs = {}) {
+export default function corsHandler(args: CorsHandlerArgs = {}): Handler {
 	const { origins, allowCredentials, allowedHeaders } = args;
 	const originRegexes = origins?.map((origin) => new RegExp(origin));
 

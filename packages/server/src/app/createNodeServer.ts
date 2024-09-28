@@ -1,4 +1,4 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
+import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import { createServer } from "node:http";
 import type { Readable } from "node:stream";
 import { Router } from "../router/base.ts";
@@ -72,7 +72,7 @@ async function webToNodeResponse(
 	nodeResponse.end();
 }
 
-export default function createNodeServer(app: BunicornApp<any>) {
+export default function createNodeServer(app: BunicornApp<any>): Server {
 	// Wrapper for static routes
 	const router = new Router();
 	const routes: Route[] = [];

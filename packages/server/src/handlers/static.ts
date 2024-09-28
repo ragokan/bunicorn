@@ -4,13 +4,16 @@ import { __getPath } from "../helpers/pathRegexps.ts";
 import { __mergePaths } from "../helpers/pathUtils.ts";
 import { restPath } from "../matchers/constants.ts";
 import type { BasePath } from "../router/types.ts";
-import { createHandler } from "./index.ts";
+import { type Handler, createHandler } from "./index.ts";
 
 export interface StaticHandlerArgs {
 	path: BasePath;
 	directory: string;
 }
-export default function staticHandler({ path, directory }: StaticHandlerArgs) {
+export default function staticHandler({
+	path,
+	directory,
+}: StaticHandlerArgs): Handler {
 	return createHandler((app) => {
 		const finalPath = __mergePaths(app.args.basePath, path);
 		app.addRoute({

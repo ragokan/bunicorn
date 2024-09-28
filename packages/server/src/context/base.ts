@@ -36,7 +36,7 @@ export class BunicornContext<
 		this.headers = new Headers();
 	}
 
-	public async getText() {
+	public async getText(): Promise<string> {
 		return (this.__text ??= await this.req.text());
 	}
 
@@ -75,19 +75,25 @@ export class BunicornContext<
 		return schema ? __validate(schema, result) : result;
 	}
 
-	public ok() {
+	public ok(): BunicornResponse<never> {
 		return new Response(undefined, {
 			status: 200,
 			headers: this.headers,
 		}) as BunicornResponse<never>;
 	}
 
-	public raw<T extends BodyInit | null>(body: T, init: BuniResponseInit = {}) {
+	public raw<T extends BodyInit | null>(
+		body: T,
+		init: BuniResponseInit = {},
+	): BunicornResponse<T> {
 		this.applyHeaders(init);
 		return new Response(body, init) as BunicornResponse<T>;
 	}
 
-	public text(body: string, init: BuniResponseInit = {}) {
+	public text(
+		body: string,
+		init: BuniResponseInit = {},
+	): BunicornResponse<string> {
 		this.headers.set("Content-Type", "text/plain");
 		this.applyHeaders(init);
 		return new Response(body, init) as BunicornResponse<string>;
@@ -96,7 +102,7 @@ export class BunicornContext<
 	public json<T extends Record<any, any>>(
 		body: T,
 		init: BuniResponseInit = {},
-	) {
+	): BunicornResponse<T> {
 		const route = this.route;
 		this.headers.set("Content-Type", "application/json");
 		this.applyHeaders(init);
@@ -117,7 +123,7 @@ export class BunicornContext<
 		return Response.json(body, init) as BunicornResponse<T>;
 	}
 
-	public redirect(url: string, status = 302) {
+	public redirect(url: string, status = 302): BunicornResponse<never> {
 		this.headers.set("Location", url);
 		return new Response(undefined, {
 			status,
@@ -126,7 +132,10 @@ export class BunicornContext<
 	}
 
 	// TODO: Move this to a separate handler
-	public stream<T>(body: ReadableStream<T>, init: BuniResponseInit = {}) {
+	public stream<T>(
+		body: ReadableStream<T>,
+		init: BuniResponseInit = {},
+	): BunicornResponse<ReadableStream<T>> {
 		this.headers.set("Content-Type", "text/event-stream");
 		this.applyHeaders(init);
 		return new Response(body, init) as BunicornResponse<ReadableStream<T>>;
