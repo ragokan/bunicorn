@@ -1,4 +1,5 @@
 {
+	"$schema": "https://jsr.io/schema/config-file.v1.json",
 	"name": "@bunicorn/server",
 	"version": "0.0.30",
 	"exports": {

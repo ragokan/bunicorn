@@ -31,7 +31,6 @@ export class BunicornContext<
 		public get: GetDependencyFn,
 		public params: __ExtractParams<TPath>,
 		protected route: __BuiltRoute<TPath>,
-		// TODO: Add global headers
 	) {
 		this.headers = new Headers();
 	}
