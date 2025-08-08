@@ -69,9 +69,9 @@ export class BunicornContext<
 		schema?: TSchema,
 	): TSchema extends BunicornSchema
 		? __InferBunicornOutput<TSchema>
-		: Record<string, string> {
+		: Record<string, string | string[]> {
 		const result = (this.__searchParams ??= __getSearchParams(this.req.url));
-		return schema ? __validate(schema, result) : result;
+		return (schema ? __validate(schema, result) : result) as any;
 	}
 
 	public ok(): BunicornResponse<never> {

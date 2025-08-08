@@ -208,9 +208,8 @@ export class BunicornApp<
 		if ("Bun" in globalThis) {
 			Bun.gc(true);
 			return Bun.serve({
-				...options,
+				...(options as any),
 				fetch: this.handleRequest,
-				static: Object.assign({}, this.staticRoutes, options.static),
 			});
 		}
 

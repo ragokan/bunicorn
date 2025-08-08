@@ -40,7 +40,7 @@ export default function staticHandler({
 						(mod) => mod.readFile,
 					);
 					const file = await readFile(target);
-					return new Response(file);
+					return new Response(new Uint8Array(file));
 				} catch (_) {
 					throw new HttpNotFoundError();
 				}
