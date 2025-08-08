@@ -1,0 +1,11 @@
+# Cursor Rules for Bunicorn
+
+- Prefer Bun APIs and bun test runner.
+- Use TypeScript strict mode and follow the repository code style.
+- Keep handler and middleware APIs stable; avoid breaking changes without a major bump.
+- Do not reformat unrelated files in edits.
+- Tests: place under `tests/` workspace; use Bun's test APIs; use ports >= 8100 to avoid conflicts; stop servers in `afterAll`.
+- Docs: update VitePress pages under `docs/`; add new pages to sidebar and nav in `docs/.vitepress/config.js`.
+- Performance: prefer zero-allocation helpers and avoid unnecessary JSON.parse/stringify in hot paths.
+- Compatibility: ensure Node, Bun, and Deno code paths are guarded via runtime checks.
+- Publishing: run `bun run build` and `bun test` before publishing.

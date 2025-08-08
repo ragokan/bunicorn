@@ -24,11 +24,7 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"keywords": [
-		"bunicorn",
-		"bun",
-		"openapi"
-	],
+	"keywords": ["bunicorn", "bun", "openapi"],
 	"homepage": "https://github.com/ragokan/bunicorn",
 	"author": "ragokan",
 	"license": "MIT",

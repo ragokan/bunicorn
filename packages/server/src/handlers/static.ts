@@ -22,7 +22,11 @@ export default function staticHandler({
 			meta: { hidden: true },
 			async handler(ctx: BunicornContext) {
 				try {
-					const target = __getPath(ctx.url).replace(finalPath, directory);
+					const rel = (ctx as any).params?.restPath as string | undefined;
+					if (!rel) {
+						throw new HttpNotFoundError();
+					}
+					const target = `${directory}/${rel}`;
 					if ("Bun" in globalThis) {
 						const file = Bun.file(target);
 						const exists = await file.exists();

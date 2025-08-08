@@ -3,7 +3,6 @@ import {
 	HttpError,
 	HttpNotFoundError,
 	Router,
-	Router,
 	dependency,
 	groupRoutes,
 } from "@bunicorn/server";

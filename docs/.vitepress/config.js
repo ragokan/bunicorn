@@ -15,6 +15,7 @@ export default defineConfig({
 		nav: [
 			{ text: "Quick Start", link: "/quick-start", activeMatch: "^/$" },
 			{ text: "Introduction", link: "/introduction" },
+			{ text: "Testing", link: "/testing" },
 		],
 		sidebar: [
 			{
@@ -22,6 +23,7 @@ export default defineConfig({
 				items: [
 					{ text: "Why Bunicorn?", link: "/introduction" },
 					{ text: "Quick Start", link: "/quick-start" },
+					{ text: "Testing", link: "/testing" },
 					{ text: "Roadmap", link: "/roadmap" },
 					{ text: "Benchmark 🚀", link: "/benchmark" },
 				],
